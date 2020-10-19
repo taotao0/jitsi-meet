@@ -253,7 +253,9 @@ export class AbstractWelcomePage extends Component<Props, *> {
      * @returns {void}
      */
     _updateRoomname() {
-        const generatedRoomname = generateRoomWithoutSeparator();
+        //const generatedRoomname = generateRoomWithoutSeparator();
+        //FIXME: to demo
+        const generatedRoomname = 'MeetingName';
         const roomPlaceholder = '';
         const updateTimeoutId = setTimeout(this._updateRoomname, 10000);
 
