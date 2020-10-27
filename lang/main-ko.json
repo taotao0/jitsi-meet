@@ -571,7 +571,7 @@
         },
         "addPeople": "통화에 사용자 추가",
         "audioOnlyOff": "음성전용 모드 끄기",
-        "audioOnlyOn": "음성전용 모드 끄기",
+        "audioOnlyOn": "음성전용 모드 켜기",
         "audioRoute": "음성 장비 선택하기",
         "authenticate": "인증 중",
         "callQuality": "품질 설정하기",
