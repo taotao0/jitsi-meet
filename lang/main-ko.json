@@ -565,7 +565,7 @@
             "show": "",
             "speakerStats": "",
             "tileView": "",
-            "toggleCamera": "카메라 토ㄱ",
+            "toggleCamera": "카메라 토글",
             "videomute": "",
             "videoblur": ""
         },
@@ -608,7 +608,7 @@
         "stopSharedVideo": "",
         "talkWhileMutedPopup": "",
         "tileViewToggle": "",
-        "toggleCamera": "카메라 토ㄱ",
+        "toggleCamera": "카메라 토글",
         "videomute": "",
         "startvideoblur": "",
         "stopvideoblur": ""
