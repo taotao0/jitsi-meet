@@ -86,7 +86,7 @@ export function showPendingRecordingNotification(streamType: string) {
             titleKey: 'dialog.recording'
         };
         const showNotificationAction = showNotification({
-            isDismissAllowed: false,
+            isDismissAllowed: true,
             ...dialogProps
         });
 

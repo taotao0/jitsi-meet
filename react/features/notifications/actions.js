@@ -66,7 +66,9 @@ export function setNotificationsEnabled(enabled: boolean) {
 export function showErrorNotification(props: Object) {
     return showNotification({
         ...props,
-        appearance: NOTIFICATION_TYPE.ERROR
+        appearance: NOTIFICATION_TYPE.ERROR,
+        timeout: 2500,
+        uid: window.Date.now()
     });
 }
 
