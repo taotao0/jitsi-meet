@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Uclick Meet</string>
+    <string name="app_name">Usee</string>
     <string name="restriction_server_url_description">URL of Uclick Meet server instance to connect to</string>
     <string name="restriction_server_url_title">Server URL</string>
 </resources>
