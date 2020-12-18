@@ -227,7 +227,7 @@ end
 -- everything.
 function is_feature_allowed(session, feature)
     if (session.jitsi_meet_context_features == nil
-        or session.jitsi_meet_context_features[feature] == "true") then
+        or session.jitsi_meet_context_features[feature] == "true" or session.jitsi_meet_context_features[feature] == true) then
         return true;
     else
         return false;
@@ -239,7 +239,7 @@ end
 function extract_subdomain(room_node)
     -- optimization, skip matching if there is no subdomain, no [subdomain] part in the beginning of the node
     if not starts_with(room_node, '[') then
-        return room_node;
+        return nil,room_node;
     end
 
     return room_node:match("^%[([^%]]+)%](.+)$");

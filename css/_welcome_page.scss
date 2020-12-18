@@ -90,7 +90,7 @@ body.welcome-page {
                     color: $defaultWarningColor;
                     display: flex;
                     flex-direction: row;
-                    margin-top: 5px;
+                    margin-top: 15px;
 
                     .jitsi-icon {
                         margin-right: 15px;
@@ -224,6 +224,7 @@ body.welcome-page {
     &.without-content {
         .welcome-card {
             min-width: 500px;
+            max-width: 580px;
         }
     }
 
