@@ -246,7 +246,7 @@ class WelcomePage extends AbstractWelcomePage {
                             <button
                                 aria-disabled = 'false'
                                 aria-label = 'Create meeting'
-                                className = 'welcome-page-button'
+                                className = 'welcome-page-create-button'
                                 id = 'create_room_button'
                                 onClick = { this._onFormSubmit }
                                 tabIndex = '0'
