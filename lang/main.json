@@ -888,6 +888,8 @@
         "roomnameHint": "Enter the name or URL of the room you want to join. You may make a name up, just let the people you are meeting know it so that they enter the same name.",
         "sendFeedback": "Send feedback",
         "startMeeting": "Start meeting",
+        "joinMeeting": "Join meeting",
+        "createMeeting": "Create meeting",
         "terms": "Terms",
         "title": "Secure, fully featured, and completely free video conferencing"
     },

@@ -751,6 +751,8 @@
         "roomname": "방 이름 입력",
         "roomnameHint": "참여하려는 방의 이름 또는 URL을 입력하십시오. 이름을 정하고 만나는 사람들에게 같은 이름을 입력하도록 알리면됩니다.",
         "sendFeedback": "피드백 보내기",
+        "joinMeeting": "회의 참여",
+        "createMeeting": "회의 생성",
         "terms": "이용약관",
         "title": "안전하고 모든 기능을 갖춘 완전 무료 화상 회의"
     },

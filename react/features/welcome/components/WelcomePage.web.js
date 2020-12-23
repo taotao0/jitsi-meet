@@ -235,23 +235,23 @@ class WelcomePage extends AbstractWelcomePage {
                             </div>
                             <button
                                 aria-disabled = 'false'
-                                aria-label = 'Start meeting'
+                                aria-label = 'Join meeting'
                                 className = 'welcome-page-button'
                                 id = 'enter_room_button'
                                 onClick = { this._onFormSubmit }
                                 tabIndex = '0'
                                 type = 'button'>
-                                { t('welcomepage.startMeeting') }
+                                { t('welcomepage.joinMeeting') }
                             </button>
                             <button
                                 aria-disabled = 'false'
-                                aria-label = 'Start meeting'
+                                aria-label = 'Create meeting'
                                 className = 'welcome-page-button'
                                 id = 'create_room_button'
                                 onClick = { this._onFormSubmit }
                                 tabIndex = '0'
                                 type = 'button'>
-                                { t('welcomepage.startMeeting') }
+                                { t('welcomepage.createMeeting') }
                             </button>
                         </div>
 
