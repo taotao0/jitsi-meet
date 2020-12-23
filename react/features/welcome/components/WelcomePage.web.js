@@ -14,6 +14,8 @@ import { SettingsButton, SETTINGS_TABS } from '../../settings';
 import { AbstractWelcomePage, _mapStateToProps } from './AbstractWelcomePage';
 import Tabs from './Tabs';
 
+import axios from 'axios';
+
 /**
  * The pattern used to validate room name.
  * @type {string}
@@ -49,7 +51,8 @@ class WelcomePage extends AbstractWelcomePage {
 
             generateRoomnames:
                 interfaceConfig.GENERATE_ROOMNAMES_ON_WELCOME_PAGE,
-            selectedTab: 0
+            selectedTab: 0,
+            loginState: false
         };
 
         /**
@@ -105,6 +108,7 @@ class WelcomePage extends AbstractWelcomePage {
         );
 
         // Bind event handlers so they are only bound once per instance.
+        this._getRoomName = this._getRoomName.bind(this);
         this._onFormSubmit = this._onFormSubmit.bind(this);
         this._onRoomChange = this._onRoomChange.bind(this);
         this._setAdditionalCardRef = this._setAdditionalCardRef.bind(this);
@@ -239,6 +243,16 @@ class WelcomePage extends AbstractWelcomePage {
                                 type = 'button'>
                                 { t('welcomepage.startMeeting') }
                             </button>
+                            <button
+                                aria-disabled = 'false'
+                                aria-label = 'Start meeting'
+                                className = 'welcome-page-button'
+                                id = 'create_room_button'
+                                onClick = { this._onFormSubmit }
+                                tabIndex = '0'
+                                type = 'button'>
+                                { t('welcomepage.startMeeting') }
+                            </button>
                         </div>
 
                         { _moderatedRoomServiceUrl && (
@@ -293,6 +307,49 @@ class WelcomePage extends AbstractWelcomePage {
         );
     }
 
+    
+
+    _getRoomName = async() => {
+        axios({
+            method: 'post',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            url: 'https://10.0.0.25:8080/Auth/SignIn',
+            data: { userId : 'test', password: '1q2w3e4r' }
+        }).then(response => {
+            console.log('_getRoomName success');
+            console.log(response.data);
+            this.setState({
+                loginState: true
+            });
+        }).catch(e => {
+            console.log('_getRoomName fail');
+            console.log(e);
+            this.setState({
+                loginState: true
+            });
+        });
+    }
+
+    /**
+     * Create room.
+     * 
+     */
+    _createRoom() {
+        console.log('_createRoom start ----------------------');
+        console.log(`loginState : ${this.state.loginState}`);
+        if(this.state.loginState) {
+            /* (1) get room name with login token */
+            this._getRoomName();
+            /* (2) create room */
+        } else {
+            /* popup information */
+            /* FIXME : manage error string in json */
+            this._getRoomName();
+            //alert('Log in to create a conference');
+        }
+        console.log('_createRoom end   ----------------------');
+    }
+
     /**
      * Prevents submission of the form and delegates join logic.
      *
@@ -303,8 +360,12 @@ class WelcomePage extends AbstractWelcomePage {
     _onFormSubmit(event) {
         event.preventDefault();
 
-        if (!this._roomInputRef || this._roomInputRef.reportValidity()) {
-            this._onJoin();
+        if(event.target.id === 'create_room_button') {  /* create room case */
+            this._createRoom();
+        } else {                                        /* join room case */
+            if (!this._roomInputRef || this._roomInputRef.reportValidity()) {
+                this._onJoin();
+            }
         }
     }
 
