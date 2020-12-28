@@ -753,6 +753,8 @@
         "sendFeedback": "피드백 보내기",
         "joinMeeting": "회의 참여",
         "createMeeting": "회의 생성",
+        "login": "로그인",
+        "register": "회원 가입",
         "terms": "이용약관",
         "title": "안전하고 모든 기능을 갖춘 완전 무료 화상 회의"
     },

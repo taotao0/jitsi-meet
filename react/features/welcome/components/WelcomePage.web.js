@@ -51,8 +51,7 @@ class WelcomePage extends AbstractWelcomePage {
 
             generateRoomnames:
                 interfaceConfig.GENERATE_ROOMNAMES_ON_WELCOME_PAGE,
-            selectedTab: 0,
-            loginState: false
+            selectedTab: 0
         };
 
         /**
@@ -108,7 +107,6 @@ class WelcomePage extends AbstractWelcomePage {
         );
 
         // Bind event handlers so they are only bound once per instance.
-        this._getRoomName = this._getRoomName.bind(this);
         this._onFormSubmit = this._onFormSubmit.bind(this);
         this._onRoomChange = this._onRoomChange.bind(this);
         this._setAdditionalCardRef = this._setAdditionalCardRef.bind(this);
@@ -180,6 +178,7 @@ class WelcomePage extends AbstractWelcomePage {
         const showAdditionalCard = this._shouldShowAdditionalCard();
         const showAdditionalContent = this._shouldShowAdditionalContent();
         const showAdditionalToolbarContent = this._shouldShowAdditionalToolbarContent();
+        const loginState = this.state.loginState;
 
         return (
             <div
@@ -191,6 +190,31 @@ class WelcomePage extends AbstractWelcomePage {
                 </div>
 
                 <div className = 'header'>
+                    { loginState == false ?
+                        <>
+                        <button
+                            aria-disabled = 'false'
+                            aria-label = 'Login'
+                            className = 'welcome-page-login'
+                            id = 'login_button'
+                            onClick = { this._login }
+                            tabIndex = '0'
+                            type = 'button'>
+                            { t('welcomepage.login') }
+                        </button>
+                        <button
+                            aria-disabled = 'false'
+                            aria-label = 'Register'
+                            className = 'welcome-page-register'
+                            id = 'register_button'
+                            onClick = { this._register }
+                            tabIndex = '0'
+                            type = 'button'>
+                            { t('welcomepage.register') }
+                        </button>
+                        </>
+                        : null
+                    }
                     <div className = 'welcome-page-settings'>
                         <SettingsButton
                             defaultTab = { SETTINGS_TABS.CALENDAR } />
@@ -248,7 +272,7 @@ class WelcomePage extends AbstractWelcomePage {
                                 aria-label = 'Create meeting'
                                 className = 'welcome-page-create-button'
                                 id = 'create_room_button'
-                                onClick = { this._onFormSubmit }
+                                onClick = { this._onCreate }
                                 tabIndex = '0'
                                 type = 'button'>
                                 { t('welcomepage.createMeeting') }
@@ -307,49 +331,6 @@ class WelcomePage extends AbstractWelcomePage {
         );
     }
 
-    
-
-    _getRoomName = async() => {
-        axios({
-            method: 'post',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            url: 'https://10.0.0.25:8080/Auth/SignIn',
-            data: { userId : 'test', password: '1q2w3e4r' }
-        }).then(response => {
-            console.log('_getRoomName success');
-            console.log(response.data);
-            this.setState({
-                loginState: true
-            });
-        }).catch(e => {
-            console.log('_getRoomName fail');
-            console.log(e);
-            this.setState({
-                loginState: true
-            });
-        });
-    }
-
-    /**
-     * Create room.
-     * 
-     */
-    _createRoom() {
-        console.log('_createRoom start ----------------------');
-        console.log(`loginState : ${this.state.loginState}`);
-        if(this.state.loginState) {
-            /* (1) get room name with login token */
-            this._getRoomName();
-            /* (2) create room */
-        } else {
-            /* popup information */
-            /* FIXME : manage error string in json */
-            this._getRoomName();
-            //alert('Log in to create a conference');
-        }
-        console.log('_createRoom end   ----------------------');
-    }
-
     /**
      * Prevents submission of the form and delegates join logic.
      *
@@ -360,12 +341,8 @@ class WelcomePage extends AbstractWelcomePage {
     _onFormSubmit(event) {
         event.preventDefault();
 
-        if(event.target.id === 'create_room_button') {  /* create room case */
-            this._createRoom();
-        } else {                                        /* join room case */
-            if (!this._roomInputRef || this._roomInputRef.reportValidity()) {
-                this._onJoin();
-            }
+        if (!this._roomInputRef || this._roomInputRef.reportValidity()) {
+            this._onJoin();
         }
     }
 

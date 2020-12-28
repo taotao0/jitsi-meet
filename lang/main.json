@@ -224,6 +224,7 @@
         "lockMessage": "Failed to lock the conference.",
         "lockRoom": "Add meeting $t(lockRoomPasswordUppercase)",
         "lockTitle": "Lock failed",
+        "loginTitle": "Login",
         "logoutQuestion": "Are you sure you want to logout and stop the conference?",
         "logoutTitle": "Logout",
         "maxUsersLimitReached": "The limit for maximum number of participants has been reached. The conference is full. Please contact the meeting owner or try again later!",
@@ -890,6 +891,8 @@
         "startMeeting": "Start meeting",
         "joinMeeting": "Join meeting",
         "createMeeting": "Create meeting",
+        "login": "Login",
+        "register": "Register",
         "terms": "Terms",
         "title": "Secure, fully featured, and completely free video conferencing"
     },
