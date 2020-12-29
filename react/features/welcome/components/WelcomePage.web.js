@@ -14,8 +14,6 @@ import { SettingsButton, SETTINGS_TABS } from '../../settings';
 import { AbstractWelcomePage, _mapStateToProps } from './AbstractWelcomePage';
 import Tabs from './Tabs';
 
-import axios from 'axios';
-
 /**
  * The pattern used to validate room name.
  * @type {string}

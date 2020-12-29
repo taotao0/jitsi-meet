@@ -878,6 +878,8 @@
         "info": "Dial-in info",
         "join": "CREATE / JOIN",
         "jitsiOnMobile": "Jitsi on mobile – download our apps and start a meeting from anywhere",
+        "loginIdAllowedChars": "Login ID only acceps alphabet and numbers",
+        "loginPasswordAllowedChars": "Login password should have at least one special character",
         "moderatedMessage": "Or <a href=\"{{url}}\" rel=\"noopener noreferrer\" target=\"_blank\">book a meeting URL</a> in advance where you are the only moderator.",
         "privacy": "Privacy",
         "recentList": "Recent",
