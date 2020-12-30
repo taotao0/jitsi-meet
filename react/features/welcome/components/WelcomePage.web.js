@@ -216,7 +216,19 @@ class WelcomePage extends AbstractWelcomePage {
                             { t('welcomepage.register') }
                         </button>
                         </>
-                        : null
+                        :
+                        <>
+                        <button
+                            aria-disabled = 'false'
+                            aria-label = 'Logout'
+                            className = 'welcome-page-logout'
+                            id = 'logout_button'
+                            onClick = { this._logout }
+                            tabIndex = '0'
+                            type = 'button'>
+                            { t('welcomepage.logout') }
+                        </button>
+                        </>
                     }
                     <div className = 'welcome-page-settings'>
                         <SettingsButton
