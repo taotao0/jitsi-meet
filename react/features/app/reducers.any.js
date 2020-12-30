@@ -47,6 +47,7 @@ import '../settings/reducer';
 import '../subtitles/reducer';
 import '../toolbox/reducer';
 import '../transcribing/reducer';
+import '../user/reducer';
 import '../video-layout/reducer';
 import '../videosipgw/reducer';
 import '../welcome/reducer';

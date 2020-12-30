@@ -171,12 +171,17 @@ class WelcomePage extends AbstractWelcomePage {
      * @returns {ReactElement|null}
      */
     render() {
-        const { _moderatedRoomServiceUrl, t } = this.props;
+        const { _moderatedRoomServiceUrl, t, _user } = this.props;
         const { DEFAULT_WELCOME_PAGE_LOGO_URL, DISPLAY_WELCOME_FOOTER } = interfaceConfig;
         const showAdditionalCard = this._shouldShowAdditionalCard();
         const showAdditionalContent = this._shouldShowAdditionalContent();
         const showAdditionalToolbarContent = this._shouldShowAdditionalToolbarContent();
         const loginState = this.state.loginState;
+
+        // FIXME: remove following log
+        console.log('-----------> _user start');
+        console.log(_user);
+        console.log('-----------> _user end');
 
         return (
             <div

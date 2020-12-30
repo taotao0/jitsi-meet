@@ -50,6 +50,11 @@ type Props = {
     _settings: Object,
 
     /**
+     * Whether the user log in.
+     */
+    _user: Object,
+
+    /**
      * The Redux dispatch Function.
      */
     dispatch: Dispatch<any>
@@ -70,7 +75,8 @@ export class AbstractWelcomePage extends Component<Props, *> {
      */
     static getDerivedStateFromProps(props: Props, state: Object) {
         return {
-            room: props._room || state.room
+            room: props._room || state.room,
+            loginState: props._user.loginState || state.loginState
         };
     }
 
@@ -224,28 +230,7 @@ export class AbstractWelcomePage extends Component<Props, *> {
 
     _login() {
         console.log('_login start ----------------------');
-
         this.props.dispatch(openDialog(UserLoginDialog));
-        /*
-        axios({
-            method: 'post',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            url: 'https://10.0.0.25:8080/Auth/SignIn',
-            data: { userId : 'test', password: '1q2w3e4r' }
-        }).then(response => {
-            console.log('_getRoomName success');
-            console.log(response.data);
-            this.setState({
-                loginState: true
-            });
-        }).catch(e => {
-            console.log('_getRoomName fail');
-            console.log(e);
-            this.setState({
-                loginState: true
-            });
-        });
-        */
         console.log('_login end ----------------------');
     }
 
@@ -265,11 +250,12 @@ export class AbstractWelcomePage extends Component<Props, *> {
      * 
      */
     _getRoomName = async() => {
+        /*
         axios({
             method: 'post',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            url: 'https://10.0.0.25:8080/Auth/SignIn',
-            data: { userId : 'test', password: '1q2w3e4r' }
+            url: 'https://10.0.0.10:8080/Auth/SignIn',
+            data: { userId : 'admin', password: '1234' }
         }).then(response => {
             console.log('_getRoomName success');
             console.log(response.data);
@@ -283,6 +269,7 @@ export class AbstractWelcomePage extends Component<Props, *> {
                 loginState: true
             });
         });
+        */
     }
 
     _onCreate: () => void;
@@ -383,6 +370,7 @@ export function _mapStateToProps(state: Object) {
         _moderatedRoomServiceUrl: state['features/base/config'].moderatedRoomServiceUrl,
         _recentListEnabled: isRecentListEnabled(),
         _room: state['features/base/conference'].room,
-        _settings: state['features/base/settings']
+        _settings: state['features/base/settings'],
+        _user: state['features/user']
     };
 }

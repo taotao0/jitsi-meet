@@ -5,17 +5,26 @@ import { connect } from '../../base/redux';
 
 import { Dialog } from '../../base/dialog';
 
+import { userLoginAction } from '../actions';
+
 /**
- * The pattern used to validate ID.
+ * The pattern used to validate ID, password
  * @type {string}
  */
+// FIXME : USER_ID_VALIDATE_PATTERN_STR
+// FIXME : USER_PASSWORD_VALIDATE_PATTERN_STR
 export const USER_ID_VALIDATE_PATTERN_STR = '^([a-zA-Z0-9_]){6,50}$';
 export const USER_PASSWORD_VALIDATE_PATTERN_STR = '(?=.*[a-z])(?=.*[A-Z])(?=.*?[0-9])(?=.*?[!@#$%^&*+`~=?\|<>/]).{8,50}$';
 
+type Props = {
+    dispatch: Function,
+    t: Function
+};
+
+
 /**
- * Implements a React {@link Component} which displays the component
- * {@code VideoQualitySlider} in a dialog.
- *
+ * Implements a React {@link Component} which displays the login dialog
+  *
  * @extends Component
  */
 class UserLoginDialog extends Component {
@@ -24,6 +33,7 @@ class UserLoginDialog extends Component {
 
         this._onIdChange = this._onIdChange.bind(this);
         this._onPasswordChange = this._onPasswordChange.bind(this);
+        this._onFormSubmit = this._onFormSubmit.bind(this);
     }
 
     state = {
@@ -34,17 +44,27 @@ class UserLoginDialog extends Component {
     };
 
     _onIdChange(event) {
-        console.log(event.target.value);
         this.setState({
             id: event.target.value
         });
     }
 
     _onPasswordChange(event) {
-        console.log(event.target.value);
         this.setState({
             password: event.target.value
         });
+    }
+
+    _onFormSubmit(event) {
+        const { dispatch } = this.props;
+        event.preventDefault();
+
+        const id = this.state.id;
+        const password = this.state.password;
+
+        dispatch(userLoginAction(id, password));
+
+        return true;
     }
 
     componentDidMount() {
@@ -55,12 +75,15 @@ class UserLoginDialog extends Component {
         document.body.classList.remove('welcome-page');
     }
     
+    //FIXME : UI/UX, layout, css
     render() {
         const { t } = this.props;
 
         return (
             <Dialog
-                hideCancelButton = { true }
+                hideCancelButton = { false }
+                submitDisabled = { false }
+                onSubmit = { this._onFormSubmit }
                 okKey = 'dialog.done'
                 titleKey = 'dialog.loginTitle'
                 width = 'small'>
