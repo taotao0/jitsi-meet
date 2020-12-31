@@ -9,10 +9,12 @@ import logger from './logger';
  * @returns {Promise<>} - Resolves with the axios.
  */
 export function callUserLoginService(id, password) {
+    /*
     logger.log('--------> callUserLoginService start');
     logger.log(id);
     logger.log(password);
     logger.log('--------> callUserLoginService end');
+    */
 
     const form = new FormData();
     form.append('userId', id);

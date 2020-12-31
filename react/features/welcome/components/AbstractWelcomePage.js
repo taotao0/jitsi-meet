@@ -7,6 +7,7 @@ import type { Dispatch } from 'redux';
 import { openDialog } from '../../base/dialog';
 import { AddPeopleDialog } from '../../invite/components';
 import { UserLoginDialog } from '../../user/components';
+import { userLogoutSuccess } from '../../user/actions';
 
 import { createWelcomePageEvent, sendAnalytics } from '../../analytics';
 import { appNavigate } from '../../app/actions';
@@ -74,9 +75,19 @@ export class AbstractWelcomePage extends Component<Props, *> {
      * @inheritdoc
      */
     static getDerivedStateFromProps(props: Props, state: Object) {
+        // console.log('-----------> getDerivedStateFromProps start');
+        let loginStateTemp = state.loginState;
+        /* if loginState in props exist, apply it */
+        if(typeof(props._user.loginState) != 'undefined') {
+            loginStateTemp = props._user.loginState;
+        }
+        /*
+        console.log(loginStateTemp);
+        console.log('-----------> getDerivedStateFromProps end');
+        */
         return {
             room: props._room || state.room,
-            loginState: props._user.loginState || state.loginState
+            loginState: loginStateTemp
         };
     }
 
@@ -118,6 +129,7 @@ export class AbstractWelcomePage extends Component<Props, *> {
             = this._animateRoomnameChanging.bind(this);
         this._onJoin = this._onJoin.bind(this);
         this._login = this._login.bind(this);
+        this._logout = this._logout.bind(this);
         this._register = this._register.bind(this);
         this._getRoomName = this._getRoomName.bind(this);
         this._onCreate = this._onCreate.bind(this);
@@ -229,9 +241,17 @@ export class AbstractWelcomePage extends Component<Props, *> {
     _login: () => void;
 
     _login() {
-        console.log('_login start ----------------------');
+        // console.log('_login start ----------------------');
         this.props.dispatch(openDialog(UserLoginDialog));
-        console.log('_login end ----------------------');
+        // console.log('_login end ----------------------');
+    }
+
+    _logout: () => void;
+
+    _logout() {
+        // console.log('_logout start ----------------------');
+        this.props.dispatch(userLogoutSuccess());
+        // console.log('_logout end ----------------------');
     }
 
     _register: () => void;

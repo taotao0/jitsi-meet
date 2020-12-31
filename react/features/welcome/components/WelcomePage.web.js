@@ -179,9 +179,11 @@ class WelcomePage extends AbstractWelcomePage {
         const loginState = this.state.loginState;
 
         // FIXME: remove following log
+        /*
         console.log('-----------> _user start');
         console.log(_user);
         console.log('-----------> _user end');
+        */
 
         return (
             <div
