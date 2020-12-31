@@ -106,7 +106,6 @@ class UserLoginDialog extends Component {
                     <input
                         aria-disabled = 'false'
                         aria-label = 'PASSWORD'
-                        autoFocus = { true }
                         className = 'enter-room-input'
                         id = 'user_password_field'
                         onChange = { this._onPasswordChange }
