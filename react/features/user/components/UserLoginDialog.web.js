@@ -57,7 +57,14 @@ class UserLoginDialog extends Component {
 
     _onFormSubmit(event) {
         const { dispatch } = this.props;
-        event.preventDefault();
+        // FIXME : _onFormSubmet is called from two path
+        // Dialog.onSubmit
+        // form onSubmit
+        // one of two path -> event is undefined
+        // following check is not good, so fix this problem
+        if(event) {
+            event.preventDefault();
+        }
 
         const id = this.state.id;
         const password = this.state.password;
