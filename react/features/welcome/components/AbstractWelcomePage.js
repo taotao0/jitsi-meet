@@ -5,7 +5,6 @@ import { Component } from 'react';
 import type { Dispatch } from 'redux';
 
 import { openDialog } from '../../base/dialog';
-import { AddPeopleDialog } from '../../invite/components';
 import { UserLoginDialog } from '../../user/components';
 import { userLogoutSuccess } from '../../user/actions';
 
@@ -131,7 +130,6 @@ export class AbstractWelcomePage extends Component<Props, *> {
         this._login = this._login.bind(this);
         this._logout = this._logout.bind(this);
         this._register = this._register.bind(this);
-        this._getRoomName = this._getRoomName.bind(this);
         this._onCreate = this._onCreate.bind(this);
         this._onRoomChange = this._onRoomChange.bind(this);
         this._renderInsecureRoomNameWarning = this._renderInsecureRoomNameWarning.bind(this);
@@ -261,37 +259,6 @@ export class AbstractWelcomePage extends Component<Props, *> {
         console.log('_register end ----------------------');
     }
 
-    _getRoomName: () => void;
-
-    /**
-     * (1) register a room from admin service only when a user already log in
-     *  - IMPORTANT! : so, admin service should check token
-     * (2) get a registered room name(not started)
-     * 
-     */
-    _getRoomName = async() => {
-        /*
-        axios({
-            method: 'post',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            url: 'https://10.0.0.10:8080/Auth/SignIn',
-            data: { userId : 'admin', password: '1234' }
-        }).then(response => {
-            console.log('_getRoomName success');
-            console.log(response.data);
-            this.setState({
-                loginState: true
-            });
-        }).catch(e => {
-            console.log('_getRoomName fail');
-            console.log(e);
-            this.setState({
-                loginState: true
-            });
-        });
-        */
-    }
-
     _onCreate: () => void;
 
     /**
@@ -301,17 +268,12 @@ export class AbstractWelcomePage extends Component<Props, *> {
         console.log('_createRoom start ----------------------');
         console.log(`loginState : ${this.state.loginState}`);
 
-        this.props.dispatch(openDialog(AddPeopleDialog));
-
         if(this.state.loginState) {
             /* (1) get room name with login token */
-            this._getRoomName();
             /* (2) create room */
         } else {
             /* popup information */
-            /* FIXME : manage error string in json */
-            this._getRoomName();
-            //alert('Log in to create a conference');
+            alert('Log in to create a conference');
         }
         console.log('_createRoom end   ----------------------');
     }
