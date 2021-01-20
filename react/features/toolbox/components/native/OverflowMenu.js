@@ -133,13 +133,15 @@ class OverflowMenu extends PureComponent<Props, State> {
                 <AudioOnlyButton { ...buttonProps } />
                 <RaiseHandButton { ...buttonProps } />
                 <LobbyModeButton { ...buttonProps } />
-                <ScreenSharingButton { ...buttonProps } />
+                {/* // FIXME: release v1.0을 위한 주석 처리
+                <ScreenSharingButton { ...buttonProps } /> */}
                 <MoreOptionsButton { ...moreOptionsButtonProps } />
                 <Collapsible collapsed = { !showMore }>
                     <ToggleCameraButton { ...buttonProps } />
                     <TileViewButton { ...buttonProps } />
                     <RecordButton { ...buttonProps } />
-                    <LiveStreamButton { ...buttonProps } />
+                    {/* // FIXME: release v1.0을 위한 주석 처리
+                    <LiveStreamButton { ...buttonProps } /> */}
                     <VideoShareButton { ...buttonProps } />
                     <RoomLockButton { ...buttonProps } />
                     <ClosedCaptionButton { ...buttonProps } />

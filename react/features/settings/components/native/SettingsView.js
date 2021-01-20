@@ -184,13 +184,18 @@ class SettingsView extends AbstractSettingsView<Props, State> {
                         <TextInput
                             autoCapitalize = 'none'
                             autoCorrect = { false }
-                            editable = { this.props._serverURLChangeEnabled }
+                            /*
+                                FIXME: release v1.0을 위한 주석 처리
+                            */
+                            // editable = { this.props._serverURLChangeEnabled }
+                            editable={ false }
                             keyboardType = { 'url' }
                             onBlur = { this._onBlurServerURL }
                             onChangeText = { this._onChangeServerURL }
                             placeholder = { this.props._serverURL }
                             textContentType = { 'URL' } // iOS only
-                            value = { serverURL } />
+                            // value = { serverURL }
+                            value={ this.props._serverURL } />
                     </FormRow>
                     <FormRow
                         fieldSeparator = { true }
@@ -212,9 +217,10 @@ class SettingsView extends AbstractSettingsView<Props, State> {
                             {`${AppInfo.version} build ${AppInfo.buildNumber}`}
                         </Text>
                     </FormRow>
+                    {/* // FIXME: release v1.0을 위한 주석 처리
                     <FormSectionHeader
                         label = 'settingsView.advanced' />
-                    {this._renderAdvancedSettings()}
+                    {this._renderAdvancedSettings()} */}
                 </ScrollView>
             </JitsiModal>
         );

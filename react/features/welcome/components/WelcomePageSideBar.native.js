@@ -101,6 +101,7 @@ class WelcomePageSideBar extends Component<Props> {
                             icon = { IconSettings }
                             label = 'settings.title'
                             onPress = { this._onOpenSettings } />
+                        {/* //FIXME: release v1.0을 위한 주석 처리
                         <SideBarItem
                             icon = { IconInfo }
                             label = 'welcomepage.terms'
@@ -112,7 +113,7 @@ class WelcomePageSideBar extends Component<Props> {
                         <SideBarItem
                             icon = { IconHelp }
                             label = 'welcomepage.getHelp'
-                            url = { PRIVACY_URL } />
+                            url = { PRIVACY_URL } /> */}
                     </ScrollView>
                 </SafeAreaView>
             </SlidingView>
