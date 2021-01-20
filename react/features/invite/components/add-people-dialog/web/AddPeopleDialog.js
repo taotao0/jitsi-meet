@@ -95,6 +95,8 @@ function AddPeopleDialog({
     t,
     updateNumbers }: Props) {
     const [ phoneNumber, setPhoneNumber ] = useState(undefined);
+    const _inviteEmailVisible = false;
+    const _embedMeetingVisibleUsee = false;
 
     /**
      * Updates the dial-in numbers.
@@ -156,10 +158,12 @@ function AddPeopleDialog({
             <div className = 'invite-more-dialog'>
                 { _inviteContactsVisible && <InviteContactsSection /> }
                 <CopyMeetingLinkSection url = { _inviteUrl } />
+                { _inviteEmailVisible &&
                 <InviteByEmailSection
                     inviteSubject = { inviteSubject }
                     inviteText = { invite } />
-                { _embedMeetingVisible && <EmbedMeetingTrigger /> }
+                }
+                { _embedMeetingVisible && _embedMeetingVisibleUsee && <EmbedMeetingTrigger /> }
                 <div className = 'invite-more-dialog separator' />
                 {
                     _liveStreamViewURL
