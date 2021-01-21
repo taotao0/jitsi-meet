@@ -249,6 +249,7 @@ class WelcomePage extends AbstractWelcomePage {
                                 type = 'button'>
                                 { t('welcomepage.joinMeeting') }
                             </button>
+                            { DISPLAY_WELCOME_USER_CONTROL &&
                             <button
                                 aria-disabled = 'false'
                                 aria-label = 'Create meeting'
@@ -259,6 +260,7 @@ class WelcomePage extends AbstractWelcomePage {
                                 type = 'button'>
                                 { t('welcomepage.createMeeting') }
                             </button>
+                            }
                         </div>
 
                         { _moderatedRoomServiceUrl && (
