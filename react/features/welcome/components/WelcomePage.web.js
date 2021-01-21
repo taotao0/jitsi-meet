@@ -114,6 +114,7 @@ class WelcomePage extends AbstractWelcomePage {
         this._setAdditionalToolbarContentRef
             = this._setAdditionalToolbarContentRef.bind(this);
         this._onTabSelected = this._onTabSelected.bind(this);
+        this._renderHeadUserButtons = this._renderHeadUserButtons.bind(this);
         this._renderFooter = this._renderFooter.bind(this);
     }
 
@@ -172,7 +173,8 @@ class WelcomePage extends AbstractWelcomePage {
      */
     render() {
         const { _moderatedRoomServiceUrl, t, _user } = this.props;
-        const { DEFAULT_WELCOME_PAGE_LOGO_URL, DISPLAY_WELCOME_FOOTER } = interfaceConfig;
+        const { DEFAULT_WELCOME_PAGE_LOGO_URL, DISPLAY_WELCOME_FOOTER,
+            DISPLAY_WELCOME_USER_CONTROL, DISPLAY_WELCOME_LOGO } = interfaceConfig;
         const showAdditionalCard = this._shouldShowAdditionalCard();
         const showAdditionalContent = this._shouldShowAdditionalContent();
         const showAdditionalToolbarContent = this._shouldShowAdditionalToolbarContent();
@@ -191,47 +193,13 @@ class WelcomePage extends AbstractWelcomePage {
                     ? 'with-content' : 'without-content'}` }
                 id = 'welcome_page'>
                 <div className = 'welcome-watermark'>
+                    { DISPLAY_WELCOME_LOGO &&
                     <Watermarks defaultJitsiLogoURL = { DEFAULT_WELCOME_PAGE_LOGO_URL } />
+                    }
                 </div>
 
                 <div className = 'header'>
-                    { loginState == false ?
-                        <>
-                        <button
-                            aria-disabled = 'false'
-                            aria-label = 'Login'
-                            className = 'welcome-page-login'
-                            id = 'login_button'
-                            onClick = { this._login }
-                            tabIndex = '0'
-                            type = 'button'>
-                            { t('welcomepage.login') }
-                        </button>
-                        <button
-                            aria-disabled = 'false'
-                            aria-label = 'Register'
-                            className = 'welcome-page-register'
-                            id = 'register_button'
-                            onClick = { this._register }
-                            tabIndex = '0'
-                            type = 'button'>
-                            { t('welcomepage.register') }
-                        </button>
-                        </>
-                        :
-                        <>
-                        <button
-                            aria-disabled = 'false'
-                            aria-label = 'Logout'
-                            className = 'welcome-page-logout'
-                            id = 'logout_button'
-                            onClick = { this._logout }
-                            tabIndex = '0'
-                            type = 'button'>
-                            { t('welcomepage.logout') }
-                        </button>
-                        </>
-                    }
+                    { DISPLAY_WELCOME_USER_CONTROL && this._renderHeadUserButtons()}                    
                     <div className = 'welcome-page-settings'>
                         <SettingsButton
                             defaultTab = { SETTINGS_TABS.CALENDAR } />
@@ -284,6 +252,7 @@ class WelcomePage extends AbstractWelcomePage {
                                 type = 'button'>
                                 { t('welcomepage.joinMeeting') }
                             </button>
+                            { DISPLAY_WELCOME_USER_CONTROL &&
                             <button
                                 aria-disabled = 'false'
                                 aria-label = 'Create meeting'
@@ -294,6 +263,7 @@ class WelcomePage extends AbstractWelcomePage {
                                 type = 'button'>
                                 { t('welcomepage.createMeeting') }
                             </button>
+                            }
                         </div>
 
                         { _moderatedRoomServiceUrl && (
@@ -387,6 +357,55 @@ class WelcomePage extends AbstractWelcomePage {
      */
     _onTabSelected(tabIndex) {
         this.setState({ selectedTab: tabIndex });
+    }
+
+    /**
+     * Renders the header user buttons.
+     *
+     * @returns {ReactElement}
+     */
+    _renderHeadUserButtons() {
+        const { t } = this.props;
+        const loginState = this.state.loginState;
+
+        return (
+            loginState == false ?
+            <>
+            <button
+                aria-disabled = 'false'
+                aria-label = 'Login'
+                className = 'welcome-page-login'
+                id = 'login_button'
+                onClick = { this._login }
+                tabIndex = '0'
+                type = 'button'>
+                { t('welcomepage.login') }
+            </button>
+            <button
+                aria-disabled = 'false'
+                aria-label = 'Register'
+                className = 'welcome-page-register'
+                id = 'register_button'
+                onClick = { this._register }
+                tabIndex = '0'
+                type = 'button'>
+                { t('welcomepage.register') }
+            </button>
+            </>
+            :
+            <>
+            <button
+                aria-disabled = 'false'
+                aria-label = 'Logout'
+                className = 'welcome-page-logout'
+                id = 'logout_button'
+                onClick = { this._logout }
+                tabIndex = '0'
+                type = 'button'>
+                { t('welcomepage.logout') }
+            </button>
+            </>
+        );
     }
 
     /**

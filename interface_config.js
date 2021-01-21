@@ -52,7 +52,7 @@ var interfaceConfig = {
 
     DISABLE_DOMINANT_SPEAKER_INDICATOR: true,
 
-    DISABLE_FOCUS_INDICATOR: false,
+    DISABLE_FOCUS_INDICATOR: true,
 
     /**
      * If true, notifications regarding joining/leaving are no longer displayed.
@@ -86,6 +86,8 @@ var interfaceConfig = {
      */
     DISABLE_VIDEO_BACKGROUND: false,
 
+    DISPLAY_WELCOME_LOGO: false,
+    DISPLAY_WELCOME_USER_CONTROL: false,
     DISPLAY_WELCOME_FOOTER: false,
     DISPLAY_WELCOME_PAGE_ADDITIONAL_CARD: false,
     DISPLAY_WELCOME_PAGE_CONTENT: false,
