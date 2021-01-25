@@ -76,16 +76,17 @@ class WelcomePageLists extends Component<Props> {
                 title: t('welcomepage.recentList')
             }
         ];
-
-        if (_calendarEnabled) {
-            pages.push(
-                {
-                    component: CalendarList,
-                    icon: IconEventNote,
-                    title: t('welcomepage.calendar')
-                }
-            );
-        }
+        
+        // //FIXME: release-v1.0을 위한 주석 처리
+        // if (_calendarEnabled) {
+        //     pages.push(
+        //         {
+        //             component: CalendarList,
+        //             icon: IconEventNote,
+        //             title: t('welcomepage.calendar')
+        //         }
+        //     );
+        // }
 
         return (
             <PagedList
