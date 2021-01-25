@@ -40,6 +40,14 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('keystorefile')) {
+                storeFile file(keystorefile)
+                storePassword keystorepassword
+                keyAlias keyalias
+                keyPassword keypassword
+            }
+        }
     }
 
     buildTypes {
@@ -54,6 +62,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-release.pro'
             buildConfigField "boolean", "GOOGLE_SERVICES_ENABLED", "${googleServicesEnabled}"
             buildConfigField "boolean", "LIBRE_BUILD", "${rootProject.ext.libreBuild}"
+            signingConfig signingConfigs.release
         }
     }
 
