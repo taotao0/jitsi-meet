@@ -5,7 +5,9 @@ import { BoxModel, ColorPalette } from '../../../base/styles';
 
 export const DROPBOX_LOGO = require('../../../../../images/dropboxLogo_square.png');
 export const ICON_SHARE = require('../../../../../images/icon-users.png');
-export const JITSI_LOGO = require('../../../../../images/jitsiLogo_square.png');
+//FIXME: release v1.0을 위한 주석처리
+// export const JITSI_LOGO = require('../../../../../images/jitsiLogo_square.png');
+export const JITSI_LOGO = require('../../../../../images/squareicon.png');
 
 // XXX The "standard" {@code BoxModel.padding} has been deemed insufficient in
 // the special case(s) of the recording feature bellow.
