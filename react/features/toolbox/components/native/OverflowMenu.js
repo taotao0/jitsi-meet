@@ -29,6 +29,11 @@ import ToggleCameraButton from './ToggleCameraButton';
 import styles from './styles';
 
 /**
+ * release-v1.0
+ */
+import { isLocalParticipantModerator } from '../../../base/participants/functions'
+
+/**
  * The type of the React {@code Component} props of {@link OverflowMenu}.
  */
 type Props = {
@@ -51,7 +56,9 @@ type Props = {
     /**
      * Used for hiding the dialog when the selection was completed.
      */
-    dispatch: Function
+    dispatch: Function,
+
+    _participants: Array<any>
 };
 
 type State = {
@@ -123,6 +130,8 @@ class OverflowMenu extends PureComponent<Props, State> {
             visible: !showMore
         };
 
+        const { _participants } = this.props
+
         return (
             <BottomSheet
                 onCancel = { this._onCancel }
@@ -146,7 +155,10 @@ class OverflowMenu extends PureComponent<Props, State> {
                     <RoomLockButton { ...buttonProps } />
                     <ClosedCaptionButton { ...buttonProps } />
                     <SharedDocumentButton { ...buttonProps } />
-                    <MuteEveryoneButton { ...buttonProps } />
+                    {
+                        isLocalParticipantModerator(_participants) && <MuteEveryoneButton { ...buttonProps } />
+                    }
+                    {/* <MuteEveryoneButton { ...buttonProps } /> */}
                     <HelpButton { ...buttonProps } />
                 </Collapsible>
             </BottomSheet>
@@ -245,7 +257,8 @@ class OverflowMenu extends PureComponent<Props, State> {
 function _mapStateToProps(state) {
     return {
         _bottomSheetStyles: ColorSchemeRegistry.get(state, 'BottomSheet'),
-        _isOpen: isDialogOpen(state, OverflowMenu_)
+        _isOpen: isDialogOpen(state, OverflowMenu_),
+        _participants: state['features/base/participants']
     };
 }
 
