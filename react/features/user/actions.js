@@ -19,11 +19,9 @@ export function userLoginAction(id: string, password: string) {
 
         return callUserLoginService(id, password)
             .then(response => {
-                /*
                 logger.log('-----------> callUserLoginService result start');
                 logger.log(response);
                 logger.log('-----------> callUserLoginService result end');
-                */
                 let success = false;
                 // response.data -> {state("fail" | "success"), msg}
                 if(response && response.data && response.data.state &&
@@ -31,16 +29,16 @@ export function userLoginAction(id: string, password: string) {
                     success = true;
                 }
                 if(success) {
-                    // logger.log('callUserLoginService result : success');
+                    logger.log('callUserLoginService result : success');
                     dispatch(userLoginSuccess());
                     alert('Login success!');
                 } else {
-                    // logger.error('callUserLoginService result : fail');
+                    logger.error('callUserLoginService result : fail');
                     alert('Login fail!');
                 }
             })
             .catch(error => {
-                // logger.error('callUserLoginService failed with error:', error);
+                logger.error('callUserLoginService failed with error:', error);
                 alert('Login fail!');
             });
     };
