@@ -1,6 +1,9 @@
 // @flow
 
-import axios from 'axios'
+/* global interfaceConfig */
+
+import axios from 'axios';
+import qs from 'qs';
 import logger from './logger';
 
 /**
@@ -15,23 +18,21 @@ export function callUserLoginService(id, password) {
     logger.log(password);
     logger.log('--------> callUserLoginService end');
     */
+    const urlData = interfaceConfig.USEE_ADMIN_URL + '/Auth/SignIn';
+    logger.log(`--------> url ${urlData}`);
 
-    const form = new FormData();
-    form.append('userId', id);
-    form.append('password', password);
-
-    const config = {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    }
-
-    return axios.post('https://10.0.0.10:8080/Auth/SignIn', form, config);
-
-    /*
-    return axios({
-        method: 'post',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        url: 'https://10.0.0.16:8080/Auth/SignIn',
-        data: { userId : 'admin', password: '1234' }
+    const data = qs.stringify({
+        'userId': id,
+        'password': password
     });
-    */
+    const config = {
+        method: 'post',
+        url: urlData,
+        headers: { 
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        data : data
+    };
+
+    return axios(config);
 }

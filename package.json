@@ -65,6 +65,7 @@
     "olm": "https://packages.matrix.org/npm/olm/olm-3.2.1.tgz",
     "pixelmatch": "5.1.0",
     "punycode": "2.1.1",
+    "qs": "^6.9.6",
     "react": "16.9",
     "react-dom": "16.9",
     "react-emoji-render": "1.2.4",

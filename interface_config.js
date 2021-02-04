@@ -87,7 +87,7 @@ var interfaceConfig = {
     DISABLE_VIDEO_BACKGROUND: false,
 
     DISPLAY_WELCOME_LOGO: false,
-    DISPLAY_WELCOME_USER_CONTROL: false,
+    DISPLAY_WELCOME_USER_CONTROL: true,
     DISPLAY_WELCOME_FOOTER: false,
     DISPLAY_WELCOME_PAGE_ADDITIONAL_CARD: false,
     DISPLAY_WELCOME_PAGE_CONTENT: false,
@@ -189,6 +189,7 @@ var interfaceConfig = {
      * help.
      */
     SUPPORT_URL: 'https://usee.gq',
+    USEE_ADMIN_URL: 'https://10.0.0.10:8080',
 
     TOOLBAR_ALWAYS_VISIBLE: false,
 
