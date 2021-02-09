@@ -14,6 +14,10 @@ import isInsecureRoomName from '../../base/util/isInsecureRoomName';
 import { isCalendarEnabled } from '../../calendar-sync';
 import { isRecentListEnabled } from '../../recent-list/functions';
 
+/*
+import { redirectToStaticPage } from '../../app/actions';
+*/
+
 /**
  * {@code AbstractWelcomePage}'s React {@code Component} prop types.
  */
@@ -256,6 +260,9 @@ export class AbstractWelcomePage extends Component<Props, *> {
 
     _register() {
         console.log('_register start ----------------------');
+        /*
+        this.props.dispatch(redirectToStaticPage(`static/authError.html`));
+        */
         console.log('_register end ----------------------');
     }
 
@@ -273,7 +280,7 @@ export class AbstractWelcomePage extends Component<Props, *> {
             /* (2) create room */
         } else {
             /* popup information */
-            alert('Log in to create a conference');
+            alert('Please log in to create a conference');
         }
         console.log('_createRoom end   ----------------------');
     }
