@@ -7,6 +7,7 @@ import type { Dispatch } from 'redux';
 import { openDialog } from '../../base/dialog';
 import { UserLoginDialog } from '../../user/components';
 import { userLogoutSuccess } from '../../user/actions';
+import { getRoomNameId } from '../../user/functions';
 
 import { createWelcomePageEvent, sendAnalytics } from '../../analytics';
 import { appNavigate } from '../../app/actions';
@@ -78,7 +79,7 @@ export class AbstractWelcomePage extends Component<Props, *> {
      * @inheritdoc
      */
     static getDerivedStateFromProps(props: Props, state: Object) {
-        console.log('-----------> getDerivedStateFromProps start');
+        // console.log('-----------> getDerivedStateFromProps start');
         let loginStateTemp = state.loginState;
         let defaultRoomNameIdTemp = state.defaultRoomNameId;
         /* if loginState in props exist, apply it */
@@ -88,9 +89,9 @@ export class AbstractWelcomePage extends Component<Props, *> {
         if(typeof(props._user.defaultRoomNameId) != 'undefined') {
             defaultRoomNameIdTemp = props._user.defaultRoomNameId;
         }
-        console.log(loginStateTemp);
-        console.log(defaultRoomNameIdTemp);
-        console.log('-----------> getDerivedStateFromProps end');
+        // console.log(loginStateTemp);
+        // console.log(defaultRoomNameIdTemp);
+        // console.log('-----------> getDerivedStateFromProps end');
         return {
             room: props._room || state.room,
             loginState: loginStateTemp,
@@ -223,16 +224,59 @@ export class AbstractWelcomePage extends Component<Props, *> {
      * @protected
      * @returns {void}
      */
-    _onJoin() {
-        const room = this.state.room || this.state.generatedRoomname;
+    async _onJoin() {
+        const roomName = this.state.room;
 
+        /* check roonName */
+        if(!roomName) {
+            return;
+        }
+
+        let serviceSuccess = false;
+        let joinPossible = false;
+        let result = null;
+        let room = null;
+
+        /* get RoonNameId using back-end service */
+        try {
+            result = await getRoomNameId(roomName);
+            // console.log('-------> getRoomNameId start');
+            // console.log(result);
+            // console.log('-------> getRoomNameId end');
+            serviceSuccess = true;
+        } catch (error) {
+            console.log('error in getRoomNameId', error);
+        }
+
+        /* get result of back-end service */
+        if(serviceSuccess) {
+            console.log(result);
+            /* check status */
+            if(result.state === 'success') {
+                room = result.roomName;
+                joinPossible = true;
+            } else {
+                alert(`error in joining room(${roomName})`);
+            }
+        } else {
+            /* show error popup */
+            alert(`error in joining room(${roomName})`);
+        }
+
+        console.log('---------> _onJoin middle start');
+        console.log(joinPossible);
+        console.log(room);
+        console.log('---------> _onJoin middle end');
+
+        /*
         sendAnalytics(
             createWelcomePageEvent('clicked', 'joinButton', {
                 isGenerated: !this.state.room,
                 room
             }));
+        */
 
-        if (room) {
+        if (joinPossible) {
             this.setState({ joining: true });
 
             // By the time the Promise of appNavigate settles, this component
