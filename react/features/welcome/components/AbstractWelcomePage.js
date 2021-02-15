@@ -284,8 +284,27 @@ export class AbstractWelcomePage extends Component<Props, *> {
         console.log(`loginState : ${this.state.loginState}`);
 
         if(this.state.loginState) {
-            /* (1) get room name with login token */
-            /* (2) create room */
+            const room = defaultRoomNameId;
+
+            /*
+            sendAnalytics(
+                createWelcomePageEvent('clicked', 'joinButton', {
+                    isGenerated: !this.state.room,
+                    room
+                }));
+            */
+
+            if (room) {
+                this.setState({ joining: true });
+
+                // By the time the Promise of appNavigate settles, this component
+                // may have already been unmounted.
+                const onAppNavigateSettled
+                    = () => this._mounted && this.setState({ joining: false });
+
+                this.props.dispatch(appNavigate(room))
+                    .then(onAppNavigateSettled, onAppNavigateSettled);
+            }
         } else {
             /* popup information */
             alert('Please log in to create a conference');
