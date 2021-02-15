@@ -30,7 +30,8 @@ export function userLoginAction(id: string, password: string) {
                 }
                 if(success) {
                     logger.log('callUserLoginService result : success');
-                    dispatch(userLoginSuccess());
+                    dispatch(userLoginSuccess(response.data.default_room_name,
+                        response.data.default_room_name_id, response.data.session_token));
                     alert('Login success!');
                 } else {
                     logger.error('callUserLoginService result : fail');
@@ -51,9 +52,15 @@ export function userLoginAction(id: string, password: string) {
  *      type: USER_LOGIN_SUCCESS
  * }}
  */
-export function userLoginSuccess() {
+export function userLoginSuccess(
+    default_room_name: string, default_room_name_id: string, session_token: string
+) {
+    logger.log(`***** (${default_room_name})(${default_room_name_id})(${session_token}) *****`);
     return {
-        type: USER_LOGIN_SUCCESS
+        type: USER_LOGIN_SUCCESS,
+        defaultRoomName: default_room_name,
+        defaultRoomNameId: default_room_name_id,
+        sessionToken: session_token
     };
 }
 

@@ -14,14 +14,20 @@ ReducerRegistry.register('features/user', (state = {}, action) => {
         // logger.log('***************** reducer : loginState -> true');
         return {
             ...state,
-            loginState: true
+            loginState: true,
+            defaultRoomName: action.defaultRoomName,
+            defaultRoomNameId: action.defaultRoomNameId,
+            sessionToken: action.sessionToken
         };
     }
     case USER_LOGOUT_SUCCESS: {
         // logger.log('***************** reducer : loginState -> false');
         return {
             ...state,
-            loginState: false
+            loginState: false,
+            defaultRoomName: '',
+            defaultRoomNameId: '',
+            sessionToken: ''
         };
     }
     }

@@ -78,19 +78,23 @@ export class AbstractWelcomePage extends Component<Props, *> {
      * @inheritdoc
      */
     static getDerivedStateFromProps(props: Props, state: Object) {
-        // console.log('-----------> getDerivedStateFromProps start');
+        console.log('-----------> getDerivedStateFromProps start');
         let loginStateTemp = state.loginState;
+        let defaultRoomNameIdTemp = state.defaultRoomNameId;
         /* if loginState in props exist, apply it */
         if(typeof(props._user.loginState) != 'undefined') {
             loginStateTemp = props._user.loginState;
         }
-        /*
+        if(typeof(props._user.defaultRoomNameId) != 'undefined') {
+            defaultRoomNameIdTemp = props._user.defaultRoomNameId;
+        }
         console.log(loginStateTemp);
+        console.log(defaultRoomNameIdTemp);
         console.log('-----------> getDerivedStateFromProps end');
-        */
         return {
             room: props._room || state.room,
-            loginState: loginStateTemp
+            loginState: loginStateTemp,
+            defaultRoomNameId: defaultRoomNameIdTemp
         };
     }
 
@@ -115,7 +119,8 @@ export class AbstractWelcomePage extends Component<Props, *> {
         room: '',
         roomPlaceholder: '',
         updateTimeoutId: undefined,
-        loginState: false
+        loginState: false,
+        defaultRoomNameId: ''
     };
 
     /**
@@ -272,6 +277,9 @@ export class AbstractWelcomePage extends Component<Props, *> {
      * Create room
      */
     _onCreate() {
+        const defaultRoomNameId = this.state.defaultRoomNameId;
+        console.log(`----> defaultRoomNameId(${defaultRoomNameId})`);
+
         console.log('_createRoom start ----------------------');
         console.log(`loginState : ${this.state.loginState}`);
 
