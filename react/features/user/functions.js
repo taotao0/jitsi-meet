@@ -6,6 +6,37 @@ import axios from 'axios';
 import qs from 'qs';
 import logger from './logger';
 
+export async function getRoomNameId(roonName) {
+    logger.log('--------> getRoomNameId start');
+    logger.log(roonName);
+    logger.log('--------> getRoomNameId end');
+ 
+    const urlData = interfaceConfig.USEE_ADMIN_URL + '/Room/Find';
+    logger.log(`--------> url ${urlData}`);
+ 
+    const data = qs.stringify({
+        'roomName': roonName
+    });
+    const config = {
+        method: 'post',
+        url: urlData,
+        headers: { 
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        data : data
+    };
+ 
+    try {
+        const result = await axios(config);
+        logger.log('----------------> axio start');
+        logger.log(result);
+        logger.log('----------------> axio end');
+        return result.data;
+    } catch (error) {
+        logger.log(`error in service call : (${error})`);
+    }
+ }
+
 /**
  * Returns promise that resolves with the axios.
  *
