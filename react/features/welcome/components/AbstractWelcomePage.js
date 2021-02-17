@@ -137,6 +137,7 @@ export class AbstractWelcomePage extends Component<Props, *> {
         this._animateRoomnameChanging
             = this._animateRoomnameChanging.bind(this);
         this._onJoin = this._onJoin.bind(this);
+        this._onJoinUsee = this._onJoinUsee.bind(this);
         this._login = this._login.bind(this);
         this._logout = this._logout.bind(this);
         this._register = this._register.bind(this);
@@ -224,7 +225,31 @@ export class AbstractWelcomePage extends Component<Props, *> {
      * @protected
      * @returns {void}
      */
-    async _onJoin() {
+    _onJoin() {
+        const room = this.state.room || this.state.generatedRoomname;
+
+        sendAnalytics(
+            createWelcomePageEvent('clicked', 'joinButton', {
+                isGenerated: !this.state.room,
+                room
+            }));
+
+        if (room) {
+            this.setState({ joining: true });
+
+            // By the time the Promise of appNavigate settles, this component
+            // may have already been unmounted.
+            const onAppNavigateSettled
+                = () => this._mounted && this.setState({ joining: false });
+
+            this.props.dispatch(appNavigate(room))
+                .then(onAppNavigateSettled, onAppNavigateSettled);
+        }
+    }
+
+    _onJoinUsee: () => void;
+
+    async _onJoinUsee() {
         const roomName = this.state.room;
 
         /* check roonName */
