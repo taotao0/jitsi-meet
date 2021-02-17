@@ -326,10 +326,16 @@ class WelcomePage extends AbstractWelcomePage {
      * @returns {void}
      */
     _onFormSubmit(event) {
+        const { DISPLAY_WELCOME_USER_CONTROL } = interfaceConfig;
+
         event.preventDefault();
 
         if (!this._roomInputRef || this._roomInputRef.reportValidity()) {
-            this._onJoinUsee();
+            if(DISPLAY_WELCOME_USER_CONTROL) {
+                this._onJoinUsee();
+            } else {
+                this._onJoin();
+            }
         }
     }
 
