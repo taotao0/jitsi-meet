@@ -329,7 +329,7 @@ class WelcomePage extends AbstractWelcomePage {
         event.preventDefault();
 
         if (!this._roomInputRef || this._roomInputRef.reportValidity()) {
-            this._onJoin();
+            this._onJoinUsee();
         }
     }
 
