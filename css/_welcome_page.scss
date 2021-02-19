@@ -3,6 +3,21 @@ body.welcome-page {
     overflow: auto;
 }
 
+.welcome-gnb {
+    display: flex;
+    font-family: $welcomePageFontFamily;
+    min-height: 40px;
+    align-content: center;
+
+    .gnb-item {
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 60px;
+        padding: 5px;
+        margin: 5px;
+    }
+}
+
 .welcome {
     background-image: $welcomePageBackground;
     background-color: #fff;
