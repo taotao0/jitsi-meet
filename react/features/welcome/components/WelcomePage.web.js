@@ -115,6 +115,8 @@ class WelcomePage extends AbstractWelcomePage {
             = this._setAdditionalToolbarContentRef.bind(this);
         this._onTabSelected = this._onTabSelected.bind(this);
         this._renderHeadUserButtons = this._renderHeadUserButtons.bind(this);
+        this._renderGNB = this._renderGNB.bind(this);
+        this._renderConference = this._renderConference.bind(this);
         this._renderFooter = this._renderFooter.bind(this);
     }
 
@@ -172,21 +174,92 @@ class WelcomePage extends AbstractWelcomePage {
      * @returns {ReactElement|null}
      */
     render() {
-        const { _moderatedRoomServiceUrl, t, _user } = this.props;
+        const { DISPLAY_WELCOME_USER_CONTROL } = interfaceConfig;
+
+        return (
+            <>
+            { DISPLAY_WELCOME_USER_CONTROL && this._renderGNB() }
+            { this._renderConference() }
+            </>
+        );
+    }
+
+    /**
+     * Renders the insecure room name warning.
+     *
+     * @inheritdoc
+     */
+    _doRenderInsecureRoomNameWarning() {
+        return (
+            <div className = 'insecure-room-name-warning'>
+                <Icon src = { IconWarning } />
+                <span>
+                    { this.props.t('security.insecureRoomNameWarning') }
+                </span>
+            </div>
+        );
+    }
+
+    /**
+     * Prevents submission of the form and delegates join logic.
+     *
+     * @param {Event} event - The HTML Event which details the form submission.
+     * @private
+     * @returns {void}
+     */
+    _onFormSubmit(event) {
+        const { DISPLAY_WELCOME_USER_CONTROL } = interfaceConfig;
+
+        event.preventDefault();
+
+        if (!this._roomInputRef || this._roomInputRef.reportValidity()) {
+            if(DISPLAY_WELCOME_USER_CONTROL) {
+                this._onJoinUsee();
+            } else {
+                this._onJoin();
+            }
+        }
+    }
+
+    /**
+     * Overrides the super to account for the differences in the argument types
+     * provided by HTML and React Native text inputs.
+     *
+     * @inheritdoc
+     * @override
+     * @param {Event} event - The (HTML) Event which details the change such as
+     * the EventTarget.
+     * @protected
+     */
+    _onRoomChange(event) {
+        super._onRoomChange(event.target.value);
+    }
+
+    /**
+     * Callback invoked when the desired tab to display should be changed.
+     *
+     * @param {number} tabIndex - The index of the tab within the array of
+     * displayed tabs.
+     * @private
+     * @returns {void}
+     */
+    _onTabSelected(tabIndex) {
+        this.setState({ selectedTab: tabIndex });
+    }
+
+    /**
+     * Renders the conference
+     *
+     * @returns {ReactElement}
+     */
+    _renderConference() {
+        const { _moderatedRoomServiceUrl, t } = this.props;
         const { DEFAULT_WELCOME_PAGE_LOGO_URL, DISPLAY_WELCOME_FOOTER,
             DISPLAY_WELCOME_USER_CONTROL, DISPLAY_WELCOME_LOGO } = interfaceConfig;
         const showAdditionalCard = this._shouldShowAdditionalCard();
         const showAdditionalContent = this._shouldShowAdditionalContent();
         const showAdditionalToolbarContent = this._shouldShowAdditionalToolbarContent();
-        const loginState = this.state.loginState;
-
-        // FIXME: remove following log
-        /*
-        console.log('-----------> _user start');
-        console.log(_user);
-        console.log('-----------> _user end');
-        */
-
+        
         return (
             <div
                 className = { `welcome ${showAdditionalContent
@@ -199,7 +272,7 @@ class WelcomePage extends AbstractWelcomePage {
                 </div>
 
                 <div className = 'header'>
-                    { DISPLAY_WELCOME_USER_CONTROL && this._renderHeadUserButtons()}                    
+                    { DISPLAY_WELCOME_USER_CONTROL && this._renderHeadUserButtons()}
                     <div className = 'welcome-page-settings'>
                         <SettingsButton
                             defaultTab = { SETTINGS_TABS.CALENDAR } />
@@ -298,72 +371,49 @@ class WelcomePage extends AbstractWelcomePage {
                 </div>
                 { DISPLAY_WELCOME_FOOTER && this._renderFooter()}
             </div>
-
         );
     }
 
     /**
-     * Renders the insecure room name warning.
+     * Renders the GNB.
      *
-     * @inheritdoc
+     * @returns {ReactElement}
      */
-    _doRenderInsecureRoomNameWarning() {
+    _renderGNB() {
+        const { t } = this.props;
+        const loginState = this.state.loginState;
+
         return (
-            <div className = 'insecure-room-name-warning'>
-                <Icon src = { IconWarning } />
-                <span>
-                    { this.props.t('security.insecureRoomNameWarning') }
-                </span>
+            loginState == true ?
+            <>
+            <div className = 'welcome-gnb'>
+                <button
+                    aria-disabled = 'false'
+                    aria-label = 'Conference'
+                    className = 'gnb-item'
+                    id = 'conference_button'
+                    onClick = { this._login }
+                    tabIndex = '0'
+                    type = 'button'>
+                    { t('welcomepage.gnbConference') }
+                </button>
+                <button
+                    aria-disabled = 'false'
+                    aria-label = 'Admin'
+                    className = 'gnb-item'
+                    id = 'admin_button'
+                    onClick = { this._login }
+                    tabIndex = '1'
+                    type = 'button'>
+                    { t('welcomepage.gnbAdmin') }
+                </button>
             </div>
+            </>
+            :
+            null
         );
     }
 
-    /**
-     * Prevents submission of the form and delegates join logic.
-     *
-     * @param {Event} event - The HTML Event which details the form submission.
-     * @private
-     * @returns {void}
-     */
-    _onFormSubmit(event) {
-        const { DISPLAY_WELCOME_USER_CONTROL } = interfaceConfig;
-
-        event.preventDefault();
-
-        if (!this._roomInputRef || this._roomInputRef.reportValidity()) {
-            if(DISPLAY_WELCOME_USER_CONTROL) {
-                this._onJoinUsee();
-            } else {
-                this._onJoin();
-            }
-        }
-    }
-
-    /**
-     * Overrides the super to account for the differences in the argument types
-     * provided by HTML and React Native text inputs.
-     *
-     * @inheritdoc
-     * @override
-     * @param {Event} event - The (HTML) Event which details the change such as
-     * the EventTarget.
-     * @protected
-     */
-    _onRoomChange(event) {
-        super._onRoomChange(event.target.value);
-    }
-
-    /**
-     * Callback invoked when the desired tab to display should be changed.
-     *
-     * @param {number} tabIndex - The index of the tab within the array of
-     * displayed tabs.
-     * @private
-     * @returns {void}
-     */
-    _onTabSelected(tabIndex) {
-        this.setState({ selectedTab: tabIndex });
-    }
 
     /**
      * Renders the header user buttons.
@@ -371,8 +421,10 @@ class WelcomePage extends AbstractWelcomePage {
      * @returns {ReactElement}
      */
     _renderHeadUserButtons() {
-        const { t } = this.props;
+        const { t, _user } = this.props;
         const loginState = this.state.loginState;
+
+        console.log(_user);
 
         return (
             loginState == false ?
@@ -383,7 +435,7 @@ class WelcomePage extends AbstractWelcomePage {
                 className = 'welcome-page-login'
                 id = 'login_button'
                 onClick = { this._login }
-                tabIndex = '0'
+                tabIndex = '1'
                 type = 'button'>
                 { t('welcomepage.login') }
             </button>
@@ -393,13 +445,14 @@ class WelcomePage extends AbstractWelcomePage {
                 className = 'welcome-page-register'
                 id = 'register_button'
                 onClick = { this._register }
-                tabIndex = '0'
+                tabIndex = '2'
                 type = 'button'>
                 { t('welcomepage.register') }
             </button>
             </>
             :
             <>
+            { _user.defaultRoomName }
             <button
                 aria-disabled = 'false'
                 aria-label = 'Logout'

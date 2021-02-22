@@ -896,6 +896,8 @@
         "login": "Login",
         "logout": "Logout",
         "register": "Register",
+        "gnbConference": "Conference",
+        "gnbAdmin": "Admin",
         "terms": "Terms",
         "title": "Secure, fully featured, and completely free video conferencing"
     },

@@ -189,7 +189,7 @@ var interfaceConfig = {
      * help.
      */
     SUPPORT_URL: 'https://usee.gq',
-    USEE_ADMIN_URL: 'https://10.0.0.10:8080',
+    USEE_ADMIN_URL: 'https://10.0.0.3:8080',
 
     TOOLBAR_ALWAYS_VISIBLE: false,
 
