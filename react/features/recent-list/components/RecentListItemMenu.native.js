@@ -1,13 +1,19 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 
 import { ColorSchemeRegistry } from '../../base/color-scheme';
 import { BottomSheet, hideDialog, isDialogOpen } from '../../base/dialog';
 import { type Item } from '../../base/react/Types';
 import { connect } from '../../base/redux';
 import { StyleType } from '../../base/styles';
+import { translate } from '../../base/i18n';
+import { ColorPalette } from '../../base/styles'
+
+import { deleteRecentListEntry } from '../actions';
+import { setActiveModalId } from '../../base/modal';
+import { DIAL_IN_SUMMARY_VIEW_ID } from '../../invite/constants';
 
 import DeleteItemButton from './DeleteItemButton.native';
 import ShowDialInInfoButton from './ShowDialInInfoButton.native';
@@ -33,7 +39,8 @@ type Props = {
     /**
      * True if the menu is currently open, false otherwise.
      */
-    _isOpen: boolean
+    _isOpen: boolean,
+    t: Function
 }
 
 // eslint-disable-next-line prefer-const
@@ -61,7 +68,7 @@ class RecentListItemMenu extends PureComponent<Props> {
      * @inheritdoc
      */
     render() {
-        const { _bottomSheetStyles, item } = this.props;
+        const { _bottomSheetStyles, item, t, dispatch } = this.props;
         const buttonProps = {
             afterClick: this._onCancel,
             itemId: item.id,
@@ -73,8 +80,29 @@ class RecentListItemMenu extends PureComponent<Props> {
             <BottomSheet
                 onCancel = { this._onCancel }
                 renderHeader = { this._renderMenuHeader }>
-                <DeleteItemButton { ...buttonProps } />
-                <ShowDialInInfoButton { ...buttonProps } />
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        accessibilityLabel={t('welcomepage.recentListDelete')}
+                        style={[styles.buttonStyle, { backgroundColor: ColorPalette.blue }]}
+                        onPress={() => {
+                            dispatch(deleteRecentListEntry(item.id))
+                            this._onCancel()
+                        }}>
+                        <Text style={{ color: 'white' }}>{t('welcomepage.recentListDelete')}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        disabled
+                        accessibilityLabel={t('welcomepage.info')}
+                        style={[styles.buttonStyle, { backgroundColor: ColorPalette.blue, opacity: 0.8 }]}
+                        onPress={() => {
+                            dispatch(setActiveModalId(DIAL_IN_SUMMARY_VIEW_ID, { summaryUrl: item.id.url }));
+                            this._onCancel()
+                        }}>
+                        <Text style={{ color: 'white' }}>{t('welcomepage.info')}</Text>
+                    </TouchableOpacity>
+                    {/* <DeleteItemButton { ...buttonProps } />
+                    <ShowDialInInfoButton { ...buttonProps } /> */}
+                </View>
             </BottomSheet>
         );
     }
@@ -111,7 +139,7 @@ class RecentListItemMenu extends PureComponent<Props> {
             <View
                 style = { [
                     _bottomSheetStyles.sheet,
-                    styles.entryNameContainer
+                    styles.entryNameContainer,
                 ] }>
                 <Text
                     ellipsizeMode = { 'middle' }
@@ -138,6 +166,6 @@ function _mapStateToProps(state) {
     };
 }
 
-RecentListItemMenu_ = connect(_mapStateToProps)(RecentListItemMenu);
+RecentListItemMenu_ = translate(connect(_mapStateToProps)(RecentListItemMenu));
 
 export default RecentListItemMenu_;

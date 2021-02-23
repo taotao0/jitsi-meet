@@ -26,19 +26,33 @@ export default createStyleSheet({
 
     entryNameContainer: {
         alignItems: 'center',
-        borderBottomColor: ColorPalette.lightGrey,
-        borderBottomWidth: 1,
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
         flexDirection: 'row',
-        justifyContent: 'center',
-        height: 48
+        justifyContent: 'flex-start',
+        paddingVertical: 15,
+        paddingLeft: 15,
     },
 
     entryNameLabel: {
-        color: ColorPalette.lightGrey,
+        color: ColorPalette.blue,
         flexShrink: 1,
-        fontSize: 16,
+        fontWeight: 'bold',
+        fontSize: 20,
         opacity: 0.90
+    },
+
+    buttonContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        paddingVertical: 10
+    },
+
+    buttonStyle: {
+        borderRadius: 10,
+        paddingHorizontal: 50,
+        paddingVertical: 10,
     }
 });

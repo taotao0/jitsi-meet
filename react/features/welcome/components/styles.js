@@ -10,7 +10,8 @@ export const SIDEBAR_AVATAR_SIZE = 100;
 
 const SIDEBAR_HEADER_HEIGHT = 150;
 
-export const SWITCH_THUMB_COLOR = ColorPalette.blueHighlight;
+// export const SWITCH_THUMB_COLOR = ColorPalette.blueHighlight;
+export const SWITCH_THUMB_COLOR = 'rgb(0, 0, 0, 0)';
 
 export const SWITCH_UNDER_COLOR = 'rgba(0, 0, 0, 0.4)';
 
@@ -84,8 +85,9 @@ export default {
     },
 
     enterRoomText: {
-        color: TEXT_COLOR,
+        color: 'rgba(255, 255, 255, 0.6)',
         fontSize: 18,
+        fontWeight: 'bold',
         marginBottom: BoxModel.margin
     },
 
@@ -222,7 +224,8 @@ export default {
      * Style of the menu items in the side bar.
      */
     sideBarItem: {
-        padding: 13
+        paddingTop: 10,
+        paddingLeft: 13,
     },
 
     /**
@@ -231,15 +234,15 @@ export default {
     sideBarItemButtonContainer: {
         alignItems: 'center',
         flexDirection: 'row',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
     },
 
     /**
      * The icon in the side bar item touchables.
      */
     sideBarItemIcon: {
-        color: ColorPalette.blueHighlight,
-        fontSize: 20,
+        color: ColorPalette.black,
+        fontSize: 30,
         marginRight: 15
     },
 
@@ -263,7 +266,7 @@ export default {
      */
     textInput: {
         backgroundColor: 'transparent',
-        borderColor: ColorPalette.white,
+        borderColor: 'rgba(255, 255, 255, 0.6)',
         borderRadius: 4,
         borderWidth: 1,
         color: TEXT_COLOR,
@@ -271,6 +274,12 @@ export default {
         height: 50,
         padding: 4,
         textAlign: 'center'
+    },
+
+    seperator: {
+        height: 1,
+        marginBottom: 10,
+        backgroundColor: 'rgba(255, 255, 255, 0.6)',
     },
 
     /**

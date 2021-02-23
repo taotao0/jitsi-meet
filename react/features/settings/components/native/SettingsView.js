@@ -1,11 +1,16 @@
 // @flow
 
 import React from 'react';
-import { Alert, NativeModules, ScrollView, Switch, Text, TextInput } from 'react-native';
+import { Alert, NativeModules, ScrollView, Switch, Text, TextInput, View } from 'react-native';
 
 import { translate } from '../../../base/i18n';
 import { JitsiModal } from '../../../base/modal';
 import { connect } from '../../../base/redux';
+
+import {
+    getLocalParticipant,
+    getParticipantDisplayName
+} from '../../../base/participants'
 import { SETTINGS_VIEW_ID } from '../../constants';
 import { normalizeUserInputURL, isServerURLChangeEnabled } from '../../functions';
 import {
@@ -16,6 +21,10 @@ import {
 
 import FormRow from './FormRow';
 import FormSectionHeader from './FormSectionHeader';
+import ConferenceMenuItem from './ConferenceMenuItem'
+
+import styles from './styles';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 /**
  * Application information module.
@@ -81,7 +90,9 @@ type Props = AbstractProps & {
      *
      * @protected
      */
-    _serverURLChangeEnabled: boolean
+    _serverURLChangeEnabled: boolean,
+
+    _displayName: ?string
 }
 
 /**
@@ -152,18 +163,18 @@ class SettingsView extends AbstractSettingsView<Props, State> {
                 <ScrollView>
                     <FormSectionHeader
                         label = 'settingsView.profileSection' />
-                    <FormRow
-                        fieldSeparator = { true }
-                        label = 'settingsView.displayName'
-                        layout = 'column'>
+                    <View style={styles.inputContainerView}>
+                        <AntDesign name='user' size={30} color='gray'/>
                         <TextInput
+                            style={[styles.textInputFieldColumn, { fontSize: 18, width: '90%' }]}
                             autoCorrect = { false }
                             onChangeText = { this._onChangeDisplayName }
-                            placeholder = 'Nickname'
+                            placeholder = { this.props._displayName }
                             textContentType = { 'name' } // iOS only
                             value = { displayName } />
-                    </FormRow>
-                    <FormRow
+                    </View>
+                    
+                    {/* <FormRow
                         label = 'settingsView.email'
                         layout = 'column'>
                         <TextInput
@@ -174,31 +185,29 @@ class SettingsView extends AbstractSettingsView<Props, State> {
                             placeholder = 'email@example.com'
                             textContentType = { 'emailAddress' } // iOS only
                             value = { email } />
-                    </FormRow>
+                    </FormRow> */}
                     <FormSectionHeader
                         label = 'settingsView.conferenceSection' />
-                    <FormRow
-                        fieldSeparator = { true }
-                        label = 'settingsView.serverURL'
-                        layout = 'column'>
-                        <TextInput
-                            autoCapitalize = 'none'
-                            autoCorrect = { false }
-                            /*
-                                FIXME: release v1.0을 위한 주석 처리
-                            */
-                            // editable = { this.props._serverURLChangeEnabled }
-                            editable={ false }
-                            keyboardType = { 'url' }
-                            onBlur = { this._onBlurServerURL }
-                            onChangeText = { this._onChangeServerURL }
-                            placeholder = { this.props._serverURL }
-                            textContentType = { 'URL' } // iOS only
-                            // value = { serverURL }
-                            value={ this.props._serverURL } />
-                    </FormRow>
-                    <FormRow
-                        fieldSeparator = { true }
+                        <ConferenceMenuItem
+                            isSeparator={true}
+                            iconName={
+                                startWithAudioMuted ? 'mic-off' : 'mic'
+                            }
+                            label='settingsView.startWithAudioMuted'>
+                            <Switch
+                                onValueChange = { this._onStartAudioMutedChange }
+                                value = { startWithAudioMuted } />
+                        </ConferenceMenuItem>
+                        <ConferenceMenuItem
+                            iconName={
+                                startWithVideoMuted ? 'video-off' : 'video'
+                            }
+                            label='settingsView.startWithVideoMuted'>
+                            <Switch
+                                onValueChange = { this._onStartVideoMutedChange }
+                                value = { startWithVideoMuted } />    
+                        </ConferenceMenuItem>
+                    {/* <FormRow
                         label = 'settingsView.startWithAudioMuted'>
                         <Switch
                             onValueChange = { this._onStartAudioMutedChange }
@@ -208,15 +217,24 @@ class SettingsView extends AbstractSettingsView<Props, State> {
                         <Switch
                             onValueChange = { this._onStartVideoMutedChange }
                             value = { startWithVideoMuted } />
-                    </FormRow>
+                    </FormRow> */}
                     <FormSectionHeader
                         label = 'settingsView.buildInfoSection' />
-                    <FormRow
+                        <View style={styles.inputContainerView}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+                                <AntDesign name='infocirlceo' size={30} color='gray' />
+                                <Text style={{ fontWeight: 'bold', marginLeft: 10 }}>{this.props.t('settingsView.version')}</Text>
+                            </View>
+                            <Text>
+                                {`${AppInfo.version}`}    
+                            </Text>
+                        </View>
+                    {/* <FormRow
                         label = 'settingsView.version'>
                         <Text>
-                            {`${AppInfo.version} build ${AppInfo.buildNumber}`}
+                            {`${AppInfo.version}`}
                         </Text>
-                    </FormRow>
+                    </FormRow> */}
                     {/* // FIXME: release v1.0을 위한 주석 처리
                     <FormSectionHeader
                         label = 'settingsView.advanced' />
@@ -538,9 +556,13 @@ class SettingsView extends AbstractSettingsView<Props, State> {
  * @returns {Props}
  */
 function _mapStateToProps(state) {
+    const _localParticipant = getLocalParticipant(state);
+    const _displayName = _localParticipant && getParticipantDisplayName(state)
+    
     return {
         ..._abstractMapStateToProps(state),
-        _serverURLChangeEnabled: isServerURLChangeEnabled(state)
+        _serverURLChangeEnabled: isServerURLChangeEnabled(state, _localParticipant?.id),
+        _displayName: _displayName
     };
 }
 

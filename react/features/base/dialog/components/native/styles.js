@@ -43,7 +43,7 @@ export const bottomSheetStyles = {
         alignItems: 'stretch',
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     },
 
     sheetItemContainer: {

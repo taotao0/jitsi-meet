@@ -68,7 +68,7 @@ class SideBarItem extends Component<Props> {
         return (
             <TouchableOpacity
                 onPress = { onPressCalculated }
-                style = { styles.sideBarItem }>
+                style = {styles.sideBarItem}>
                 <View style = { styles.sideBarItemButtonContainer }>
                     <Icon
                         src = { this.props.icon }
