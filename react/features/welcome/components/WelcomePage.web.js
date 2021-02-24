@@ -116,6 +116,8 @@ class WelcomePage extends AbstractWelcomePage {
         this._onTabSelected = this._onTabSelected.bind(this);
         this._renderHeadUserButtons = this._renderHeadUserButtons.bind(this);
         this._renderGNB = this._renderGNB.bind(this);
+        this._renderMain = this._renderMain.bind(this);
+        this._renderAdmin = this._renderAdmin.bind(this);
         this._renderConference = this._renderConference.bind(this);
         this._renderFooter = this._renderFooter.bind(this);
     }
@@ -174,12 +176,17 @@ class WelcomePage extends AbstractWelcomePage {
      * @returns {ReactElement|null}
      */
     render() {
+        const { _user } = this.props;
         const { DISPLAY_WELCOME_USER_CONTROL } = interfaceConfig;
+
+        // console.log('----------> render start');
+        // console.log(_user.gnbTabNumber);
+        // console.log('----------> render start');
 
         return (
             <>
             { DISPLAY_WELCOME_USER_CONTROL && this._renderGNB() }
-            { this._renderConference() }
+            { this._renderMain() }
             </>
         );
     }
@@ -245,6 +252,27 @@ class WelcomePage extends AbstractWelcomePage {
      */
     _onTabSelected(tabIndex) {
         this.setState({ selectedTab: tabIndex });
+    }
+
+    /**
+     * Renders the conference
+     *
+     * @returns {ReactElement}
+     */
+    _renderMain() {
+        const { _user } = this.props;
+
+        switch(_user.gnbTabNumber) {
+            case 0: return this._renderConference();
+            case 1: return this._renderAdmin();
+            default: return this._renderConference();
+        }
+    }
+
+    _renderAdmin() {
+        return (
+            <div> Admin </div>
+        );
     }
 
     /**
@@ -392,7 +420,7 @@ class WelcomePage extends AbstractWelcomePage {
                     aria-label = 'Conference'
                     className = 'gnb-item'
                     id = 'conference_button'
-                    onClick = { this._login }
+                    onClick = { this._gnbConference }
                     tabIndex = '0'
                     type = 'button'>
                     { t('welcomepage.gnbConference') }
@@ -402,7 +430,7 @@ class WelcomePage extends AbstractWelcomePage {
                     aria-label = 'Admin'
                     className = 'gnb-item'
                     id = 'admin_button'
-                    onClick = { this._login }
+                    onClick = { this._gnbAdmin }
                     tabIndex = '1'
                     type = 'button'>
                     { t('welcomepage.gnbAdmin') }
@@ -413,7 +441,6 @@ class WelcomePage extends AbstractWelcomePage {
             null
         );
     }
-
 
     /**
      * Renders the header user buttons.

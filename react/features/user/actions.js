@@ -1,6 +1,7 @@
 // @flow
 
-import { USER_LOGIN_SUCCESS, USER_LOGOUT_SUCCESS } from './actionTypes';
+import { USER_LOGIN_SUCCESS, USER_LOGOUT_SUCCESS, USER_GNB_CONFERENCE,
+            USER_GNB_ADMIN } from './actionTypes';
 import { callUserLoginService } from './functions';
 import logger from './logger';
 
@@ -77,3 +78,31 @@ export function userLogoutSuccess() {
         type: USER_LOGOUT_SUCCESS
     };
 }
+
+/**
+ * Signals a login user want to see conference view.
+ *
+ * @returns {{
+    *      type: USER_GNB_CONFERENCE
+    * }}
+    */
+   export function userGNBConference() {
+       // logger.log('------------> userGNBConference called');
+       return {
+           type: USER_GNB_CONFERENCE
+       };
+   }
+
+/**
+ * Signals a login user want to see admin view.
+ *
+ * @returns {{
+    *      type: USER_GNB_ADMIN
+    * }}
+    */
+   export function userGNBAdmin() {
+       // logger.log('------------> userGNBAdmin called');
+       return {
+           type: USER_GNB_ADMIN
+       };
+   }
