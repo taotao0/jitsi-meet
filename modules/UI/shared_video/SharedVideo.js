@@ -29,7 +29,7 @@ export const SHARED_VIDEO_CONTAINER_TYPE = 'sharedvideo';
  * Example shared video link.
  * @type {string}
  */
-const defaultSharedVideoLink = 'https://youtu.be/TB7LlM4erx8';
+const defaultSharedVideoLink = 'https://www.youtube.com/watch?v=dyRsYk0LyA8&ab_channel=BLACKPINK';
 const updateInterval = 5000; // milliseconds
 
 /**
