@@ -212,6 +212,8 @@
         "lockMessage": "회의를 비공개하지 못했습니다",
         "lockRoom": "회의 추가 $t(lockRoomPasswordUppercase)",
         "lockTitle": "비공개 실패",
+        "loginTitle": "로그인",
+        "resetTitle": "패스워드 재설정을 위한 계정 email을 입력하세요",
         "logoutQuestion": "로그 아웃하고 컨퍼런스를 중지하시겠습니까?",
         "logoutTitle": "로그아웃",
         "maxUsersLimitReached": "회의의 최대 참가자 수에 도달했습니다. 회의 소유자에게 연락하거나 나중에 다시 시도하십시오!",
@@ -762,6 +764,7 @@
         "createMeeting": "회의 생성",
         "login": "로그인",
         "register": "회원 가입",
+        "reset": "계정",
         "terms": "이용약관",
         "title": "안전하고 모든 기능을 갖춘 완전 무료 화상 회의"
     },

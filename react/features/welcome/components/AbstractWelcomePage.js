@@ -5,7 +5,7 @@ import { Component } from 'react';
 import type { Dispatch } from 'redux';
 
 import { openDialog } from '../../base/dialog';
-import { UserLoginDialog } from '../../user/components';
+import { UserLoginDialog, UserResetDialog } from '../../user/components';
 import { userLogoutSuccess, userGNBConference, userGNBAdmin } from '../../user/actions';
 import { getRoomNameId } from '../../user/functions';
 
@@ -150,6 +150,7 @@ export class AbstractWelcomePage extends Component<Props, *> {
         this._login = this._login.bind(this);
         this._logout = this._logout.bind(this);
         this._register = this._register.bind(this);
+        this._reset = this._reset.bind(this);
         this._onCreate = this._onCreate.bind(this);
         this._onRoomChange = this._onRoomChange.bind(this);
         this._renderInsecureRoomNameWarning = this._renderInsecureRoomNameWarning.bind(this);
@@ -363,6 +364,14 @@ export class AbstractWelcomePage extends Component<Props, *> {
         this.props.dispatch(redirectToStaticPage(`static/authError.html`));
         */
         console.log('_register end ----------------------');
+    }
+
+    _reset: () => void;
+
+    _reset() {
+        // console.log('_reset start ----------------------');
+        this.props.dispatch(openDialog(UserResetDialog));
+        // console.log('_reset end ----------------------');
     }
 
     _onCreate: () => void;

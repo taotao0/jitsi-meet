@@ -301,6 +301,16 @@ class WelcomePage extends AbstractWelcomePage {
 
                 <div className = 'header'>
                     { DISPLAY_WELCOME_USER_CONTROL && this._renderHeadUserButtons()}
+                    <button
+                        aria-disabled = 'false'
+                        aria-label = 'Reset'
+                        className = 'welcome-page-reset'
+                        id = 'reset_button'
+                        onClick = { this._reset }
+                        tabIndex = '0'
+                        type = 'button'>
+                        { t('welcomepage.reset') }
+                    </button>
                     <div className = 'welcome-page-settings'>
                         <SettingsButton
                             defaultTab = { SETTINGS_TABS.CALENDAR } />

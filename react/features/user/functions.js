@@ -67,3 +67,30 @@ export function callUserLoginService(id, password) {
 
     return axios(config);
 }
+
+/**
+ * Returns promise that resolves with the axios.
+ *
+ * @returns {Promise<>} - Resolves with the axios.
+ */
+export function callUserResetPasswordService(email) {
+    logger.log('--------> callUserResetPasswordService start');
+    logger.log(email);
+    logger.log('--------> callUserResetPasswordService end');
+    const urlData = interfaceConfig.USEE_ADMIN_URL + '/Verified';
+    logger.log(`--------> url ${urlData}`);
+
+    const data = qs.stringify({
+        'email': email
+    });
+    const config = {
+        method: 'post',
+        url: urlData,
+        headers: { 
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        data : data
+    };
+
+    return axios(config);
+}

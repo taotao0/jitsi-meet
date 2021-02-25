@@ -1,8 +1,8 @@
 // @flow
 
-import { USER_LOGIN_SUCCESS, USER_LOGOUT_SUCCESS, USER_GNB_CONFERENCE,
+import { USER_LOGIN_SUCCESS, USER_LOGOUT_SUCCESS, USER_RESET_PASSWORD, USER_GNB_CONFERENCE,
             USER_GNB_ADMIN } from './actionTypes';
-import { callUserLoginService } from './functions';
+import { callUserLoginService, callUserResetPasswordService } from './functions';
 import logger from './logger';
 
 const LOGIN_SUCCESS_CODE = 'success';
@@ -10,8 +10,8 @@ const LOGIN_SUCCESS_CODE = 'success';
 /**
 * Signals user login success.
 *
-* @param {boolean} id - user ID.
-* @param {boolean} password - user password.
+* @param {string} id - user ID.
+* @param {string} password - user password.
 * @returns {Promise}
 */
 export function userLoginAction(id: string, password: string) {
@@ -76,6 +76,44 @@ export function userLogoutSuccess() {
     // logger.log('------------> userLogoutSuccess called');
     return {
         type: USER_LOGOUT_SUCCESS
+    };
+}
+
+/**
+* Reset user password using user email.
+*
+* @param {string} email - user email.
+* @returns {Promise}
+*/
+export function userResetPasswordAction(email: string) {
+    return function(dispatch: (Object) => Object, getState: () => any) {
+        const state = getState();        
+
+        return callUserResetPasswordService(email)
+            .then(response => {
+                logger.log('-----------> callUserResetPasswordService result start');
+                logger.log(response);
+                logger.log('-----------> callUserResetPasswordService result end');
+                // let success = false;
+                // response.data -> {state("fail" | "success"), msg}
+                // if(response && response.data && response.data.state &&
+                //     response.data.state === LOGIN_SUCCESS_CODE) {
+                //     success = true;
+                // }
+                // if(success) {
+                //     logger.log('callUserLoginService result : success');
+                //     dispatch(userLoginSuccess(response.data.default_room_name,
+                //         response.data.default_room_name_id, response.data.session_token));
+                //     alert('Login success!');
+                // } else {
+                //     logger.error('callUserLoginService result : fail');
+                //     alert('Login fail!');
+                // }
+            })
+            .catch(error => {
+                logger.error('callUserResetPasswordService failed with error:', error);
+                alert('Something wrong!');
+            });
     };
 }
 
