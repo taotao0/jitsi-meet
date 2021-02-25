@@ -150,6 +150,11 @@ var interfaceConfig = {
      */
     MOBILE_DOWNLOAD_LINK_IOS: 'https://itunes.apple.com/us/app/jitsi-meet/usee.co.kr',
 
+    /**
+     * Specify URL for downloading manual.
+     */
+    MANUAL_DOWNLOAD_LINK_WEB: 'https://usee.co.kr/usee-manual-ko.pdf',
+
     NATIVE_APP_NAME: 'USee Meeting',
 
     // Names of browsers which should show a warning stating the current browser

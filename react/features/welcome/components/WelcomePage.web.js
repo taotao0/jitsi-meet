@@ -503,8 +503,8 @@ class WelcomePage extends AbstractWelcomePage {
         const { t } = this.props;
         const {
             MOBILE_DOWNLOAD_LINK_ANDROID,
-            MOBILE_DOWNLOAD_LINK_F_DROID,
-            MOBILE_DOWNLOAD_LINK_IOS
+            MANUAL_DOWNLOAD_LINK_WEB,
+            MOBILE_DOWNLOAD_LINK_IOS,
         } = interfaceConfig;
 
         return (<footer className = 'welcome-footer'>
@@ -524,9 +524,9 @@ class WelcomePage extends AbstractWelcomePage {
                         </a>
                         <a
                             className = 'welcome-badge'
-                            href = { MOBILE_DOWNLOAD_LINK_F_DROID }>
-                            <img src = './images/f-droid-badge.png' />
-                        </a>
+                            href = { MANUAL_DOWNLOAD_LINK_WEB }>
+                            <img src = './images/usee-manual-download.png' />
+                        </a>                        
                     </div>
                 </div>
             </div>
