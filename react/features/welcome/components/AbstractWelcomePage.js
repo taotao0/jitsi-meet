@@ -5,8 +5,8 @@ import { Component } from 'react';
 import type { Dispatch } from 'redux';
 
 import { openDialog } from '../../base/dialog';
-import { UserLoginDialog } from '../../user/components';
-import { userLogoutSuccess } from '../../user/actions';
+import { UserLoginDialog, UserResetDialog } from '../../user/components';
+import { userLogoutSuccess, userGNBConference, userGNBAdmin } from '../../user/actions';
 import { getRoomNameId } from '../../user/functions';
 
 import { createWelcomePageEvent, sendAnalytics } from '../../analytics';
@@ -82,6 +82,7 @@ export class AbstractWelcomePage extends Component<Props, *> {
         // console.log('-----------> getDerivedStateFromProps start');
         let loginStateTemp = state.loginState;
         let defaultRoomNameIdTemp = state.defaultRoomNameId;
+        let gnbTabNumberTemp = 0;
         /* if loginState in props exist, apply it */
         if(typeof(props._user.loginState) != 'undefined') {
             loginStateTemp = props._user.loginState;
@@ -89,13 +90,18 @@ export class AbstractWelcomePage extends Component<Props, *> {
         if(typeof(props._user.defaultRoomNameId) != 'undefined') {
             defaultRoomNameIdTemp = props._user.defaultRoomNameId;
         }
+        if(typeof(props._user.gnbTabNumber) != 'undefined') {
+            gnbTabNumberTemp = props._user.gnbTabNumber;
+        }
         // console.log(loginStateTemp);
         // console.log(defaultRoomNameIdTemp);
+        // console.log(gnbTabNumberTemp);
         // console.log('-----------> getDerivedStateFromProps end');
         return {
             room: props._room || state.room,
             loginState: loginStateTemp,
-            defaultRoomNameId: defaultRoomNameIdTemp
+            defaultRoomNameId: defaultRoomNameIdTemp,
+            gnbTabNumber: gnbTabNumberTemp
         };
     }
 
@@ -121,7 +127,8 @@ export class AbstractWelcomePage extends Component<Props, *> {
         roomPlaceholder: '',
         updateTimeoutId: undefined,
         loginState: false,
-        defaultRoomNameId: ''
+        defaultRoomNameId: '',
+        gnbTabNumber: 0
     };
 
     /**
@@ -138,9 +145,12 @@ export class AbstractWelcomePage extends Component<Props, *> {
             = this._animateRoomnameChanging.bind(this);
         this._onJoin = this._onJoin.bind(this);
         this._onJoinUsee = this._onJoinUsee.bind(this);
+        this._gnbConference = this._gnbConference.bind(this);
+        this._gnbAdmin = this._gnbAdmin.bind(this);
         this._login = this._login.bind(this);
         this._logout = this._logout.bind(this);
         this._register = this._register.bind(this);
+        this._reset = this._reset.bind(this);
         this._onCreate = this._onCreate.bind(this);
         this._onRoomChange = this._onRoomChange.bind(this);
         this._renderInsecureRoomNameWarning = this._renderInsecureRoomNameWarning.bind(this);
@@ -314,6 +324,22 @@ export class AbstractWelcomePage extends Component<Props, *> {
         }
     }
 
+    _gnbConference: () => void;
+
+    _gnbConference() {
+        // console.log('_gnbConference start ----------------------');
+        this.props.dispatch(userGNBConference());
+        // console.log('_gnbConference end ----------------------');
+    }
+
+    _gnbAdmin: () => void;
+
+    _gnbAdmin() {
+        // console.log('_gnbAdmin start ----------------------');
+        this.props.dispatch(userGNBAdmin());
+        // console.log('_gnbAdmin end ----------------------');
+    }
+
     _login: () => void;
 
     _login() {
@@ -338,6 +364,14 @@ export class AbstractWelcomePage extends Component<Props, *> {
         this.props.dispatch(redirectToStaticPage(`static/authError.html`));
         */
         console.log('_register end ----------------------');
+    }
+
+    _reset: () => void;
+
+    _reset() {
+        // console.log('_reset start ----------------------');
+        this.props.dispatch(openDialog(UserResetDialog));
+        // console.log('_reset end ----------------------');
     }
 
     _onCreate: () => void;

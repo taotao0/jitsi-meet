@@ -287,6 +287,26 @@ body.welcome-page {
         }  
     }
 
+    .welcome-page-reset {
+        border: 0;
+        font-size: 14px;
+        background: #0074E0;
+        border-radius: 3px;
+        color: #FFFFFF;
+        cursor: pointer;
+        margin-left: 5px;
+        margin-right: 5px;
+        padding: 16px 20px;
+        position: absolute;
+        top: 32px;
+        right: 80px;
+        z-index: $zindex2;
+
+        &:focus-within {
+            outline: auto 2px #022e61;
+        }  
+    }
+
     .welcome-page-settings {
         background: rgba(255, 255, 255, 0.38);
         border-radius: 3px;

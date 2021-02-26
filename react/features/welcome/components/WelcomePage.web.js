@@ -116,6 +116,8 @@ class WelcomePage extends AbstractWelcomePage {
         this._onTabSelected = this._onTabSelected.bind(this);
         this._renderHeadUserButtons = this._renderHeadUserButtons.bind(this);
         this._renderGNB = this._renderGNB.bind(this);
+        this._renderMain = this._renderMain.bind(this);
+        this._renderAdmin = this._renderAdmin.bind(this);
         this._renderConference = this._renderConference.bind(this);
         this._renderFooter = this._renderFooter.bind(this);
     }
@@ -174,12 +176,17 @@ class WelcomePage extends AbstractWelcomePage {
      * @returns {ReactElement|null}
      */
     render() {
+        const { _user } = this.props;
         const { DISPLAY_WELCOME_USER_CONTROL } = interfaceConfig;
+
+        // console.log('----------> render start');
+        // console.log(_user.gnbTabNumber);
+        // console.log('----------> render start');
 
         return (
             <>
             { DISPLAY_WELCOME_USER_CONTROL && this._renderGNB() }
-            { this._renderConference() }
+            { this._renderMain() }
             </>
         );
     }
@@ -252,6 +259,27 @@ class WelcomePage extends AbstractWelcomePage {
      *
      * @returns {ReactElement}
      */
+    _renderMain() {
+        const { _user } = this.props;
+
+        switch(_user.gnbTabNumber) {
+            case 0: return this._renderConference();
+            case 1: return this._renderAdmin();
+            default: return this._renderConference();
+        }
+    }
+
+    _renderAdmin() {
+        return (
+            <div> Admin </div>
+        );
+    }
+
+    /**
+     * Renders the conference
+     *
+     * @returns {ReactElement}
+     */
     _renderConference() {
         const { _moderatedRoomServiceUrl, t } = this.props;
         const { DEFAULT_WELCOME_PAGE_LOGO_URL, DISPLAY_WELCOME_FOOTER,
@@ -273,6 +301,16 @@ class WelcomePage extends AbstractWelcomePage {
 
                 <div className = 'header'>
                     { DISPLAY_WELCOME_USER_CONTROL && this._renderHeadUserButtons()}
+                    <button
+                        aria-disabled = 'false'
+                        aria-label = 'Reset'
+                        className = 'welcome-page-reset'
+                        id = 'reset_button'
+                        onClick = { this._reset }
+                        tabIndex = '0'
+                        type = 'button'>
+                        { t('welcomepage.reset') }
+                    </button>
                     <div className = 'welcome-page-settings'>
                         <SettingsButton
                             defaultTab = { SETTINGS_TABS.CALENDAR } />
@@ -392,7 +430,7 @@ class WelcomePage extends AbstractWelcomePage {
                     aria-label = 'Conference'
                     className = 'gnb-item'
                     id = 'conference_button'
-                    onClick = { this._login }
+                    onClick = { this._gnbConference }
                     tabIndex = '0'
                     type = 'button'>
                     { t('welcomepage.gnbConference') }
@@ -402,7 +440,7 @@ class WelcomePage extends AbstractWelcomePage {
                     aria-label = 'Admin'
                     className = 'gnb-item'
                     id = 'admin_button'
-                    onClick = { this._login }
+                    onClick = { this._gnbAdmin }
                     tabIndex = '1'
                     type = 'button'>
                     { t('welcomepage.gnbAdmin') }
@@ -413,7 +451,6 @@ class WelcomePage extends AbstractWelcomePage {
             null
         );
     }
-
 
     /**
      * Renders the header user buttons.
@@ -476,8 +513,8 @@ class WelcomePage extends AbstractWelcomePage {
         const { t } = this.props;
         const {
             MOBILE_DOWNLOAD_LINK_ANDROID,
-            MOBILE_DOWNLOAD_LINK_F_DROID,
-            MOBILE_DOWNLOAD_LINK_IOS
+            MANUAL_DOWNLOAD_LINK_WEB,
+            MOBILE_DOWNLOAD_LINK_IOS,
         } = interfaceConfig;
 
         return (<footer className = 'welcome-footer'>
@@ -497,9 +534,9 @@ class WelcomePage extends AbstractWelcomePage {
                         </a>
                         <a
                             className = 'welcome-badge'
-                            href = { MOBILE_DOWNLOAD_LINK_F_DROID }>
-                            <img src = './images/f-droid-badge.png' />
-                        </a>
+                            href = { MANUAL_DOWNLOAD_LINK_WEB }>
+                            <img src = './images/usee-manual-download.png' />
+                        </a>                        
                     </div>
                 </div>
             </div>
