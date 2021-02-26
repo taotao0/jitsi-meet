@@ -26,6 +26,7 @@ class StopRecordingDialog extends AbstractStopRecordingDialog<Props> {
     render() {
         return (
             <ConfirmDialog
+                title= {this.props.t('dialog.stopRecording')}
                 contentKey = 'dialog.stopRecordingWarning'
                 onSubmit = { this._onSubmit } />
         );

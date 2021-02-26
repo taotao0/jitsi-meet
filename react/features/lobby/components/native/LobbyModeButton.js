@@ -26,7 +26,8 @@ type Props = AbstractProps & {
  */
 class LobbyModeButton extends AbstractButton<Props, any> {
     accessibilityLabel = 'toolbar.accessibilityLabel.lobbyButton';
-    icon = IconMeetingUnlocked;
+    // icon = IconMeetingUnlocked;
+    icon = null;
     label = 'toolbar.lobbyButtonEnable';
     toggledLabel = 'toolbar.lobbyButtonDisable'
     toggledIcon = IconMeetingLocked;

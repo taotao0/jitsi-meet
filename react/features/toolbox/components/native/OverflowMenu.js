@@ -2,6 +2,8 @@
 
 import React, { PureComponent } from 'react';
 import { TouchableOpacity, View } from 'react-native';
+import Fontisto from 'react-native-vector-icons/Fontisto'
+
 import Collapsible from 'react-native-collapsible';
 
 import { ColorSchemeRegistry } from '../../../base/color-scheme';
@@ -127,7 +129,8 @@ class OverflowMenu extends PureComponent<Props, State> {
         const moreOptionsButtonProps = {
             ...buttonProps,
             afterClick: this._onToggleMenu,
-            visible: !showMore
+            visible: !showMore,
+            showLabel: false,
         };
 
         const { _participants } = this.props
@@ -137,8 +140,9 @@ class OverflowMenu extends PureComponent<Props, State> {
                 onCancel = { this._onCancel }
                 onSwipe = { this._onSwipe }
                 renderHeader = { this._renderMenuExpandToggle }>
-                <AudioRouteButton { ...buttonProps } />
+                {/* <AudioRouteButton { ...buttonProps } /> */}
                 <InviteButton { ...buttonProps } />
+                <ToggleCameraButton { ...buttonProps } />
                 <AudioOnlyButton { ...buttonProps } />
                 <RaiseHandButton { ...buttonProps } />
                 <LobbyModeButton { ...buttonProps } />
@@ -146,20 +150,19 @@ class OverflowMenu extends PureComponent<Props, State> {
                 <ScreenSharingButton { ...buttonProps } /> */}
                 <MoreOptionsButton { ...moreOptionsButtonProps } />
                 <Collapsible collapsed = { !showMore }>
-                    <ToggleCameraButton { ...buttonProps } />
                     <TileViewButton { ...buttonProps } />
                     <RecordButton { ...buttonProps } />
                     {/* // FIXME: release v1.0을 위한 주석 처리
                     <LiveStreamButton { ...buttonProps } /> */}
                     <VideoShareButton { ...buttonProps } />
                     <RoomLockButton { ...buttonProps } />
-                    <ClosedCaptionButton { ...buttonProps } />
-                    <SharedDocumentButton { ...buttonProps } />
+                    {/* <ClosedCaptionButton { ...buttonProps } /> */}
+                    {/* <SharedDocumentButton { ...buttonProps } /> */}
                     {
                         isLocalParticipantModerator(_participants) && <MuteEveryoneButton { ...buttonProps } />
                     }
                     {/* <MuteEveryoneButton { ...buttonProps } /> */}
-                    <HelpButton { ...buttonProps } />
+                    {/* <HelpButton { ...buttonProps } /> */}
                 </Collapsible>
             </BottomSheet>
         );
@@ -173,15 +176,20 @@ class OverflowMenu extends PureComponent<Props, State> {
      * @returns {React$Element}
      */
     _renderMenuExpandToggle() {
+        let iconName = this.state.showMore ? 'angle-down' : 'angle-up'
+
         return (
             <View
                 style = { [
                     this.props._bottomSheetStyles.sheet,
                     styles.expandMenuContainer
                 ] }>
-                <TouchableOpacity onPress = { this._onToggleMenu }>
+                <TouchableOpacity
+                    style={{ width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#2c2c54', opacity: 0.9, borderTopLeftRadius: 15, borderTopRightRadius: 15, paddingVertical: 5 }}
+                    onPress = { this._onToggleMenu }>
                     { /* $FlowFixMeProps */ }
-                    <IconDragHandle style = { this.props._bottomSheetStyles.expandIcon } />
+                    <Fontisto name={iconName} size={30} color='white' />
+                    {/* <IconDragHandle style = { this.props._bottomSheetStyles.expandIcon } /> */}
                 </TouchableOpacity>
             </View>
         );

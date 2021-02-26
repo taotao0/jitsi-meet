@@ -65,6 +65,7 @@ class WaitForOwnerDialog extends Component<Props> {
 
         return (
             <ConfirmDialog
+                title = { room }
                 cancelKey = 'dialog.Cancel'
                 contentKey = {
                     {

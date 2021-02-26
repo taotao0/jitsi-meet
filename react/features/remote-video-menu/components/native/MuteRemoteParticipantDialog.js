@@ -21,6 +21,7 @@ class MuteRemoteParticipantDialog extends AbstractMuteRemoteParticipantDialog {
     render() {
         return (
             <ConfirmDialog
+                title= {this.props.t('dialog.muteParticipantButton')}
                 contentKey = 'dialog.muteParticipantDialog'
                 onSubmit = { this._onSubmit } />
         );

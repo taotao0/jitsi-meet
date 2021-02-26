@@ -35,9 +35,11 @@ MiddlewareRegistry.register(store => next => action => {
         const { dispatch, getState } = store;
 
         if (!p.local && !joinLeaveNotificationsDisabled()) {
-            dispatch(showParticipantJoinedNotification(
-                getParticipantDisplayName(getState, p.id)
-            ));
+            if (p.isFakeParticipant === false) {
+                dispatch(showParticipantJoinedNotification(
+                    getParticipantDisplayName(getState, p.id)
+                ));
+            }
         }
 
         if (typeof interfaceConfig === 'object'

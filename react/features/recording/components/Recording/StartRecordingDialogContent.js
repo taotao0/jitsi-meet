@@ -253,12 +253,12 @@ class StartRecordingDialogContent extends Component<Props> {
                 className = 'recording-header'
                 key = 'noIntegrationSetting'
                 style = { styles.header }>
-                <Container className = 'recording-icon-container'>
+                {/* <Container className = 'recording-icon-container'>
                     <Image
                         className = 'recording-icon'
                         src = { icon }
                         style = { styles.recordingIcon } />
-                </Container>
+                </Container> */}
                 <Text
                     className = 'recording-title'
                     style = {{

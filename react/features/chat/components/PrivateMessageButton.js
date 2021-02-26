@@ -40,9 +40,11 @@ export type Props = AbstractButtonProps & {
  */
 class PrivateMessageButton extends AbstractButton<Props, any> {
     accessibilityLabel = 'toolbar.accessibilityLabel.privateMessage';
-    icon = IconMessage;
+    // icon = IconMessage;
+    icon = null;
     label = 'toolbar.privateMessage';
-    toggledIcon = IconReply;
+    // toggledIcon = IconReply;
+    toggledIcon = null;
 
     /**
      * Handles clicking / pressing the button, and kicks the participant.

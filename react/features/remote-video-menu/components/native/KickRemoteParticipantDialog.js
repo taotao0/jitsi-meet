@@ -21,6 +21,7 @@ class KickRemoteParticipantDialog extends AbstractKickRemoteParticipantDialog {
     render() {
         return (
             <ConfirmDialog
+                title = {this.props.t('dialog.kickParticipantButton')}
                 contentKey = 'dialog.kickParticipantDialog'
                 onSubmit = { this._onSubmit } />
         );

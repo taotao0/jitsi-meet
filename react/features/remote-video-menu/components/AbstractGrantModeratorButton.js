@@ -35,8 +35,9 @@ export type Props = AbstractButtonProps & {
  */
 export default class AbstractGrantModeratorButton extends AbstractButton<Props, *> {
   accessibilityLabel = 'toolbar.accessibilityLabel.grantModerator';
-  icon = IconCrown;
-  label = 'videothumbnail.grantModerator';
+//   icon = IconCrown;
+    icon = null;
+    label = 'videothumbnail.grantModerator';
 
   /**
    * Handles clicking / pressing the button, and kicks the participant.

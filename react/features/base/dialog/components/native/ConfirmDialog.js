@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 import { translate } from '../../../i18n';
 import { connect } from '../../../redux';
@@ -27,6 +27,8 @@ type Props = BaseProps & {
      * {@code translate(string, Object)} for more details.
      */
     contentKey: string | { key: string, params: Object},
+
+    title: ?string,
 
     t: Function
 }
@@ -62,8 +64,9 @@ class ConfirmDialog extends BaseSubmitDialog<Props, *> {
                 onPress = { this._onCancel }
                 style = { [
                     _dialogStyles.button,
-                    brandedDialog.buttonFarLeft,
-                    _dialogStyles.buttonSeparator
+                    brandedDialog.buttonFarRight,
+                    { borderLeftWidth: 2, borderLeftColor: 'rgba(0, 0, 0, 0.8)' }
+                    // _dialogStyles.buttonSeparator
                 ] }>
                 <Text style = { _dialogStyles.buttonLabel }>
                     { t(cancelKey || 'dialog.confirmNo') }
@@ -89,9 +92,21 @@ class ConfirmDialog extends BaseSubmitDialog<Props, *> {
                 : this._renderHTML(t(contentKey.key, contentKey.params));
 
         return (
-            <Text style = { _dialogStyles.text }>
-                { content }
-            </Text>
+            <>
+                {
+                    this.props.title && (
+                        <View style={{ marginTop: 5, marginBottom: 10 }}>
+                            <Text style={{ fontWeight: 'bold', fontSize: 18, textAlign: 'center', color: '#2c2c54' }}>{this.props.title}</Text>
+                        </View>
+                    )
+                }
+                <View>
+                    <Text style = { _dialogStyles.text }>
+                        { content }
+                    </Text>
+                </View>
+            </>
+            
         );
     }
 

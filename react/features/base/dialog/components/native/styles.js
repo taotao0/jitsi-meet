@@ -6,7 +6,7 @@ import { ColorSchemeRegistry, schemeColor } from '../../../color-scheme';
 import { BoxModel, ColorPalette } from '../../../styles';
 import { PREFERRED_DIALOG_SIZE } from '../../constants';
 
-const BORDER_RADIUS = 5;
+const BORDER_RADIUS = 10;
 
 export const FIELD_UNDERLINE = ColorPalette.transparent;
 
@@ -70,7 +70,7 @@ export const brandedDialog = {
     },
 
     buttonWrapper: {
-        alignItems: 'stretch',
+        // alignItems: 'stretch',
         borderRadius: BORDER_RADIUS,
         flexDirection: 'row'
     },
@@ -86,7 +86,7 @@ export const brandedDialog = {
 
         // The added bottom padding is to compensate the empty space around the
         // close icon.
-        paddingBottom: BoxModel.padding * 3
+        // paddingBottom: BoxModel.padding * 3
     },
 
     overlay: {
@@ -108,7 +108,7 @@ export const brandedDialog = {
  */
 const brandedDialogText = {
     color: schemeColor('text'),
-    fontSize: MD_FONT_SIZE,
+    // fontSize: MD_FONT_SIZE,
     textAlign: 'center'
 };
 
@@ -190,7 +190,7 @@ ColorSchemeRegistry.register('Dialog', {
     button: {
         backgroundColor: schemeColor('buttonBackground'),
         flex: 1,
-        padding: BoxModel.padding * 1.5
+        padding: BoxModel.padding * 1
     },
 
     /**
@@ -221,12 +221,12 @@ ColorSchemeRegistry.register('Dialog', {
     dialog: {
         alignItems: 'stretch',
         backgroundColor: schemeColor('background'),
-        borderColor: schemeColor('border'),
+        // borderColor: schemeColor('border'),
         borderRadius: BORDER_RADIUS,
-        borderWidth: 1,
+        // borderWidth: 1,
         flex: 1,
         flexDirection: 'column',
-        maxWidth: PREFERRED_DIALOG_SIZE
+        maxWidth: PREFERRED_DIALOG_SIZE,
     },
 
     /**
@@ -236,7 +236,7 @@ ColorSchemeRegistry.register('Dialog', {
         ...brandedDialogText,
         borderBottomWidth: 1,
         borderColor: schemeColor('border'),
-        margin: BoxModel.margin,
+        // margin: BoxModel.margin,
         textAlign: 'left'
     },
 

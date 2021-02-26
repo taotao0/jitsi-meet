@@ -145,7 +145,7 @@ class RemoteVideoMenu extends PureComponent<Props> {
                     styles.participantNameContainer ] }>
                 <Avatar
                     participantId = { participant.id }
-                    size = { AVATAR_SIZE } />
+                    size = { AVATAR_SIZE + 10 } />
                 <Text style = { styles.participantNameLabel }>
                     { this.props._participantDisplayName }
                 </Text>

@@ -29,7 +29,8 @@ export type Props = AbstractButtonProps & {
  */
 export default class AbstractKickButton extends AbstractButton<Props, *> {
     accessibilityLabel = 'toolbar.accessibilityLabel.kick';
-    icon = IconKick;
+    // icon = IconKick;
+    icon = null;
     label = 'videothumbnail.kick';
 
     /**

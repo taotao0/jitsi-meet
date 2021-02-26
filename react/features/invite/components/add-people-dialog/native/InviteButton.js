@@ -23,7 +23,7 @@ type Props = AbstractButtonProps & {
  */
 class InviteButton extends AbstractButton<Props, *> {
     accessibilityLabel = 'toolbar.accessibilityLabel.shareRoom';
-    icon = IconAddPeople;
+    icon = null;
     label = 'toolbar.shareRoom';
 
     /**

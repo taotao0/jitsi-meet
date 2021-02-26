@@ -57,24 +57,25 @@ class BaseSubmitDialog<P: Props, S: *> extends BaseDialog<P, S> {
 
         return (
             <View>
-                <View style = { brandedDialog.mainWrapper }>
+                <View style = {[brandedDialog.mainWrapper, { paddingTop: 8 }]}>
                     { this._renderSubmittable() }
                 </View>
                 <View style = { brandedDialog.buttonWrapper }>
-                    { additionalButtons }
                     <TouchableOpacity
                         disabled = { this.props.okDisabled }
                         onPress = { this._onSubmit }
                         style = { [
                             _dialogStyles.button,
                             additionalButtons
-                                ? null : brandedDialog.buttonFarLeft,
-                            brandedDialog.buttonFarRight
+                                ? null : brandedDialog.buttonFarRight,
+                                brandedDialog.buttonFarLeft
+                            
                         ] }>
                         <Text style = { _dialogStyles.buttonLabel }>
                             { t(this._getSubmitButtonKey()) }
                         </Text>
                     </TouchableOpacity>
+                    { additionalButtons }
                 </View>
             </View>
         );

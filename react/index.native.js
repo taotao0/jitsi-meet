@@ -68,7 +68,7 @@ if (!__DEV__) {
     /* eslint-enable */
 }
 
-
+console.disableYellowBox = true;
 // Register the main/root Component of JitsiMeetView.
 AppRegistry.registerComponent('App', () => Root);
 

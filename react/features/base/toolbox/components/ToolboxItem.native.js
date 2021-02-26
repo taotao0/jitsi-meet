@@ -21,6 +21,10 @@ export default class ToolboxItem extends AbstractToolboxItem<Props> {
     _renderIcon() {
         const { styles } = this.props;
 
+        if (this.props.icon === null) {
+            return null;
+        }
+        
         return (
             <Icon
                 src = { this.props.icon }
@@ -55,15 +59,22 @@ export default class ToolboxItem extends AbstractToolboxItem<Props> {
             // XXX TouchableHighlight requires 1 child. If there's a need to
             // show both the icon and the label, then these two need to be
             // wrapped in a View.
-            children = (
-                <View style = { style }>
+            children = children !== null ? (
+                <View style = {style}>
                     { children }
-                    <Text style = { styles && styles.labelStyle }>
+                    <Text style = { [styles && styles.labelStyle, { color: '#2c2c54', fontWeight: 'bold' }] }>
                         { this.label }
                     </Text>
                     { elementAfter }
                 </View>
-            );
+            ) : (
+                <View style={style}>
+                    <Text style = {[ styles && styles.labelStyle, { marginLeft: 0, color: '#2c2c54', fontWeight: 'bold' } ]}>
+                            { this.label }
+                        </Text>
+                    { elementAfter }
+                </View>
+            )
 
             // XXX As stated earlier, the style was applied to the wrapper View
             // (above).
@@ -77,7 +88,7 @@ export default class ToolboxItem extends AbstractToolboxItem<Props> {
                 accessibilityState = {{ 'selected': toggled }}
                 disabled = { disabled }
                 onPress = { onClick }
-                style = { style }
+                style = {[ style, { justifyContent: 'center', alignItems: 'center', borderBottomWidth: 1, borderColor: 'rgba(0, 0, 0, 0.1)' } ]}
                 underlayColor = { styles && styles.underlayColor } >
                 { children }
             </TouchableHighlight>

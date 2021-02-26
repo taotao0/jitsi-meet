@@ -20,10 +20,10 @@ export default createStyleSheet({
     },
 
     participantNameLabel: {
-        color: ColorPalette.lightGrey,
+        color: ColorPalette.blue,
         flexShrink: 1,
         fontSize: MD_FONT_SIZE,
         marginLeft: MD_ITEM_MARGIN_PADDING,
-        opacity: 0.90
+        fontWeight: 'bold',
     }
 });

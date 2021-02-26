@@ -5,6 +5,7 @@ import type { Dispatch } from 'redux';
 
 import { InputDialog } from '../../base/dialog';
 import { connect } from '../../base/redux';
+import { translate } from '../../base/i18n'
 import { endRoomLockRequest } from '../actions';
 
 /**
@@ -14,7 +15,8 @@ import { endRoomLockRequest } from '../actions';
  */
 const _TEXT_INPUT_PROPS = {
     autoCapitalize: 'none',
-    autoCorrect: false
+    autoCorrect: false,
+    placeholder: '추가 잠금번호 설정'
 };
 
 /**
@@ -35,7 +37,8 @@ type Props = {
     /**
      * Redux store dispatch function.
      */
-    dispatch: Dispatch<any>
+    dispatch: Dispatch<any>, 
+    t: Function,
 };
 
 /**
@@ -71,12 +74,13 @@ class RoomLockPrompt extends Component<Props> {
             textInputProps = {
                 ...textInputProps,
                 keyboardType: 'number-pad',
-                maxLength: this.props.passwordNumberOfDigits
+                maxLength: this.props.passwordNumberOfDigits,
             };
         }
 
         return (
             <InputDialog
+                title = '추가 잠금 설정'
                 contentKey = 'security.about'
                 onCancel = { this._onCancel }
                 onSubmit = { this._onSubmit }
