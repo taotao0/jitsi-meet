@@ -63,7 +63,7 @@
 
 # Jisti Meet SDK
 
--keep class org.jitsi.meet.** { *; }
+-keep class org.usee.** { *; }
 -keep class org.jitsi.meet.sdk.** { *; }
 
 # We added the following when we switched minifyEnabled on. Probably because we

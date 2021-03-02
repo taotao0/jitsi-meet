@@ -173,6 +173,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
                     participantID = { message.id }
                     reply = { true }
                     showLabel = { false }
+                    showIcon = { true }
                     toggledStyles = { _styles.replyStyles } />
             </View>
         );

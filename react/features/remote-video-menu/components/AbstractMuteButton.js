@@ -42,8 +42,8 @@ export type Props = AbstractButtonProps & {
  */
 export default class AbstractMuteButton extends AbstractButton<Props, *> {
     accessibilityLabel = 'toolbar.accessibilityLabel.remoteMute';
-    // icon = IconMicDisabled;
-    icon = null;
+    icon = IconMicDisabled;
+    // icon = null;
     label = 'videothumbnail.domute';
     toggledLabel = 'videothumbnail.muted';
 

@@ -11,6 +11,8 @@ if (googleServicesEnabled) {
 // next ~680 years.
 // https://stackoverflow.com/a/38643838
 def vcode = (int) (((new Date().getTime() / 1000) - 1546297200) / 10)
+def enableProguardInReleaseBuilds = true
+def enableSeparateBuildPerCPUArchitecture = true
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -21,16 +23,16 @@ android {
     }
 
     defaultConfig {
-        applicationId 'org.jitsi.meet'
+        applicationId 'org.usee'
         versionCode vcode
         versionName project.appVersion
 
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
 
-        ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
-        }
+        // ndk {
+        //     abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        // }
     }
 
     signingConfigs {
@@ -63,6 +65,7 @@ android {
             buildConfigField "boolean", "GOOGLE_SERVICES_ENABLED", "${googleServicesEnabled}"
             buildConfigField "boolean", "LIBRE_BUILD", "${rootProject.ext.libreBuild}"
             signingConfig signingConfigs.release
+            shrinkResources enableProguardInReleaseBuilds
         }
     }
 

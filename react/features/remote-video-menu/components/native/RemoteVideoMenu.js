@@ -93,19 +93,20 @@ class RemoteVideoMenu extends PureComponent<Props> {
             afterClick: this._onCancel,
             showLabel: true,
             participantID: participant.id,
-            styles: this.props._bottomSheetStyles.buttons
+            styles: this.props._bottomSheetStyles.buttons,
+            showIcon: false,
         };
 
         return (
             <BottomSheet
                 onCancel = { this._onCancel }
                 renderHeader = { this._renderMenuHeader }>
-                { !_disableRemoteMute && <MuteButton { ...buttonProps } /> }
-                { !_disableKick && <KickButton { ...buttonProps } /> }
-                <GrantModeratorButton { ...buttonProps } />
+                { !participant.isFakeParticipant && !_disableRemoteMute && <MuteButton { ...buttonProps } /> }
+                { !participant.isFakeParticipant && !_disableKick && <KickButton { ...buttonProps } /> }
+                { !participant.isFakeParticipant && <GrantModeratorButton { ...buttonProps } /> }
                 <PinButton { ...buttonProps } />
-                <PrivateMessageButton { ...buttonProps } />
-                <MuteEveryoneElseButton { ...buttonProps } />
+                { !participant.isFakeParticipant && <PrivateMessageButton { ...buttonProps } /> }
+                { !participant.isFakeParticipant && <MuteEveryoneElseButton { ...buttonProps } /> }
             </BottomSheet>
         );
     }

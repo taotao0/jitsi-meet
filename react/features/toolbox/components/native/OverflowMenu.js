@@ -123,7 +123,8 @@ class OverflowMenu extends PureComponent<Props, State> {
         const buttonProps = {
             afterClick: this._onCancel,
             showLabel: true,
-            styles: _bottomSheetStyles.buttons
+            styles: _bottomSheetStyles.buttons,
+            showIcon: false,
         };
 
         const moreOptionsButtonProps = {
@@ -131,6 +132,7 @@ class OverflowMenu extends PureComponent<Props, State> {
             afterClick: this._onToggleMenu,
             visible: !showMore,
             showLabel: false,
+            showIcon: true,
         };
 
         const { _participants } = this.props

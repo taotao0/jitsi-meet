@@ -35,8 +35,8 @@ export type Props = AbstractButtonProps & {
  */
 class PinButton extends AbstractButton<Props, *> {
     accessibilityLabel = 'toolbar.accessibilityLabel.show';
-    // icon = IconPin;
-    icon = null;
+    icon = IconPin;
+    // icon = null;
     label = 'videothumbnail.show';
 
     /**

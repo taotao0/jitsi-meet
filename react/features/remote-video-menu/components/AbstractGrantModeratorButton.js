@@ -35,8 +35,8 @@ export type Props = AbstractButtonProps & {
  */
 export default class AbstractGrantModeratorButton extends AbstractButton<Props, *> {
   accessibilityLabel = 'toolbar.accessibilityLabel.grantModerator';
-//   icon = IconCrown;
-    icon = null;
+  icon = IconCrown;
+    // icon = null;
     label = 'videothumbnail.grantModerator';
 
   /**

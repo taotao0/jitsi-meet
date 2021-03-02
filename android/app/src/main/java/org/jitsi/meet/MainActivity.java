@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.jitsi.meet;
+package org.usee;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -92,7 +92,7 @@ public class MainActivity extends JitsiMeetActivity {
         // Setup Crashlytics and Firebase Dynamic Links
         // Here we are using reflection since it may have been disabled at compile time.
         try {
-            Class<?> cls = Class.forName("org.jitsi.meet.GoogleServicesHelper");
+            Class<?> cls = Class.forName("org.usee.GoogleServicesHelper");
             Method m = cls.getMethod("initialize", JitsiMeetActivity.class);
             m.invoke(null, this);
         } catch (Exception e) {

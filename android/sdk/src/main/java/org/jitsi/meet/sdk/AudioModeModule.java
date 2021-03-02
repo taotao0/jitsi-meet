@@ -117,7 +117,7 @@ class AudioModeModule extends ReactContextBaseJavaModule {
     /**
      * Device change event.
      */
-    private static final String DEVICE_CHANGE_EVENT = "org.jitsi.meet:features/audio-mode#devices-update";
+    private static final String DEVICE_CHANGE_EVENT = "org.usee:features/audio-mode#devices-update";
 
     /**
      * List of currently available audio devices.

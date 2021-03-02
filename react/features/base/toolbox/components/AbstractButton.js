@@ -43,7 +43,9 @@ export type Props = {
     /**
      * Whether this button is visible or not.
      */
-    visible: boolean
+    visible: boolean,
+
+    showIcon: boolean,
 };
 
 /**
@@ -71,7 +73,8 @@ export default class AbstractButton<P: Props, S: *> extends Component<P, S> {
         styles: undefined,
         toggledStyles: undefined,
         tooltipPosition: 'top',
-        visible: true
+        visible: true,
+        showIcon : true,
     };
 
     /**

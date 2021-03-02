@@ -46,10 +46,16 @@ export default class ToolboxItem extends AbstractToolboxItem<Props> {
             onClick,
             showLabel,
             styles,
-            toggled
+            toggled,
+            showIcon,
         } = this.props;
 
-        let children = this._renderIcon();
+        let children = null;
+
+        if (showIcon) {
+            children = this._renderIcon();
+        }
+        
 
         // XXX When using a wrapper View, apply the style to it instead of
         // applying it to the TouchableHighlight.
@@ -79,7 +85,7 @@ export default class ToolboxItem extends AbstractToolboxItem<Props> {
             // XXX As stated earlier, the style was applied to the wrapper View
             // (above).
             style = undefined;
-        }
+        } 
 
         return (
             <TouchableHighlight
@@ -90,7 +96,11 @@ export default class ToolboxItem extends AbstractToolboxItem<Props> {
                 onPress = { onClick }
                 style = {[ style, { justifyContent: 'center', alignItems: 'center', borderBottomWidth: 1, borderColor: 'rgba(0, 0, 0, 0.1)' } ]}
                 underlayColor = { styles && styles.underlayColor } >
-                { children }
+                {
+                    children === null
+                    ? ( <></> )
+                    : children
+                }
             </TouchableHighlight>
         );
     }
