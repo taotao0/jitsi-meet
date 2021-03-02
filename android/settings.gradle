@@ -1,4 +1,4 @@
-rootProject.name = 'jitsi-meet'
+rootProject.name = 'org.usee'
 
 include ':app', ':sdk'
 include ':react-native-background-timer'
