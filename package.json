@@ -85,7 +85,7 @@
     "react-native-svg": "10.1.0",
     "react-native-svg-transformer": "0.14.3",
     "react-native-url-polyfill": "1.2.0",
-    "react-native-vector-icons": "^8.0.0",
+    "react-native-vector-icons": "^8.1.0",
     "react-native-watch-connectivity": "0.4.3",
     "react-native-webrtc": "1.87.1",
     "react-native-webview": "11.0.2",
