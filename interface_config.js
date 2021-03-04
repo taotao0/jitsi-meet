@@ -153,7 +153,7 @@ var interfaceConfig = {
     /**
      * Specify URL for downloading manual.
      */
-    MANUAL_DOWNLOAD_LINK_WEB: 'https://usee.co.kr/usee-manual-ko.pdf',
+    MANUAL_DOWNLOAD_LINK_WEB: 'https://usee.co.kr/usee-userguide-kr_v1.0.zip',
 
     NATIVE_APP_NAME: 'USee Meeting',
 
@@ -193,8 +193,8 @@ var interfaceConfig = {
      * If indicated some of the error dialogs may point to the support URL for
      * help.
      */
-    SUPPORT_URL: 'https://usee.gq',
-    USEE_ADMIN_URL: 'https://10.0.0.3:8080',
+    SUPPORT_URL: 'https://usee.co.kr',
+    USEE_ADMIN_URL: 'https://usee.co.kr:10080',
 
     TOOLBAR_ALWAYS_VISIBLE: false,
 
