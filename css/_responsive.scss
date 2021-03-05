@@ -59,6 +59,16 @@
         .welcome-badge {
             margin-right: 16px;
         }
+        .welcome-badge-reset {
+            border: 0;
+            font-size: 14px;
+            background: #0074E0;
+            border-radius: 3px;
+            color: #FFFFFF;
+            cursor: pointer;
+            margin-right: 16px;
+            padding: 16px 20px;
+        }
 
         .welcome-footer {
             display: none;
