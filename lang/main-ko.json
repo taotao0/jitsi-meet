@@ -181,7 +181,7 @@
         "confirmNo": "아니요",
         "confirmYes": "예",
         "connectError": "죄송합니다. 문제가 발생하여 회의에 연결할 수 없습니다",
-        "connectErrorWithMsg": "죄송합니다. 뭔가 잘못되어 회의에 연결할 수 없습니다: {{msg}}",
+        "connectErrorWithMsg": "죄송합니다. 문제가 발생하여 회의에 연결할 수 없습니다: {{msg}}",
         "connecting": "연결중",
         "contactSupport": "지원 연락처",
         "copy": "복사",
@@ -764,7 +764,7 @@
         "createMeeting": "회의 생성",
         "login": "로그인",
         "register": "회원 가입",
-        "reset": "계정",
+        "reset": "비밀번호 찾기",
         "terms": "이용약관",
         "title": "안전하고 모든 기능을 갖춘 완전 무료 화상 회의"
     },
