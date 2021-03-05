@@ -1,5 +1,7 @@
 // @flow
 
+import { jitsiLocalStorage } from '@jitsi/js-utils';
+
 import { generateRoomWithoutSeparator } from '@jitsi/js-utils/random';
 import { Component } from 'react';
 import type { Dispatch } from 'redux';
