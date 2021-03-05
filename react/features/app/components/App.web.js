@@ -6,6 +6,9 @@ import React from 'react';
 import { DialogContainer } from '../../base/dialog';
 import { ChromeExtensionBanner } from '../../chrome-extension-banner';
 
+import GlobalMenuContainer from '../../usee/common/globalMenu'
+import FooterContainer from '../../usee/common/footer'
+
 import { AbstractApp } from './AbstractApp';
 
 // Register middlewares and reducers.
@@ -26,10 +29,15 @@ export class App extends AbstractApp {
      */
     _createMainElement(component, props) {
         return (
-            <AtlasKitThemeProvider mode = 'dark'>
-                <ChromeExtensionBanner />
+            <>
+                <GlobalMenuContainer />
                 { super._createMainElement(component, props) }
-            </AtlasKitThemeProvider>
+                <FooterContainer />
+            </>
+            // <AtlasKitThemeProvider mode = 'dark'>
+            //     <ChromeExtensionBanner />
+            //     { super._createMainElement(component, props) }
+            // </AtlasKitThemeProvider>
         );
     }
 
