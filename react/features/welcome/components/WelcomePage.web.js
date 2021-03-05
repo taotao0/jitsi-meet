@@ -528,12 +528,14 @@ class WelcomePage extends AbstractWelcomePage {
                             <img src = './images/usee-manual-download.png' />
                         </a>
                         <button
-                            aria-disabled = 'false'
-                            aria-label = 'Reset'
-                            className = 'welcome-badge-reset'
-                            id = 'reset_button'
+                            // className = 'welcome-account'
+                            style={{
+                                backgroundColor: 'transparent',
+                                width: 200,
+                                height: 40,
+                                fontSize: 12,
+                                border: 'none' }}
                             onClick = { this._reset }
-                            tabIndex = '0'
                             type = 'button'>
                             { t('welcomepage.reset') }
                         </button>                        
