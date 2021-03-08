@@ -152,6 +152,7 @@ export class AbstractWelcomePage extends Component<Props, *> {
         this._login = this._login.bind(this);
         this._logout = this._logout.bind(this);
         this._register = this._register.bind(this);
+        this._manualDownload = this._manualDownload.bind(this);
         this._reset = this._reset.bind(this);
         this._onCreate = this._onCreate.bind(this);
         this._onRoomChange = this._onRoomChange.bind(this);
@@ -372,6 +373,15 @@ export class AbstractWelcomePage extends Component<Props, *> {
         this.props.dispatch(redirectToStaticPage(`static/authError.html`));
         */
         console.log('_register end ----------------------');
+    }
+    
+    _manualDownload: () => void;
+
+    _manualDownload() {
+        const {
+            MANUAL_DOWNLOAD_FILE
+        } = interfaceConfig;
+        window.open(MANUAL_DOWNLOAD_FILE);
     }
 
     _reset: () => void;

@@ -522,23 +522,29 @@ class WelcomePage extends AbstractWelcomePage {
                             href = { MOBILE_DOWNLOAD_LINK_ANDROID }>
                             <img src = './images/google-play-badge.png' />
                         </a>
-                        <a
-                            className = 'welcome-badge'
-                            href = { MANUAL_DOWNLOAD_LINK_WEB }>
-                            <img src = './images/usee-manual-download.png' />
-                        </a>
+                        <button
+                            style={{
+                                backgroundColor: 'transparent',
+                                width: 200,
+                                height: 40,
+                                fontSize: 11,
+                                border: 'none' }}
+                            onClick = { this._manualDownload }
+                            type = 'button'>
+                            { t('welcomepage.manualDownload') }
+                        </button>
                         <button
                             // className = 'welcome-account'
                             style={{
                                 backgroundColor: 'transparent',
                                 width: 200,
                                 height: 40,
-                                fontSize: 12,
+                                fontSize: 11,
                                 border: 'none' }}
                             onClick = { this._reset }
                             type = 'button'>
                             { t('welcomepage.reset') }
-                        </button>                        
+                        </button>
                     </div>
                 </div>
             </div>

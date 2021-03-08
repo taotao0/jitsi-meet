@@ -154,6 +154,7 @@ var interfaceConfig = {
      * Specify URL for downloading manual.
      */
     MANUAL_DOWNLOAD_LINK_WEB: 'https://usee.co.kr/usee-userguide-kr_v1.0.zip',
+    MANUAL_DOWNLOAD_FILE: 'usee-userguide-kr_v1.0.zip',
 
     NATIVE_APP_NAME: 'USee Meeting',
 

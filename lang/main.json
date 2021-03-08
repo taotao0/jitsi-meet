@@ -898,6 +898,7 @@
         "login": "Login",
         "logout": "Logout",
         "register": "Register",
+        "manualDownload": "Manual Download",
         "reset": "USee Account",
         "gnbConference": "Conference",
         "gnbAdmin": "Admin",
