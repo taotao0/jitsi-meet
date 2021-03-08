@@ -182,20 +182,40 @@ function doXmppAuth(room, lockPassword) {
                     loginDialog.close();
                 },
                 /* onRejected */ error => {
-                    logger.error('authenticateAndUpgradeRole failed', error);
+                    const { authenticationError, connectionError, message } = error;
 
-                    const { authenticationError, connectionError } = error;
+                    /*
+                    logger.error('--------------hhh');
+                    logger.error('authenticateAndUpgradeRole failed', error);
+                    logger.error(authenticationError);
+                    logger.error(connectionError);
+                    logger.error(message);
+                    logger.error('--------------hhh');
+                    */
+
+                    let readableMessage = message;
+
+                    if(message.indexOf('existing room') != -1) {
+                        readableMessage = '같은 계정으로 이미 생성한 방이 있습니다. ' + message;
+                    }
 
                     if (authenticationError) {
                         loginDialog.displayError(
-                            'connection.GET_SESSION_ID_ERROR',
+                            readableMessage,
                             { msg: authenticationError });
                     } else if (connectionError) {
                         loginDialog.displayError(connectionError);
                     }
                 });
         },
-        /* cancelCallback */ () => loginDialog.close());
+        /* cancelCallback */ () => {
+            /*
+            logger.error('--------------ggg');
+            logger.error('cancelCallback');
+            logger.error('--------------ggg');
+            */
+            loginDialog.close()
+        });
 }
 
 /**

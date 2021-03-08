@@ -240,6 +240,12 @@ export class AbstractWelcomePage extends Component<Props, *> {
     _onJoin() {
         const room = this.state.room || this.state.generatedRoomname;
 
+        /* flush sessionId when creating a room */
+        const sessionId = jitsiLocalStorage.getItem('sessionId');
+        if(sessionId) {
+            jitsiLocalStorage.removeItem('sessionId');
+        }
+
         sendAnalytics(
             createWelcomePageEvent('clicked', 'joinButton', {
                 isGenerated: !this.state.room,
@@ -371,6 +377,15 @@ export class AbstractWelcomePage extends Component<Props, *> {
     _reset: () => void;
 
     _reset() {
+
+        {
+            const sessionId = jitsiLocalStorage.getItem('sessionId');
+            console.log(sessionId);
+            if(sessionId) {
+                jitsiLocalStorage.removeItem('sessionId');
+            }
+        }
+
         // console.log('_reset start ----------------------');
         this.props.dispatch(openDialog(UserResetDialog));
         // console.log('_reset end ----------------------');
