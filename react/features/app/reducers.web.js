@@ -13,4 +13,6 @@ import '../screenshot-capture/reducer';
 import '../shared-video/reducer';
 import '../talk-while-muted/reducer';
 
+import '../usee/contents/ducks'
+
 import './reducers.any';

@@ -19,10 +19,11 @@ body.welcome-page {
 }
 
 .welcome {
-    background-image: $welcomePageHeaderBackground;
-    background-size: cover;
-    background-repeat: no-repeat;
-    // background-color: #fff;
+    // background-image: $welcomePageHeaderBackground;
+    // background-size: cover;
+    // background-repeat: no-repeat;
+    background-color: #fff;
+
     display: flex;
     flex-direction: column;
     font-family: $welcomePageFontFamily;

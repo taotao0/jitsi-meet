@@ -1,0 +1,46 @@
+
+.gm-container {
+    width: 100%;
+
+    .gm-header {
+        background-color: #aeaecc;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+
+        .gm-contents {
+            max-width: 1020px;
+            max-height: 75px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        
+            .gm-logo-button {
+                background-image: url('../../images/usee-logo.png');
+                width: 150px;
+                height: 73px;
+                background-color: transparent;
+                border: none;
+            }
+
+            .gm-button-contents {
+                display: flex;
+                flex-direction: row;
+
+                .gm-button {
+                    background: transparent;
+                    color: #000;
+                    padding-inline: 20px;
+                    font-size: 18px;
+                    margin-left: 20px;
+                    border-width: 0;
+                }
+            }
+        }
+    }
+}
+

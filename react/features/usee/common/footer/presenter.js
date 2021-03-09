@@ -2,9 +2,9 @@ import React from 'react'
 
 const FooterPresenter = () => {
     return(
-        <>
-            <h1>babo</h1>
-        </>
+        <div className = 'footer-container'>
+            <h1 className = 'title'>babo</h1>
+        </div>
     )
 }
 

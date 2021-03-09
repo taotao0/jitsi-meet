@@ -1,0 +1,20 @@
+.contents-container {
+    position: relative;
+    top: 75px;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+
+    .main-contents-container {
+        max-width: 1020px;
+        margin: 0 auto;
+        display: flex;
+        height: auto;
+        
+        .main-input-form-container {
+            width: 100vw;
+            height: 500px;
+            background-image: url('../../images/main-contents-background.png')
+        }
+    }
+}
