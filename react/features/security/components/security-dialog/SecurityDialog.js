@@ -80,6 +80,8 @@ function SecurityDialog({
         }
     }, [ _password ]);
 
+    const showE2ee = false;
+
     return (
         <Dialog
             customHeader = { Header }
@@ -99,7 +101,7 @@ function SecurityDialog({
                     setPassword = { setPassword }
                     setPasswordEditEnabled = { setPasswordEditEnabled } />
                 {
-                    _showE2ee ? <>
+                    showE2ee ? <>
                         <div className = 'separator-line' />
                         <E2EESection />
                     </> : null
