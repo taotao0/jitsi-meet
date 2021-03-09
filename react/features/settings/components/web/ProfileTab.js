@@ -85,6 +85,8 @@ class ProfileTab extends AbstractDialogTab<Props> {
             t
         } = this.props;
 
+        const hideEmail = true;
+
         return (
             <div>
                 <div className = 'profile-edit'>
@@ -104,21 +106,25 @@ class ProfileTab extends AbstractDialogTab<Props> {
                             type = 'text'
                             value = { displayName } />
                     </div>
-                    <div className = 'profile-edit-field'>
-                        <FieldTextStateless
-                            compact = { true }
-                            id = 'setEmail'
-                            label = { t('profile.setEmailLabel') }
-                            // eslint-disable-next-line react/jsx-no-bind
-                            onChange = {
-                                ({ target: { value } }) =>
-                                    super._onChange({ email: value })
-                            }
-                            placeholder = { t('profile.setEmailInput') }
-                            shouldFitContainer = { true }
-                            type = 'text'
-                            value = { email } />
-                    </div>
+                    { hideEmail ?
+                        null
+                        : 
+                        <div className = 'profile-edit-field'>
+                            <FieldTextStateless
+                                compact = { true }
+                                id = 'setEmail'
+                                label = { t('profile.setEmailLabel') }
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onChange = {
+                                    ({ target: { value } }) =>
+                                        super._onChange({ email: value })
+                                }
+                                placeholder = { t('profile.setEmailInput') }
+                                shouldFitContainer = { true }
+                                type = 'text'
+                                value = { email } />
+                        </div>
+                    }
                 </div>
                 { authEnabled && this._renderAuth() }
             </div>
