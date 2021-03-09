@@ -148,7 +148,7 @@ var interfaceConfig = {
     /**
      * Specify URL for downloading ios mobile app.
      */
-    MOBILE_DOWNLOAD_LINK_IOS: 'https://itunes.apple.com/us/app/jitsi-meet/usee.co.kr',
+    MOBILE_DOWNLOAD_LINK_IOS: 'https://apps.apple.com/app/id1550547407',
 
     /**
      * Specify URL for downloading manual.
