@@ -128,12 +128,12 @@ export default class BaseApp extends Component<*, State> {
             return (
                 <I18nextProvider i18n = { i18next }>
                     <Provider store = { store }>
-                        <Fragment>
+                        <div>
                             { this._createMainElement(component, props) }
-                            <SoundCollection />
+                            {/* <SoundCollection />
                             { this._createExtraElement() }
-                            { this._renderDialogContainer() }
-                        </Fragment>
+                            { this._renderDialogContainer() } */}
+                        </div>
                     </Provider>
                 </I18nextProvider>
             );

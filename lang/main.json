@@ -943,5 +943,12 @@
         "passwordJoinButton": "Join",
         "reject": "Reject",
         "toggleLabel": "Enable lobby"
+    },
+    "usee": {
+        "globalMenu": {
+            "login": "로그인",
+            "memberJoin": "회원가입",
+            "findPw": "비밀번호 찾기"
+        }
     }
 }

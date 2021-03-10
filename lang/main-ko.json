@@ -774,6 +774,13 @@
     },
     "helpView": {
         "header": "지원 센터"
+    },
+    "usee": {
+        "globalMenu": {
+            "login": "로그인",
+            "memberJoin": "회원가입",
+            "findPw": "비밀번호 찾기"
+        }
     }
 }
 
