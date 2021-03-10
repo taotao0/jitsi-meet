@@ -29,7 +29,7 @@
                 }
             }
 
-            li.footer-menu-list-manual {
+            li.footer-menu-list-mobile {
                 &::after {
                     content: '';
                 }
@@ -38,12 +38,32 @@
    
     }
 
-    .footer-company-info {
+    .footer-info-section {
         display: flex;
-        justify-content: center;
-        padding: 5px 0 5px 0;
-        p {
-            font-size: 12px;
+        justify-content: space-between;
+        height: 111px;
+        padding-left: 100px;
+        padding-right: 100px;
+        align-items: center;
+
+        .footer-uclick-logo-info {
+            display: flex;
+
+            .footer-company-info {
+                padding-left: 50px;
+                p {
+                    font-size: 12px;
+                }
+            }
         }
+
+        .footer-language-select {
+            margin-bottom: 30px;
+        }
+        select {
+            width: 120px;
+        }
+    
     }
+
 }
