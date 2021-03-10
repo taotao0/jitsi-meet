@@ -512,35 +512,83 @@ class WelcomePage extends AbstractWelcomePage {
     _renderFooter() {
         const { t } = this.props;
         const {
+            INTRODUCTION_ABOUT_UCLICK_WEB,
             MOBILE_DOWNLOAD_LINK_ANDROID,
             MANUAL_DOWNLOAD_LINK_WEB,
             MOBILE_DOWNLOAD_LINK_IOS,
         } = interfaceConfig;
 
-        return (<footer className = 'welcome-footer'>
-            <div className = 'welcome-footer-centered'>
-                <div className = 'welcome-footer-padded'>
-                    <div className = 'welcome-footer-row-block welcome-footer--row-1'>
-                        <div className = 'welcome-footer-row-1-text'>{t('welcomepage.jitsiOnMobile')}</div>
-                        <a
-                            className = 'welcome-badge'
-                            href = { MOBILE_DOWNLOAD_LINK_IOS }>
-                            <img src = './images/app-store-badge.png' />
-                        </a>
-                        <a
-                            className = 'welcome-badge'
-                            href = { MOBILE_DOWNLOAD_LINK_ANDROID }>
-                            <img src = './images/google-play-badge.png' />
-                        </a>
-                        <a
-                            className = 'welcome-badge'
-                            href = { MANUAL_DOWNLOAD_LINK_WEB }>
-                            <img src = './images/usee-manual-download.png' />
-                        </a>                        
-                    </div>
-                </div>
-            </div>
-        </footer>);
+        // return (<footer className = 'welcome-footer'>
+        //     <div className = 'welcome-footer-wrapper'>
+        //     <div className = 'welcome-footer-left'>
+        //         <ul className = 'welcome-footer-menu'>
+        //             <li className = 'welcome-footer-list'>
+        //                 <a 
+        //                     className = 'welcome-footer-intro'
+        //                      href = "http://uclick.co.kr/sub1/sub1_2.html">
+        //                     회사소개
+        //                 </a>
+        //             </li>
+        //             <li>
+        //                 <a
+        //                     className = 'welcome-footer-privacy'>
+        //                     개인정보처리방침
+        //                 </a> 
+        //             </li>
+        //         </ul>        
+        //     <div className = 'welcome-footer-introduction1'>
+        //         <label>
+        //             (주)유클릭
+        //         </label>
+        //         <label>
+        //             주소: 서울시 중구 퇴계로 286 쌍림빌딩 8층/9층
+        //         </label>
+        //         <label>
+        //             대표이사: 엄남한, 김인욱
+        //         </label>
+        //         <label> 
+        //             사업자등록번호: 110-81-41781
+        //         </label>
+        //     </div>
+        //     <div className = 'welcome-footer-introduction2'>
+        //         <label>
+        //             대표전화 : 02-6320-0000
+        //         </label>
+        //         <label>
+        //             팩스 : 6320-0001
+        //         </label>
+        //     </div>
+        //     </div>
+        //     <div className = 'welcome-footer-right'>
+        //     <div className = 'welcome-footer-centered'>
+        //         <div className = 'welcome-footer-padded'>
+        //             <div className = 'welcome-footer-row-block welcome-footer--row-1'>
+        //                 <div className = 'welcome-footer-row-1-text'>{t('welcomepage.jitsiOnMobile')}</div>
+        //                 <a
+        //                     className = 'welcome-badge'
+        //                     href = { MOBILE_DOWNLOAD_LINK_IOS }>
+        //                     <img src = './images/app-store-badge.png' />
+        //                 </a>
+        //                 <a
+        //                     className = 'welcome-badge'
+        //                     href = { MOBILE_DOWNLOAD_LINK_ANDROID }>
+        //                     <img src = './images/google-play-badge.png' />
+        //                 </a>
+        //                  <a
+        //                     className = 'welcome-badge'
+        //                     href = { MANUAL_DOWNLOAD_LINK_WEB }>
+        //                     <button
+        //                         className = 'welcome-manual-button'>
+        //                         Manual Download
+        //                     </button>
+        //                     <img src = './images/usee-manual-download.png' />
+        //                 </a>                         
+        //             </div>
+        //         </div>
+        //     </div>
+        //     </div>
+        //     </div>
+        // </footer>);
     }
 
     /**
