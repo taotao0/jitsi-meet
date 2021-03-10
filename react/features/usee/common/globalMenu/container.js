@@ -13,14 +13,13 @@ const GlobalMenuContainer = (props) => {
     const dispatch = useDispatch()
 
     const _handleBtnClicked = useCallback((event) => {
-        let _btnName = event.target.name
+        let _btnName = event.currentTarget.name
 
         switch(_btnName) {
             case 'logo' : {
                 dispatch(setContents(MainContentsContainer))
                 break
             }
-
             case 'login' : {
                 dispatch(setContents(LoginContainer))
                 break

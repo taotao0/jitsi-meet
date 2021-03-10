@@ -1,16 +1,16 @@
 .contents-container {
-    position: absolute;
-    top: 75px;
     width: 100vw;
-    height: auto;
+    min-height: calc(100% - 220px);
+    margin-top: -150px;
+    padding-top: 220px;
 
-    .top-container {
+    .main-top-container {
         width: 100vw;
         height: auto;
         background-image: url('../../images/main-contents-background.png');
         background-size: contain;
 
-        .form-container {
+        .main-form-container {
             max-width: 1020px;
             height: 300px;
             margin: 0 auto;
@@ -19,22 +19,50 @@
             justify-content: center;
             align-items: center;
 
-            .form-text {
+            .main-form-text {
                 font-weight: bold;
                 color: #fff;
                 text-align: center;
             }
+
+            .main-input-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-width: 420px;
+                height: 58px;
+                margin-top: 30px;
+                background-color: #fff;
+                border-radius: 16px;
+                
+                .main-input {
+                    width: 84%;
+                    height: 90%;
+                    border: none;
+                    border-top-left-radius: 13px;
+                    border-bottom-left-radius: 13px;
+                    padding-left: 10px;
+                }
+
+                .main-input-button {
+                    width: 15%;
+                    height: 90%;
+                    border: none;
+                    background-color: #e4caad;
+                    border-top-right-radius: 13px;
+                    border-bottom-right-radius: 13px;
+                    font-weight: bold;
+                }
+            }
         }
     }
 
-    .main-contents-container {
+    .main-content-container {
         max-width: 1020px;
         margin: 0 auto;
         display: flex;
-        height: auto;
-
-        .main-input-form-container {
-            background-image: url('../../images/main-contents-background.png')
-        }
+        height: 100px;
+        justify-content: center;
+        align-items: center;
     }
 }

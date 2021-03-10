@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { useTranslation } from 'react-i18next'
+
 const MainContentsPresenter = (props) => {
     const {
         meetingName,
@@ -7,27 +9,37 @@ const MainContentsPresenter = (props) => {
         handleJoinMeetingClicked
     } = props
 
+    const { t } = useTranslation()
+
     return (
         <main className = 'contents-container'>
-            <div className = 'top-container'>
+            <div className = 'main-top-container'>
                 <form
-                    className = 'form-container'
+                    className = 'main-form-container'
                     onSubmit = { handleJoinMeetingClicked }>
-                    <h2 className = 'form-text'>
-                        실시간 메시징 및 컨텐츠 공유를 <br/> 사용한 비디오 회의
-                    </h2>
-                    <div>
+                    <h1 className = 'main-form-text'>
+                        { t('usee.contents.main.description') }
+                    </h1>
+                    <div className = 'main-input-container'>
                         <input
+                            className = 'main-input'
                             type = 'text'
                             value = { meetingName }
-                            placeholder = '회의방 이름 입력'
+                            placeholder = { t('usee.contents.main.inputPlaceholder') }
                             onChange = { handleInputChanged } >
                         </input>
-                        <button type = 'submit'>
-                            참여
+                        <button
+                            className = 'main-input-button'
+                            type = 'submit'>
+                            { t('usee.contents.main.join') }
                         </button>
                     </div>
                 </form>
+            </div>
+            <div className = 'main-content-container'>
+                <h1>
+                    기능 명세
+                </h1>
             </div>
         </main>
     )

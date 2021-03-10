@@ -10,44 +10,42 @@ const GlobalMenuPresenter = (props) => {
     const { t } = useTranslation()
 
     return (
-        // <div className = 'gm-container'>
-            <header className = 'gm-header'>
-                {/* <div className = 'gm-contents'> */}
+        <header className = 'gm-header'>
+            <div className = 'gm-inner'>
+                <button
+                    className = 'gm-logo-button'
+                    type = 'button'
+                    name = 'logo'
+                    onClick = { handleBtnClicked }>
+                    <img
+                        src = '../../../../images/usee-logo.png'
+                        alt = 'usee-logo' />
+                </button>
+                <div className = 'gm-button-contents'>
                     <button
-                        className = 'gm-logo-button'
+                        className = 'gm-button'
                         type = 'button'
-                        name = 'logo'
+                        name = 'login'
                         onClick = { handleBtnClicked }>
-                        <img
-                            src = '../../../../images/usee-logo.png'
-                            alt = 'usee-logo' />
+                        { t('usee.globalMenu.login') }
                     </button>
-                    <div className = 'gm-button-contents'>
-                        <button
-                            className = 'gm-button'
-                            type = 'button'
-                            name = 'login'
-                            onClick = { handleBtnClicked }>
-                            {t('usee.globalMenu.login')}
-                        </button>
-                        <button
-                            className = 'gm-button'
-                            type = 'button'
-                            name = 'memberJoin'
-                            onClick = { handleBtnClicked }>
-                            {t('usee.globalMenu.memberJoin')}
-                        </button>
-                        <button
-                            className = 'gm-button'
-                            type = 'button'
-                            name = 'findPw'
-                            onClick = { handleBtnClicked }>
-                            {t('usee.globalMenu.findPw')}
-                        </button>
-                    </div>
-                {/* </div> */}
-            </header>
-        // </div>
+                    <button
+                        className = 'gm-button'
+                        type = 'button'
+                        name = 'memberJoin'
+                        onClick = { handleBtnClicked }>
+                        { t('usee.globalMenu.memberJoin') }
+                    </button>
+                    <button
+                        className = 'gm-button'
+                        type = 'button'
+                        name = 'findPw'
+                        onClick = { handleBtnClicked }>
+                        { t('usee.globalMenu.findPw') }
+                    </button>
+                </div>
+            </div>
+        </header>
     )
 }
 

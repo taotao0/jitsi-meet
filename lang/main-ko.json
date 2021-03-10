@@ -780,6 +780,13 @@
             "login": "로그인",
             "memberJoin": "회원가입",
             "findPw": "비밀번호 찾기"
+        },
+        "contents": {
+            "main": {
+                "description": "실시간 메시징 및 컨텐츠 공유를 \n 사용한 비디오 회의",
+                "join": "참여",
+                "inputPlaceholder": "회의실 이름 입력"
+            }
         }
     }
 }

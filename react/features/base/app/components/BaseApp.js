@@ -128,7 +128,7 @@ export default class BaseApp extends Component<*, State> {
             return (
                 <I18nextProvider i18n = { i18next }>
                     <Provider store = { store }>
-                        <div>
+                        <div className = 'usee-wrapper'>
                             { this._createMainElement(component, props) }
                             {/* <SoundCollection />
                             { this._createExtraElement() }
