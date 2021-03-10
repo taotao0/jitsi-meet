@@ -1,12 +1,51 @@
+
 .footer-container {
     position: absolute;
     bottom: 0;
     width: 100vw;
-    height: 9vh;
-    background-color: #2c2c54;
 
-    .title {
-        color: #fff;
-        text-align: center;
+    .footer-menu {
+        border-top: 1px solid rgb(209, 201, 201);
+        border-bottom: 1px solid rgb(209, 201, 201);
+        padding-top: 10px;
+        padding-bottom: 10px;
+        display: flex;
+        justify-content: center;
+
+        ul {
+            padding-left: 0;
+            overflow: hidden;
+
+            li {
+                float: left;
+                list-style: none;
+                padding-left: 25px;
+                font-size: 12px;
+                &::after {
+                    content: '|';
+                    padding-left: 25px;
+                }
+
+                a {
+                    color: #000;
+                }
+            }
+
+            li.footer-menu-list-manual {
+                &::after {
+                    content: '';
+                }
+            }
+        }
+   
+    }
+
+    .footer-company-info {
+        display: flex;
+        justify-content: center;
+        padding: 5px 0 5px 0;
+        p {
+            font-size: 12px;
+        }
     }
 }

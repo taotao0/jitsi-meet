@@ -3,37 +3,37 @@ import React from 'react'
 const FooterPresenter = () => {
 
     return(
-        <footer className ='welcome-footer'>
-            <div className ='welcome-footer-menu'>
+        <footer className ='footer-container'>
+            <div className ='footer-menu'>
                 <ul>
-                    <li className = 'welcome-footer-menu-list'>
+                    <li className = 'footer-menu-list'>
                         <a href="http://uclick.co.kr/sub1/sub1_2.html">
                             회사소개
                         </a>
                     </li>
-                    <li className = 'welcome-footer-menu-list'>
+                    <li className = 'footer-menu-list'>
                         <a href = "https://usee.co.kr/static/202102_terms_of_service.html">
                             개인정보처리방침
                         </a>
                     </li>
-                    <li className = 'welcome-footer-menu-list'>
+                    <li className = 'footer-menu-list'>
                         <a href ="http://uclick.co.kr/email.html">
                             이메일무단수집거부
                         </a>
                     </li>
-                    <li className = 'welcome-footer-menu-list'>
+                    <li className = 'footer-menu-list'>
                         <a href="http://uclick.co.kr/sub5/sub5_1.html">
                             안내데스크  
                         </a>
                     </li>
-                    <li className = 'welcome-footer-menu-list-manual'>
+                    <li className = 'footer-menu-list-manual'>
                         <a href="'https://usee.co.kr/usee-manual-ko.pdf'" download>
                             메뉴얼
                         </a>
                     </li>
                 </ul>
             </div>
-            <div className='welcome-footer-company-info'>
+            <div className='footer-company-info'>
                 <p>
                     <strong>(주)유클릭</strong>
                     <span className='bar'> | </span>
@@ -47,24 +47,6 @@ const FooterPresenter = () => {
                     <span className='bar'> | </span>
                     팩스 : 6320-0001
                 </p>
-            </div>
-            <div className = 'welcome-footer-download'>
-                {/* <div className = 'welcome-footer-download-message'>
-                    <strong>
-                        Usee mobile
-                    </strong>
-                        - download for apps and start meeting from anywhere
-                </div> */}
-                    <a
-                        className = 'ios-download'
-                        href = "https://itunes.apple.com/us/app/jitsi-meet/usee.co.kr">
-                        <img src = './images/app-store-badge.png' />
-                    </a>
-                    <a
-                        className = 'android-download'
-                        href = "https://play.google.com/store/apps/details?id=usee.co.kr">
-                        <img src = './images/google-play-badge.png' />
-                    </a>
             </div>
         </footer>
     )
