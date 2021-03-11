@@ -1,16 +1,20 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 
 import FooterPresenter from './presenter'
+import FooterInfoArea from './components/footer-info-area'
 
 const FooterContainer = () => {
-    const [ langSelect, setLangSelect ] = useState('한국어')
+    const [ langSelect, setLangSelect ] = useState()
 
-    const handleSelectChanged = useCallback((event) => {
+    const _handleSelectChanged = useCallback((event) => {
         setLangSelect(event.target.value)
     }, [])
+
     return (
-        <FooterPresenter />
+        <FooterPresenter
+            langSelect={ langSelect }
+            handleSelectChanged={ _handleSelectChanged }/>
     )
 }
 
-export default FooterPresenter
+export default FooterContainer
