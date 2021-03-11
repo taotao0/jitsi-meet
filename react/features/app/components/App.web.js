@@ -31,7 +31,9 @@ export class App extends AbstractApp {
         return (
             <>
                 <GlobalMenuContainer />
-                { super._createMainElement(component, props) }
+                <main className = 'contents-container'>
+                    { super._createMainElement(component, props) }
+                </main>
                 <FooterContainer />
             </>
             // <AtlasKitThemeProvider mode = 'dark'>

@@ -12,7 +12,7 @@ const MainContentsPresenter = (props) => {
     const { t } = useTranslation()
 
     return (
-        <main className = 'contents-container'>
+        <>
             <div className = 'main-top-container'>
                 <form
                     className = 'main-form-container'
@@ -41,7 +41,7 @@ const MainContentsPresenter = (props) => {
                     기능 명세
                 </h1>
             </div>
-        </main>
+        </>
     )
 }
 
