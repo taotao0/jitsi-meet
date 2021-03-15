@@ -4,10 +4,18 @@ import FooterMenuArea from './components/footer-menu-area'
 import FooterInfoArea from './components/footer-info-area'
 
 const FooterPresenter = (props) => {
+    const {
+        langSelect,
+        handleSelectChanged,
+        handleMobileSupportClicked
+    } = props
+
     return(
         <footer className = 'footer-container'>
-            <FooterMenuArea />
-            <FooterInfoArea { ...props } />
+            <FooterMenuArea handleMobileSupportClicked = { handleMobileSupportClicked } />
+            <FooterInfoArea 
+                langSelect = { langSelect }
+                handleSelectChanged = { handleSelectChanged } />
         </footer>
     )
 }

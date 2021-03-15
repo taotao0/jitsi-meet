@@ -64,4 +64,33 @@
         align-items: center;
     }
 
+    .mobile-container {
+        max-width: 1020px;
+        margin: 70px auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .mobile-description {
+            font-weight: bold;
+        }
+
+        .mobile-button-container {
+            margin-top: 80px;
+
+            .mobile-button {
+                display: block;
+                padding: 15px 30px 15px 30px;
+                margin-bottom: 20px;
+                border-radius: 13px;
+                font-size: 20px;
+            
+                .button-inner-text {
+                    margin-left: 10px;
+                }
+            }
+        }
+    }
+
 }

@@ -33,9 +33,12 @@
                 &::after {
                     content: '';
                 }
+
+                a {
+                    cursor: pointer;
+                }
             }
         }
-   
     }
 
     .footer-info-section {

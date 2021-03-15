@@ -954,6 +954,9 @@
             "main": {
                 "description": "실시간 메시징 및 컨텐츠 공유 <br /> 사용한 비디오 회의",
                 "join": "참여"
+            },
+            "mobile": {
+                "description": "모바일 다운로드"
             }
         },
         "footer": {
