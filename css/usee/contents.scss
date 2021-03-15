@@ -117,6 +117,7 @@
                     border-radius: 7px;
                     border: 1px solid #CACFD2;
                     display: flex;
+                    box-sizing: border-box;
         
                     &:focus-within {
                         border: 2px solid black;
@@ -124,7 +125,6 @@
         
                     .login-input-id-pwd {
                         width: 270px;
-                        height: 40px;
                         border: none;
                         border-radius: 7px;
                         font-size: 13px;
@@ -133,8 +133,6 @@
         
                     .login-input-reset-btn {
                         background-color: transparent;
-                        // width: 17px;
-                        // height: 17px;
             
                         img {
                             width: 17px;
