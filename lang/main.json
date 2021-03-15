@@ -957,6 +957,15 @@
             },
             "mobile": {
                 "description": "모바일 다운로드"
+            },
+            "login": {
+                "login": "로그인",
+                "id": "아이디",
+                "pwd": "비밀번호",
+                "loginStateSave": "로그인 상태 유지",
+                "findId": "아이디 찾기",
+                "findPwd": "패스워드 찾기",
+                "loginWithOtherSns": "다른 계정으로도 이용이 가능합니다"
             }
         },
         "footer": {

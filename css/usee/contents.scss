@@ -34,7 +34,7 @@
                 margin-top: 30px;
                 background-color: #fff;
                 border-radius: 16px;
-                
+
                 .main-input {
                     width: 84%;
                     height: 90%;
@@ -63,6 +63,7 @@
         justify-content: center;
         align-items: center;
     }
+
 
     .mobile-container {
         max-width: 1020px;
@@ -93,4 +94,121 @@
         }
     }
 
+    .login-contents-container {
+        height: auto;
+        margin: 70px auto;
+        text-align: center;
+
+        .login-contents-main-container  {
+            h1 {
+                margin-bottom: 35px; 
+            }
+
+            .login-contents-form {
+                width: 300px;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+
+                .login-input-id-pwd-box {
+                    width: 300px;
+                    height: 40px;
+                    margin-bottom: 5px;
+                    border-radius: 7px;
+                    border: 1px solid #CACFD2;
+                    display: flex;
+        
+                    &:focus-within {
+                        border: 2px solid black;
+                    }
+        
+                    .login-input-id-pwd {
+                        width: 270px;
+                        height: 40px;
+                        border: none;
+                        border-radius: 7px;
+                        font-size: 13px;
+                        font-weight: bold;
+                    }
+        
+                    .login-input-reset-btn {
+                        background-color: transparent;
+                        // width: 17px;
+                        // height: 17px;
+            
+                        img {
+                            width: 17px;
+                            height: 17px;
+                        }
+                    }
+                }
+        
+                .login-input-button {
+                    width: 300px;
+                    height: 40px;
+                    font-size: 13px;
+                    font-weight: bold;
+                    border-radius: 7px;
+                }
+        
+                .login-state-save {
+                    display: flex;
+                    float: right;
+                    margin-top: 5px;
+                    margin-bottom: 5px;
+        
+                    .login-state-save-switch {
+                        margin-left: 5px;
+                    }
+                }
+        
+                .login-find-id-pwd {
+                    display: flex;
+                    justify-content: flex-end;
+                    margin-top: 5px;
+        
+                    a {
+                        color: #333333;
+                    }
+                }
+            }
+        }
+
+        .login-contents-container-separator {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-block: 30px;
+
+            hr {
+                width: 100%;
+            }
+
+            .textd {
+                position: relative;
+                top: -15;
+                background-color: white;
+                padding-inline: 10px;
+            }
+        }
+
+        .login-with-other-sns-msg {
+            margin-top: 20px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #333333;
+        }
+
+        .login-with-other-sns-logo {
+            margin-top: 20px;
+
+            img {
+                margin: 0 20px;
+                width: 35px;
+                height: 35px;
+            }
+        }
+
+    }
 }
