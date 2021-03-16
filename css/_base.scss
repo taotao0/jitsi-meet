@@ -280,7 +280,7 @@ input[type='text'], input[type='password'], textarea {
 }
 
 button {
-    background-color: #006266;
-    color: #fff;
+    background-color: $useePrimaryColor;
+    color: $useePrimaryTextColor;
     border: none;
 }

@@ -5,37 +5,40 @@
     right: 0;
     z-index: 999;
     height: auto;
-    background-color: #fff;
+    padding: 10px 0;
+    // background-color: #fff;
+    background-color: $useePrimaryColor;
 
-    .gm-inner {
+    .gm-navbar {
         max-width: 1020px;
         margin: 0 auto;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid rgb(209, 201, 201);
-        height: 60px;
-    }
-    
-    .gm-logo-button {
-        width: 90px;
-        height: 44px;
-        background-color: transparent;
-        border: none;
-    }
+        // border-bottom: 1px solid rgb(209, 201, 201);
+        // height: 60px;
 
-    .gm-button-contents {
-        display: flex;
-        flex-direction: row;
+        a {
+            cursor: pointer;
+        }
 
-        .gm-button {
-            background: transparent;
-            color: #000;
-            padding-inline: 20px;
-            font-size: 18px;
-            margin-left: 20px;
-            border-width: 0;
+        .gm-menu {
+            display: flex;
+            padding-left: 0;
+
+            li {
+                list-style: none;
+                padding: 0 20px;
+
+                a {
+                    font-size: 18px;
+                    cursor: pointer;
+                    text-decoration: none;
+                    font-weight: bold;
+                    color: $useePrimaryTextColor;
+                }
+            }
         }
     }
 }

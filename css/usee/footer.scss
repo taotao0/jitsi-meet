@@ -1,10 +1,9 @@
 .footer-container {
-    width: 100vw;
-    height: 150px;
+    height: auto;
+    background-color: $useeLightColor;
 
     .footer-menu {
-        border-top: 1px solid rgb(209, 201, 201);
-        border-bottom: 1px solid rgb(209, 201, 201);
+        border-bottom: 1px solid $useeDarkTextColor;
         padding-top: 10px;
         padding-bottom: 10px;
         display: flex;
@@ -25,7 +24,7 @@
                 }
 
                 a {
-                    color: #000;
+                    color: $useeDarkTextColor;
                 }
             }
 
@@ -44,9 +43,7 @@
     .footer-info-section {
         display: flex;
         justify-content: space-between;
-        height: 111px;
-        padding-left: 100px;
-        padding-right: 100px;
+        padding: 20px 80px;
         align-items: center;
 
         .footer-uclick-logo-info {

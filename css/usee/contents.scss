@@ -1,8 +1,8 @@
 .contents-container {
-    width: 100vw;
-    min-height: calc(100% - 220px);
-    margin-top: -150px;
-    padding-top: 220px;
+    min-height: calc(100% - 208px);
+    margin-top: -144px;
+    padding-top: 208px;
+
 
     .main-top-container {
         width: 100vw;
@@ -21,7 +21,7 @@
 
             .main-form-text {
                 font-weight: bold;
-                color: #fff;
+                color: $useePrimaryTextColor;
                 text-align: center;
             }
 

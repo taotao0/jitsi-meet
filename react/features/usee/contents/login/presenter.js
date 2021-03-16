@@ -66,7 +66,9 @@ const LoginPresenter = () => {
             </div>
             <div className = 'login-contents-container-separator'>
                 <hr/>
-                <span className = 'textd'>OR</span>
+                <span className = 'textd'>
+                    OR
+                </span>
             </div>
             <div className = 'login-with-other-auth-contents-container'>
                 <div className = 'login-with-other-auth-msg'>

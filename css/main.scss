@@ -7,6 +7,7 @@
 /* Variables BEGIN */
 
 @import 'variables';
+@import 'usee/variable';
 
 /* Variables END */
 
@@ -104,8 +105,9 @@ $flagsImagePath: "../images/";
 @import 'responsive';
 @import 'connection-status';
 
-@import 'usee/contents.scss';
-@import 'usee/global_menu.scss';
-@import 'usee/footer.scss'
+
+@import 'usee/contents';
+@import 'usee/global_menu';
+@import 'usee/footer';
 
 /* Modules END */
