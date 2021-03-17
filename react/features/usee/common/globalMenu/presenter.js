@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import { useTranslation } from 'react-i18next'
 
@@ -12,20 +13,28 @@ const GlobalMenuPresenter = (props) => {
     return (
         <header className = 'gm-header'>
             <nav className = 'gm-navbar'>
-                <a
+                <Link to = '/'>
+                    <img
+                        src = '../../../../images/usee-logo.png'
+                        alt = 'usee-logo' />
+                </Link>
+                {/* <a
                     name = 'logo'
                     onClick = { handleBtnClicked }>
                     <img
                         src = '../../../../images/usee-logo.png'
                         alt = 'usee-logo' />
-                </a>
+                </a> */}
                 <ul className = 'gm-menu'>
                     <li>
-                        <a
+                        <Link to = '/login'>
+                            { t('usee.globalMenu.login') }    
+                        </Link>
+                        {/* <a
                             name = 'login'
                             onClick = { handleBtnClicked }>
                             { t('usee.globalMenu.login') }
-                        </a>
+                        </a> */}
                     </li>
                     {/* <li>
                         <a>

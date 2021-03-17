@@ -1,5 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
 const FooterMenuArea = (props) => {
     const { handleMobileSupportClicked } = props
@@ -35,10 +36,13 @@ const FooterMenuArea = (props) => {
                     </a>
                 </li>
                 <li className = 'footer-menu-list-mobile'>
-                    <a
+                    <Link to = '/mobileSupport'>
+                        { t('usee.footer.mobileVersion') }
+                    </Link>
+                    {/* <a
                         onClick = { handleMobileSupportClicked }>
                         { t('usee.footer.mobileVersion') }
-                    </a>
+                    </a> */}
                 </li>
             </ul>
         </div>

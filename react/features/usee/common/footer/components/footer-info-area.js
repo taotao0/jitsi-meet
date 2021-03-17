@@ -43,8 +43,8 @@ const FooterInfoArea = (props) => {
                     {t('usee.footer.language.lang')}
                     <br/>
                     <select
-                         value = {langSelect}
-                         onChange = {handleSelectChanged}>
+                        value = {langSelect}
+                        onChange = {handleSelectChanged}>
                         <option value = "korean">
                             {t('usee.footer.language.korean')}
                         </option>

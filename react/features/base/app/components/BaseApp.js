@@ -7,6 +7,7 @@ import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { compose, createStore } from 'redux';
 import Thunk from 'redux-thunk';
+import { Route, BrowserRouter, Switch } from 'react-router-dom'
 
 import { i18next } from '../../i18n';
 import {
@@ -18,6 +19,13 @@ import {
 import { SoundCollection } from '../../sounds';
 import { appWillMount, appWillUnmount } from '../actions';
 import logger from '../logger';
+
+import GlobalMenuContainer from '../../../usee/common/globalMenu'
+import FooterContainer from '../../../usee/common/footer'
+
+import MainContentsContainer from '../../../usee/contents/main'
+import LoginContainer from '../../../usee/contents/login'
+import MobileContainer from '../../../usee/contents/mobile'
 
 declare var APP: Object;
 
@@ -128,12 +136,31 @@ export default class BaseApp extends Component<*, State> {
             return (
                 <I18nextProvider i18n = { i18next }>
                     <Provider store = { store }>
-                        <div className = 'usee-wrapper'>
-                            { this._createMainElement(component, props) }
-                            {/* <SoundCollection />
-                            { this._createExtraElement() }
-                            { this._renderDialogContainer() } */}
-                        </div>
+                        <BrowserRouter>
+                            <div className = 'usee-wrapper'>
+                                <GlobalMenuContainer />
+                                <main className = 'contents-container'>
+                                    <Switch>
+                                        <Route
+                                            exact
+                                            path = '/'
+                                            component = { MainContentsContainer } />
+                                        <Route
+                                            path = '/login'
+                                            component = { LoginContainer } />
+                                        <Route
+                                            path = '/mobileSupport'
+                                            component = { MobileContainer } />
+                                    </Switch>
+                                </main>
+                                <FooterContainer />
+
+                                {/* { this._createMainElement(component, props) } */}
+                                {/* <SoundCollection />
+                                { this._createExtraElement() }
+                                { this._renderDialogContainer() } */}
+                            </div>
+                        </BrowserRouter>
                     </Provider>
                 </I18nextProvider>
             );
