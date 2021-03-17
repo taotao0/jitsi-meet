@@ -3,13 +3,31 @@ import Switch from 'react-switch'
 
 import { useTranslation } from 'react-i18next'
 
-const LoginPresenter = () => {
+import {
+    SWITCH_WIDTH,
+    SWITCH_HEIGHT,
+    SWITCH_COLOR,
+    SWITCH_ONCOLOR
+} from './constants'
+
+const LoginPresenter = (props) => {
+    const {
+        loginBtnClicked,
+        LoginInputResetBtnClicked,
+        handleLoginStateSaved,
+        isLoginStateSaved,
+        onChange,
+        id,
+        pwd,
+        altmsg
+    } = props
+
     const { t } = useTranslation()
 
     return (
         <div className = 'login-contents-container'>
             <div className = 'login-contents-main-container'>
-                <h1>{t('usee.contents.login.login')}</h1>
+                <h1>{ t('usee.contents.login.login') }</h1>
                 <form className = 'login-contents-form'>
                     <div>
                         <div className = 'login-input-id-pwd-box'>
@@ -17,10 +35,14 @@ const LoginPresenter = () => {
                                 className = 'login-input-id-pwd'
                                 type = 'text'
                                 placeholder = { t('usee.contents.login.login') }
-                                name = 'id' />
-                                {/* value = { id }
-                                onChange = { onChange } /> */}
-                                <button className = 'login-input-reset-btn'>
+                                name = 'id'
+                                onChange = { onChange }
+                                value = { id } />
+                                <button
+                                    className = 'login-input-reset-btn'
+                                    type = 'button'
+                                    name = 'id'
+                                    onClick = { LoginInputResetBtnClicked }>
                                     <img src = '../../../../images/Xbutton.png' />
                                 </button>
                         </div>
@@ -28,33 +50,41 @@ const LoginPresenter = () => {
                             <input
                                 className = 'login-input-id-pwd'
                                 type = 'password'
-                                placeholder = { t('usee.contents.login.pwd')}
-                                name = 'pwd' />
-                                {/* value = { pwd }
-                                onChange = { onChange } /> */}
-                                <button className = 'login-input-reset-btn'>
+                                placeholder = { t('usee.contents.login.pwd') }
+                                name = 'pwd'
+                                onChange = { onChange }
+                                value = { pwd } />
+                                <button
+                                    className = 'login-input-reset-btn'
+                                    type = 'button'
+                                    name = 'pwd'
+                                    onClick = { LoginInputResetBtnClicked }>
                                     <img src = '../../../../images/Xbutton.png' />
                                 </button>
                         </div>
                         <div className = 'login-state-save'>
-                            <p className = 'login-state-save-msg'>
-                                {t('usee.contents.login.loginStateSave')}
-                            </p>
-                            <Switch
-                                className = 'login-state-save-switch'
-                                onColor = '#038389'
-                                onHandleColor = '#038389'
-                                uncheckedIcon = { false }
-                                checkedIcon = { false }
-                                width = { 35 }
-                                height = { 15 } />
+                            <span>{ altmsg }</span>
+                            <div className = 'login-state-save-msg'>
+                                <p>{ t('usee.contents.login.loginStateSave') }</p>
+                                <Switch
+                                    className = 'login-state-save-switch'
+                                    checked = { isLoginStateSaved }
+                                    onChange = { handleLoginStateSaved }
+                                    color = { SWITCH_COLOR }
+                                    onColor = { SWITCH_ONCOLOR }
+                                    uncheckedIcon = { false }
+                                    checkedIcon = { false }
+                                    width = { SWITCH_WIDTH }
+                                    height = { SWITCH_HEIGHT } />
+                            </div>
                         </div>
                         <div>
                             <button
                                 className = 'login-input-button'
-                                type = 'submit' >
+                                type = 'submit'
+                                onClick = { loginBtnClicked } >
                                     { t('usee.contents.login.login')}
-                            </button>    {/* onClick = { loginBtnClicked} /> */}
+                            </button>
                         </div>
                         <div className = 'login-find-id-pwd'>
                             <a>{t('usee.contents.login.findId')}</a>

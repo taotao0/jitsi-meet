@@ -148,13 +148,23 @@
                     font-size: 13px;
                     font-weight: bold;
                     border-radius: 7px;
+                    margin-top: 8px
                 }
         
                 .login-state-save {
                     display: flex;
-                    float: right;
+                    justify-content: space-between;
                     margin-top: 5px;
                     margin-bottom: 5px;
+
+                    .login-state-save-msg {
+                        display: flex;
+                        justify-content: flex-end;
+                    }
+
+                    span {
+                        color: red;
+                    }
         
                     .login-state-save-switch {
                         margin-left: 5px;

@@ -1,41 +1,82 @@
 import React, { useState, useCallback } from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
-import Switch from 'react-switch'
+import { setLoginInfo } from './ducks'
 
+import { useTranslation } from 'react-i18next'
 
 import LoginPresenter from './presenter'
+import logininfo from './constants'
 
 const LoginContainer = () => {
-      // const dispatch = useDispatch()
+    const { t } = useTranslation()
+    const dispatch = useDispatch()
+
+    const value = useSelector(state => state['features/usee/contents/login'], [])
       
-    // const [ inputs, setInputs ] = useState({
-    //     id: "",
-    //     pwd: ""
-    // })
+    const [ inputs, setInputs ] = useState({
+        id: "",
+        pwd: ""
+    })
 
-    // const [ loginStateCheck, setLoginStateCheck ] = useState(false)
+    const [ altmsg, setAltMsg ] = useState('')
+    const [ isLoginStateSaved, setLoginStateSaved ] = useState(false)
 
-    // const { id, pwd } = inputs
+    const { id, pwd } = inputs
 
-    // const onChange = useCallback((event) => {
-    //     setInputs({
-    //         ...inputs,
-    //         [event.target.name]: event.target.value,
-    //     }, [inputs])
-    // })
+    const onChange = useCallback((event) => {
+        setInputs({
+            ...inputs,
+            [event.target.name]: event.target.value,
+        })
+    }, [inputs])
 
-    // const _handleLoginBtnClicked = useCallback((event) => {
+    const _handleLoginStateSaved = useCallback((isLoginStateSaved) => {
+        setLoginStateSaved(isLoginStateSaved)
+    }, [isLoginStateSaved])
 
-    //     dispatch(setLoginInfo(id, pwd))
-    //     event.preventDefault()
-    // }, [id, pwd])
+    const _handleLoginBtnClicked = useCallback((event) => {
+        const _obj = logininfo.find((elem) => {
+            return elem.id === id
+        })
+
+        _obj === undefined
+            ? setAltMsg(t('usee.contents.login.wrongLoginInfo'))
+            : _obj.pwd === pwd
+                ? setAltMsg("")
+                : setAltMsg(t('usee.contents.login.wrongLoginInfo'))
+
+        dispatch(setLoginInfo(id, pwd, isLoginStateSaved))
+
+        event.preventDefault()
+    }, [id, pwd, isLoginStateSaved])
+
+    const _handleLoginInputResetBtnClicked = useCallback((event) => {
+        if ( id && id.length > 0 && event.currentTarget.name === 'id') {
+            setInputs({
+                ...inputs,
+                id: ''
+            })
+        } else if ( pwd && pwd.length > 0 && event.currentTarget.name === 'pwd') {
+            setInputs({
+                ...inputs,
+                pwd: ''
+            })
+        }
+
+        event.preventDefault()
+        }, [id, pwd, inputs])
 
     return (
-        <LoginPresenter />
-    //     <LoginPresenter
-    //         loginBtnClicked = { _handleLoginBtnClicked }
-    //         onChange = { onChange }/>
+        <LoginPresenter
+            loginBtnClicked = { _handleLoginBtnClicked }
+            LoginInputResetBtnClicked = { _handleLoginInputResetBtnClicked }
+            handleLoginStateSaved = { _handleLoginStateSaved }
+            isLoginStateSaved = { isLoginStateSaved }
+            onChange = { onChange }
+            id = { id }
+            pwd = { pwd }
+            altmsg = { altmsg } />
     )
 }
 
