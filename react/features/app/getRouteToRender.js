@@ -17,7 +17,6 @@ import {
 } from '../welcome';
 
 import MainContentsContainer from '../usee/contents/main'
-import { getCurrentContents } from '../usee/contents/functions'
 
 /**
  * Object describing application route.
@@ -116,9 +115,7 @@ function _getContentsRoute(state): Promise<Route> {
     if (!isSupportedBrowser()) {
         route.component = UnsupportedDesktopBrowser
     } else {
-        let component = getCurrentContents(state)
-
-        component ? route.component = component : route.component = MainContentsContainer
+        route.component = MainContentsContainer
     }
 
     return Promise.resolve(route);

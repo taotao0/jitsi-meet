@@ -6,7 +6,6 @@
     z-index: 999;
     height: auto;
     padding: 10px 0;
-    // background-color: #fff;
     background-color: $useePrimaryColor;
 
     .gm-navbar {
@@ -16,12 +15,6 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        // border-bottom: 1px solid rgb(209, 201, 201);
-        // height: 60px;
-
-        a {
-            cursor: pointer;
-        }
 
         .gm-menu {
             display: flex;
@@ -31,7 +24,7 @@
                 list-style: none;
                 padding: 0 20px;
 
-                a {
+                .gm-menu-item {
                     font-size: 18px;
                     cursor: pointer;
                     text-decoration: none;

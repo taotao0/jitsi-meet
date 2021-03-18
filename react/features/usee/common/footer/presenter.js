@@ -7,12 +7,11 @@ const FooterPresenter = (props) => {
     const {
         langSelect,
         handleSelectChanged,
-        handleMobileSupportClicked
     } = props
 
     return(
         <footer className = 'footer-container'>
-            <FooterMenuArea handleMobileSupportClicked = { handleMobileSupportClicked } />
+            <FooterMenuArea />
             <FooterInfoArea 
                 langSelect = { langSelect }
                 handleSelectChanged = { handleSelectChanged } />

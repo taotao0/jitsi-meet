@@ -10,7 +10,6 @@ import {
     CONNECTION_FAILED,
     getURLWithoutParams
 } from '../base/connection';
-import { SET_CONTENTS } from '../usee/contents/ducks'
 
 import { MiddlewareRegistry } from '../base/redux';
 
@@ -26,10 +25,6 @@ MiddlewareRegistry.register(store => next => action => {
 
         case SET_ROOM:
             return _setRoom(store, next, action);
-
-        case SET_CONTENTS : {
-            return _setRoom(store, next, action)
-        }
     }
 
     return next(action);

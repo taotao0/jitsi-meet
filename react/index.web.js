@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import { getJitsiMeetTransport } from '../modules/transport';
 
@@ -69,7 +70,9 @@ globalNS.renderEntryPoint = ({
     elementId = 'react'
 }) => {
     ReactDOM.render(
-        <Component { ...props } />,
+        <BrowserRouter>
+            <Component { ...props } />
+        </BrowserRouter>,
         document.getElementById(elementId)
     );
 };

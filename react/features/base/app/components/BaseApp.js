@@ -7,7 +7,7 @@ import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { compose, createStore } from 'redux';
 import Thunk from 'redux-thunk';
-import { Route, BrowserRouter, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 import { i18next } from '../../i18n';
 import {
@@ -136,31 +136,29 @@ export default class BaseApp extends Component<*, State> {
             return (
                 <I18nextProvider i18n = { i18next }>
                     <Provider store = { store }>
-                        <BrowserRouter>
-                            <div className = 'usee-wrapper'>
-                                <GlobalMenuContainer />
-                                <main className = 'contents-container'>
-                                    <Switch>
-                                        <Route
-                                            exact
-                                            path = '/'
-                                            component = { MainContentsContainer } />
-                                        <Route
-                                            path = '/login'
-                                            component = { LoginContainer } />
-                                        <Route
-                                            path = '/mobileSupport'
-                                            component = { MobileContainer } />
-                                    </Switch>
-                                </main>
-                                <FooterContainer />
+                        <div className = 'usee-wrapper'>
+                            <GlobalMenuContainer />
+                            <main className = 'contents-container'>
+                                <Switch>
+                                    <Route
+                                        exact
+                                        path = '/'
+                                        component = { MainContentsContainer } />
+                                    <Route
+                                        path = '/login'
+                                        component = { LoginContainer } />
+                                    <Route
+                                        path = '/mobileSupport'
+                                        component = { MobileContainer } />
+                                </Switch>
+                            </main>
+                            <FooterContainer />
 
-                                {/* { this._createMainElement(component, props) } */}
-                                {/* <SoundCollection />
-                                { this._createExtraElement() }
-                                { this._renderDialogContainer() } */}
+                            {/* { this._createMainElement(component, props) } */}
+                            {/* <SoundCollection />
+                            { this._createExtraElement() }
+                            { this._renderDialogContainer() } */}
                             </div>
-                        </BrowserRouter>
                     </Provider>
                 </I18nextProvider>
             );

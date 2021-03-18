@@ -2,18 +2,10 @@
 
 import { AtlasKitThemeProvider } from '@atlaskit/theme';
 import React from 'react';
-import { Route } from 'react-router-dom'
 
 import { DialogContainer } from '../../base/dialog';
 import { ChromeExtensionBanner } from '../../chrome-extension-banner';
-
-import GlobalMenuContainer from '../../usee/common/globalMenu'
-import FooterContainer from '../../usee/common/footer'
-
 import { AbstractApp } from './AbstractApp';
-
-import MainContentsContainer from '../../usee/contents/main'
-import LoginContainer from '../../usee/contents/main'
 
 // Register middlewares and reducers.
 import '../middlewares';
