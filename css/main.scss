@@ -105,9 +105,10 @@ $flagsImagePath: "../images/";
 @import 'responsive';
 @import 'connection-status';
 
-
+@import 'usee/base';
 @import 'usee/contents';
 @import 'usee/global_menu';
 @import 'usee/footer';
+@import 'usee/modal';
 
 /* Modules END */

@@ -12,7 +12,7 @@ const MobilePresenter = (props) => {
     const { t } = useTranslation()
 
     return (
-        <div className = 'mobile-container'>
+        <div className = 'cc mobile-container'>
             <FontAwesomeIcon
                 icon = { faMobileAlt }
                 size = '5x' /> 

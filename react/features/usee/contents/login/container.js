@@ -13,7 +13,7 @@ const LoginContainer = () => {
     const dispatch = useDispatch()
 
     const value = useSelector(state => state['features/usee/contents/login'], [])
-      
+
     const [ inputs, setInputs ] = useState({
         id: "",
         pwd: ""
@@ -21,6 +21,10 @@ const LoginContainer = () => {
 
     const [ altmsg, setAltMsg ] = useState('')
     const [ isLoginStateSaved, setLoginStateSaved ] = useState(false)
+    const [ modalVisible, setModalVisible ] = useState({
+        findId: false,
+        findPwd: false
+    })
 
     const { id, pwd } = inputs
 
@@ -65,7 +69,23 @@ const LoginContainer = () => {
         }
 
         event.preventDefault()
-        }, [id, pwd, inputs])
+    }, [id, pwd, inputs])
+
+    const _modalOpen = useCallback((event) => {
+        setModalVisible({
+            ...modalVisible,
+            [event.currentTarget.name]: true,
+        })
+    }, [modalVisible])
+
+    const _modalClose = useCallback((event) => {
+        setModalVisible({
+            ...modalVisible,
+            [event.currentTarget.name]: false,
+        })
+
+        event.preventDefault()
+    }, [modalVisible])
 
     return (
         <LoginPresenter
@@ -76,7 +96,10 @@ const LoginContainer = () => {
             onChange = { onChange }
             id = { id }
             pwd = { pwd }
-            altmsg = { altmsg } />
+            altmsg = { altmsg }
+            modalVisible = { modalVisible }
+            modalOpen = { _modalOpen }
+            modalClose = { _modalClose } />
     )
 }
 

@@ -1,9 +1,6 @@
 .contents-container {
     width: 100vw;
     min-height: calc(100% - 208px);
-    margin-top: -144px;
-    padding-top: 208px;
-
 
     .main-top-container {
         width: 100vw;
@@ -67,8 +64,6 @@
 
 
     .mobile-container {
-        max-width: 1020px;
-        margin: 70px auto;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -97,8 +92,6 @@
 
     .login-contents-container {
         height: auto;
-        margin: 70px auto;
-        text-align: center;
 
         .login-contents-main-container  {
             h1 {
@@ -177,6 +170,20 @@
                     margin-top: 5px;
         
                     a {
+                        text-decoration: none;
+                        cursor: pointer;
+
+                        &:hover {
+                            font-weight: bold;
+                        }
+
+                        &:first-child {
+                            &::after {
+                                padding: 0 4px;
+                                content: '/';
+                            }
+                        }
+
                         color: #333333;
                     }
                 }

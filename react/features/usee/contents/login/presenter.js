@@ -10,6 +10,9 @@ import {
     SWITCH_ONCOLOR
 } from './constants'
 
+import FindIdModal from './components/FindIdModal'
+import FindPwdModal from './components/FindPwdModal'
+
 const LoginPresenter = (props) => {
     const {
         loginBtnClicked,
@@ -19,13 +22,16 @@ const LoginPresenter = (props) => {
         onChange,
         id,
         pwd,
-        altmsg
+        altmsg,
+        modalVisible,
+        modalOpen,
+        modalClose
     } = props
 
     const { t } = useTranslation()
 
     return (
-        <div className = 'login-contents-container'>
+        <div className = 'cc login-contents-container'>
             <div className = 'login-contents-main-container'>
                 <h1>{ t('usee.contents.login.login') }</h1>
                 <form className = 'login-contents-form'>
@@ -83,13 +89,20 @@ const LoginPresenter = (props) => {
                                 className = 'login-input-button'
                                 type = 'submit'
                                 onClick = { loginBtnClicked } >
-                                    { t('usee.contents.login.login')}
+                                    { t('usee.contents.login.login') }
                             </button>
                         </div>
                         <div className = 'login-find-id-pwd'>
-                            <a>{t('usee.contents.login.findId')}</a>
-                            /
-                            <a>{t('usee.contents.login.findPwd')}</a>
+                            <a
+                                name = 'findId'
+                                onClick = { modalOpen }>
+                                { t('usee.contents.login.findId') }
+                            </a>
+                            <a
+                                name = 'findPwd'
+                                onClick = { modalOpen }>
+                                { t('usee.contents.login.findPwd') }
+                            </a>
                         </div>
                     </div>
                 </form>
@@ -103,7 +116,7 @@ const LoginPresenter = (props) => {
             <div className = 'login-with-other-auth-contents-container'>
                 <div className = 'login-with-other-auth-msg'>
                     <p className = 'login-with-other-sns-msg'>
-                        {t('usee.contents.login.loginWithOtherSns')}
+                        { t('usee.contents.login.loginWithOtherSns') }
                     </p>
                 </div>
                 <div className = 'login-with-other-sns-logo'>
@@ -124,6 +137,12 @@ const LoginPresenter = (props) => {
                     </a>
                 </div>
             </div>
+            <FindIdModal
+                visible = { modalVisible.findId }
+                close = { modalClose }/>
+            <FindPwdModal
+                visible = { modalVisible.findPwd }
+                close = { modalClose } />
         </div>
     )
 }
