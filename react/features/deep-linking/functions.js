@@ -39,6 +39,8 @@ export function generateDeepLinkingURL() {
     }
 
     // iOS: Replace the protocol part with the app scheme.
+    appScheme = 'com.usee'
+    
     return href.replace(regex, `${appScheme}:`);
 }
 
