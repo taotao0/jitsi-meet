@@ -221,7 +221,8 @@ class WelcomePage extends AbstractWelcomePage {
 
         if (!this._roomInputRef || this._roomInputRef.reportValidity()) {
             if(DISPLAY_WELCOME_USER_CONTROL) {
-                this._onJoinUsee();
+                this._onJoin();
+                // this._onJoinUsee();
             } else {
                 this._onJoin();
             }

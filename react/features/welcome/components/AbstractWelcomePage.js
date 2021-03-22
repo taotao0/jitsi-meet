@@ -83,11 +83,15 @@ export class AbstractWelcomePage extends Component<Props, *> {
     static getDerivedStateFromProps(props: Props, state: Object) {
         // console.log('-----------> getDerivedStateFromProps start');
         let loginStateTemp = state.loginState;
+        let defaultRoomNameTemp = state.defaultRoomName;
         let defaultRoomNameIdTemp = state.defaultRoomNameId;
         let gnbTabNumberTemp = 0;
         /* if loginState in props exist, apply it */
         if(typeof(props._user.loginState) != 'undefined') {
             loginStateTemp = props._user.loginState;
+        }
+        if(typeof(props._user.defaultRoomName) != 'undefined') {
+            defaultRoomNameTemp = props._user.defaultRoomName;
         }
         if(typeof(props._user.defaultRoomNameId) != 'undefined') {
             defaultRoomNameIdTemp = props._user.defaultRoomNameId;
@@ -102,6 +106,7 @@ export class AbstractWelcomePage extends Component<Props, *> {
         return {
             room: props._room || state.room,
             loginState: loginStateTemp,
+            defaultRoomName: defaultRoomNameTemp,
             defaultRoomNameId: defaultRoomNameIdTemp,
             gnbTabNumber: gnbTabNumberTemp
         };
@@ -129,6 +134,7 @@ export class AbstractWelcomePage extends Component<Props, *> {
         roomPlaceholder: '',
         updateTimeoutId: undefined,
         loginState: false,
+        defaultRoomName: '',
         defaultRoomNameId: '',
         gnbTabNumber: 0
     };
@@ -407,14 +413,15 @@ export class AbstractWelcomePage extends Component<Props, *> {
      * Create room
      */
     _onCreate() {
-        const defaultRoomNameId = this.state.defaultRoomNameId;
-        console.log(`----> defaultRoomNameId(${defaultRoomNameId})`);
+        // const defaultRoomNameId = this.state.defaultRoomNameId;
+        const defaultRoomName = this.state.defaultRoomName;
+        console.log(`----> defaultRoomName(${defaultRoomName})`);
 
         console.log('_createRoom start ----------------------');
         console.log(`loginState : ${this.state.loginState}`);
 
         if(this.state.loginState) {
-            const room = defaultRoomNameId;
+            const room = defaultRoomName;
 
             /*
             sendAnalytics(

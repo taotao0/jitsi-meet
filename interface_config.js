@@ -133,7 +133,7 @@ var interfaceConfig = {
      *
      * @type {boolean}
      */
-    MOBILE_APP_PROMO: false,
+    MOBILE_APP_PROMO: true,
 
     /**
      * Specify custom URL for downloading android mobile app.
