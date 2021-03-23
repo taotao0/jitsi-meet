@@ -480,7 +480,9 @@ class WelcomePage extends AbstractWelcomePage {
             </>
             :
             <>
+            <div className = 'welcome-page-roomname'>
             { _user.defaultRoomName }
+            </div>
             <button
                 aria-disabled = 'false'
                 aria-label = 'Logout'

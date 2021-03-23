@@ -287,6 +287,22 @@ body.welcome-page {
         }  
     }
 
+    .welcome-page-roomname {
+        background: rgba(255, 255, 255, 0.38);
+        border-radius: 3px;
+        color: $welcomePageDescriptionColor;
+        padding: 4px;
+        position: absolute;
+        top: 32px;
+        left: 32px;
+        z-index: $zindex2;
+
+        * {
+            cursor: pointer;
+            font-size: 32px;
+        }
+    }
+
     .welcome-page-settings {
         background: rgba(255, 255, 255, 0.38);
         border-radius: 3px;
