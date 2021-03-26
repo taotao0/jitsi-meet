@@ -9,12 +9,11 @@
     background-color: $useePrimaryColor;
 
     .gm-navbar {
-        max-width: 1020px;
-        margin: 0 auto;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        padding-inline: 80px;
 
         .gm-menu {
             display: flex;
