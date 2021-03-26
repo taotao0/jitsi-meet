@@ -127,6 +127,10 @@
         
                     .login-input-reset-btn {
                         background-color: transparent;
+
+                        &:focus {
+                            outline: none;
+                        }
             
                         img {
                             width: 17px;
@@ -146,17 +150,12 @@
         
                 .login-state-save {
                     display: flex;
-                    justify-content: space-between;
+                    justify-content: flex-end;
                     margin-top: 5px;
                     margin-bottom: 5px;
 
                     .login-state-save-msg {
                         display: flex;
-                        justify-content: flex-end;
-                    }
-
-                    span {
-                        color: red;
                     }
         
                     .login-state-save-switch {
@@ -168,6 +167,7 @@
                     display: flex;
                     justify-content: flex-end;
                     margin-top: 5px;
+                    height: 30px;
         
                     a {
                         text-decoration: none;
@@ -186,6 +186,10 @@
 
                         color: #333333;
                     }
+                }
+                .login-error-msg {
+                    height: 12px;
+                    color: red;
                 }
             }
         }

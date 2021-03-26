@@ -24,6 +24,8 @@ const LoginPresenter = (props) => {
         pwd,
         altmsg,
         modalVisible,
+        idInput,
+        pwdInput,
         modalOpen,
         modalClose
     } = props
@@ -42,6 +44,7 @@ const LoginPresenter = (props) => {
                                 type = 'text'
                                 placeholder = { t('usee.contents.login.login') }
                                 name = 'id'
+                                ref = { idInput }
                                 onChange = { onChange }
                                 value = { id } />
                                 <button
@@ -58,6 +61,7 @@ const LoginPresenter = (props) => {
                                 type = 'password'
                                 placeholder = { t('usee.contents.login.pwd') }
                                 name = 'pwd'
+                                ref = { pwdInput }
                                 onChange = { onChange }
                                 value = { pwd } />
                                 <button
@@ -69,7 +73,6 @@ const LoginPresenter = (props) => {
                                 </button>
                         </div>
                         <div className = 'login-state-save'>
-                            <span>{ altmsg }</span>
                             <div className = 'login-state-save-msg'>
                                 <p>{ t('usee.contents.login.loginStateSave') }</p>
                                 <Switch
@@ -93,16 +96,21 @@ const LoginPresenter = (props) => {
                             </button>
                         </div>
                         <div className = 'login-find-id-pwd'>
-                            <a
-                                name = 'findId'
-                                onClick = { modalOpen }>
-                                { t('usee.contents.login.findId') }
-                            </a>
-                            <a
-                                name = 'findPwd'
-                                onClick = { modalOpen }>
-                                { t('usee.contents.login.findPwd') }
-                            </a>
+                            <div>
+                                <a
+                                    name = 'findId'
+                                    onClick = { modalOpen }>
+                                    { t('usee.contents.login.findId') }
+                                </a>
+                                <a
+                                    name = 'findPwd'
+                                    onClick = { modalOpen }>
+                                    { t('usee.contents.login.findPwd') }
+                                </a>
+                            </div>
+                        </div>
+                        <div className = 'login-error-msg'>
+                            { altmsg }
                         </div>
                     </div>
                 </form>

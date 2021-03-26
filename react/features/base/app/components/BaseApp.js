@@ -26,6 +26,7 @@ import FooterContainer from '../../../usee/common/footer'
 import MainContentsContainer from '../../../usee/contents/main'
 import LoginContainer from '../../../usee/contents/login'
 import MobileContainer from '../../../usee/contents/mobile'
+import RecordingListContainer from '../../../usee/contents/recordinglist'
 
 declare var APP: Object;
 
@@ -150,6 +151,9 @@ export default class BaseApp extends Component<*, State> {
                                     <Route
                                         path = '/mobileSupport'
                                         component = { MobileContainer } />
+                                    <Route
+                                        path = '/recordingList'
+                                        component = { RecordingListContainer } />
                                 </Switch>
                             </main>
                             <FooterContainer />

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { setLoginInfo } from './ducks'
@@ -18,6 +18,9 @@ const LoginContainer = () => {
         id: "",
         pwd: ""
     })
+
+    const idInput = useRef()
+    const pwdInput = useRef()
 
     const [ altmsg, setAltMsg ] = useState('')
     const [ isLoginStateSaved, setLoginStateSaved ] = useState(false)
@@ -40,17 +43,22 @@ const LoginContainer = () => {
     }, [isLoginStateSaved])
 
     const _handleLoginBtnClicked = useCallback((event) => {
-        const _obj = logininfo.find((elem) => {
-            return elem.id === id
-        })
+        if ((id === '') || (pwd === '')) {
+            id === '' ? idInput.current.focus() : pwdInput.current.focus()
+            setAltMsg('')
+        } else {
+            const _obj = logininfo.find((elem) => {
+                return elem.id === id
+            })
+    
+            _obj === undefined
+                ? setAltMsg(t('usee.contents.login.wrongLoginInfo'))
+                : _obj.pwd === pwd
+                    ? setAltMsg("")
+                    : setAltMsg(t('usee.contents.login.wrongLoginInfo'))
 
-        _obj === undefined
-            ? setAltMsg(t('usee.contents.login.wrongLoginInfo'))
-            : _obj.pwd === pwd
-                ? setAltMsg("")
-                : setAltMsg(t('usee.contents.login.wrongLoginInfo'))
-
-        dispatch(setLoginInfo(id, pwd, isLoginStateSaved))
+            dispatch(setLoginInfo(id, pwd, isLoginStateSaved))
+        }
 
         event.preventDefault()
     }, [id, pwd, isLoginStateSaved])
@@ -98,6 +106,8 @@ const LoginContainer = () => {
             pwd = { pwd }
             altmsg = { altmsg }
             modalVisible = { modalVisible }
+            idInput = { idInput }
+            pwdInput = { pwdInput }
             modalOpen = { _modalOpen }
             modalClose = { _modalClose } />
     )
