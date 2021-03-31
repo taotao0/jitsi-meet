@@ -20,13 +20,22 @@ import { SoundCollection } from '../../sounds';
 import { appWillMount, appWillUnmount } from '../actions';
 import logger from '../logger';
 
-import GlobalMenuContainer from '../../../usee/common/globalMenu'
-import FooterContainer from '../../../usee/common/footer'
+import HeaderGNBContainer from '../../../usee/HeaderGNB'
+import NavigationContainer from '../../../usee/Navigation'
+import FooterContainer from '../../../usee/Footer'
 
-import MainContentsContainer from '../../../usee/contents/main'
-import LoginContainer from '../../../usee/contents/login'
-import MobileContainer from '../../../usee/contents/mobile'
-import RecordingListContainer from '../../../usee/contents/recordinglist'
+import PrimaryContainer from '../../../usee/Pages/Primary'
+import LoginContainer from '../../../usee/Pages/Login'
+import MobileSupportContainer from '../../../usee/Pages/MobileSupport'
+import NotFoundContainer from '../../../usee/Pages/NotFound'
+
+import {
+    PRIMARY_ROUTE_PATH,
+    LOGIN_ROUTE_PATH,
+    LOGIN_ROUTE_PATH_IN_PARAMS,
+    MOBILE_SUPPORT_ROUTE_PATH,
+    MY_PAGE_ROUTE_PATH
+} from '../../../usee/usee_config'
 
 declare var APP: Object;
 
@@ -133,28 +142,39 @@ export default class BaseApp extends Component<*, State> {
     render() {
         const { route: { component, props }, store } = this.state;
 
+
+
         if (store) {
             return (
                 <I18nextProvider i18n = { i18next }>
                     <Provider store = { store }>
                         <div className = 'usee-wrapper'>
-                            <GlobalMenuContainer />
-                            <main className = 'contents-container'>
-                                <Switch>
-                                    <Route
-                                        exact
-                                        path = '/'
-                                        component = { MainContentsContainer } />
-                                    <Route
-                                        path = '/login'
-                                        component = { LoginContainer } />
-                                    <Route
-                                        path = '/mobileSupport'
-                                        component = { MobileContainer } />
-                                    <Route
-                                        path = '/recordingList'
-                                        component = { RecordingListContainer } />
-                                </Switch>
+                            <HeaderGNBContainer />
+                            <NavigationContainer />
+                            <main className = 'main-wrapper'>
+                                {
+                                    component
+                                        ? this._createMainElement(component, props)
+                                        : (
+                                            <Switch>
+                                                <Route
+                                                    exact
+                                                    path = { PRIMARY_ROUTE_PATH }
+                                                    component = { PrimaryContainer } />
+                                                <Route
+                                                    path = { LOGIN_ROUTE_PATH_IN_PARAMS }
+                                                    component = { LoginContainer } />
+                                                <Route
+                                                    exact
+                                                    path = { LOGIN_ROUTE_PATH }
+                                                    component = { LoginContainer } />
+                                                <Route
+                                                    path = { MOBILE_SUPPORT_ROUTE_PATH }
+                                                    component = { MobileSupportContainer } />
+                                                <Route component = { NotFoundContainer } />
+                                            </Switch>
+                                        )
+                                }
                             </main>
                             <FooterContainer />
 
@@ -162,7 +182,7 @@ export default class BaseApp extends Component<*, State> {
                             {/* <SoundCollection />
                             { this._createExtraElement() }
                             { this._renderDialogContainer() } */}
-                            </div>
+                        </div>
                     </Provider>
                 </I18nextProvider>
             );

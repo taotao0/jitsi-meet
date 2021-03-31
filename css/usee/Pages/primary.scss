@@ -1,0 +1,60 @@
+.pm-wrapper {
+    width: 100vw;
+    height: auto;
+    background-image: url('../../images/main-contents-background.png');
+    background-size: contain;
+
+    .pm-form {
+        max-width: 1020px;
+        height: 300px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .pm-form-desc {
+            font-weight: bold;
+            color: $useePrimaryTextColor;
+            text-align: center;
+        }
+
+        .pm-input-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 420px;
+            height: 58px;
+            margin-top: 30px;
+            background-color: #fff;
+            border-radius: 16px;
+
+            .pm-input {
+                width: 84%;
+                height: 90%;
+                border: none;
+                border-top-left-radius: 13px;
+                border-bottom-left-radius: 13px;
+                padding-left: 10px;
+            }
+
+            .pm-input-btn {
+                width: 15%;
+                height: 90%;
+                border-top-right-radius: 13px;
+                border-bottom-right-radius: 13px;
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+.pm-fnc-wrapper {
+    max-width: 1020px;
+    margin: 0 auto;
+    display: flex;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+}
+

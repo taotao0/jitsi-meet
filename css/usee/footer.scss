@@ -1,68 +1,67 @@
-.footer-container {
+.ft-wrapper {
     height: auto;
     background-color: $useeLightColor;
+}
 
-    .footer-menu {
-        border-bottom: 1px solid $useeDarkTextColor;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        display: flex;
-        justify-content: center;
+.ft-menu {
+    border-bottom: 1px solid $useeDarkTextColor;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: center;
 
-        ul {
-            padding-left: 0;
-            overflow: hidden;
+    ul {
+        padding-left: 0;
+        overflow: hidden;
 
-            li {
-                float: left;
-                list-style: none;
+        li {
+            float: left;
+            list-style: none;
+            padding-left: 25px;
+            font-size: 12px;
+            &::after {
+                content: '|';
                 padding-left: 25px;
-                font-size: 12px;
-                &::after {
-                    content: '|';
-                    padding-left: 25px;
-                }
-
-                a {
-                    color: $useeDarkTextColor;
-                }
             }
 
-            li.footer-menu-list-mobile {
-                &::after {
-                    content: '';
-                }
+            a {
+                color: $useeDarkTextColor;
+            }
+        }
 
-                a {
-                    cursor: pointer;
-                }
+        li.ft-menu-last-item {
+            &::after {
+                content: '';
+            }
+
+            a {
+                cursor: pointer;
             }
         }
     }
+}
 
-    .footer-info-section {
+.ft-info-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 80px;
+    align-items: center;
+
+    .ft-info {
         display: flex;
-        justify-content: space-between;
-        padding: 20px 80px;
-        align-items: center;
 
-        .footer-uclick-logo-info {
-            display: flex;
-
-            .footer-company-info {
-                padding-left: 50px;
-                p {
-                    font-size: 12px;
-                }
+        .ft-company-info-wrapper {
+            padding-left: 50px;
+            p {
+                font-size: 12px;
             }
-        }
-
-        .footer-language-select {
-            margin-bottom: 30px;
-        }
-        select {
-            width: 120px;
         }
     }
 
+    .ft-lng-select {
+        margin-bottom: 30px;
+    }
+    select {
+        width: 120px;
+    }
 }

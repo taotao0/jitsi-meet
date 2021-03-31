@@ -16,8 +16,6 @@ import {
     isWelcomePageUserEnabled
 } from '../welcome';
 
-import MainContentsContainer from '../usee/contents/main'
-
 /**
  * Object describing application route.
  *
@@ -46,7 +44,8 @@ export function _getRouteToRender(stateful: Function | Object): Promise<Route> {
         return _getMobileRoute(state);
     }
 
-    return _getWebConferenceRoute(state) || _getContentsRoute(state)
+    // FIXME: URL 규칙을 정해야 한다!!! /
+    return _getContentsRoute(state) || _getWebConferenceRoute(state)
 }
 
 /**
@@ -114,8 +113,6 @@ function _getContentsRoute(state): Promise<Route> {
 
     if (!isSupportedBrowser()) {
         route.component = UnsupportedDesktopBrowser
-    } else {
-        route.component = MainContentsContainer
     }
 
     return Promise.resolve(route);

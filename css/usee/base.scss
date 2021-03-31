@@ -1,4 +1,17 @@
-.cc {
+.common-wrapper {
     padding-top: 70px;
     text-align: center;
+}
+
+.usee-wrapper {
+    height: 100%;
+
+    .main-wrapper {
+        width: 100vw;
+        min-height: calc(100% - 208px);
+    }
+}
+
+.err-txt {
+    color: red;
 }
