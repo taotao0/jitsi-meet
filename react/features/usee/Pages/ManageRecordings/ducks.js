@@ -1,0 +1,1 @@
+import { ReducerRegistry } from '../../../base/redux'

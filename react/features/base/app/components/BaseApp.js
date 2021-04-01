@@ -27,6 +27,7 @@ import FooterContainer from '../../../usee/Footer'
 import PrimaryContainer from '../../../usee/Pages/Primary'
 import LoginContainer from '../../../usee/Pages/Login'
 import MyPageContainer from '../../../usee/Pages/MyPage'
+import ManageRecordingsContainer from '../../../usee/Pages/ManageRecordings'
 import MobileSupportContainer from '../../../usee/Pages/MobileSupport'
 import NotFoundContainer from '../../../usee/Pages/NotFound'
 
@@ -35,7 +36,8 @@ import {
     LOGIN_ROUTE_PATH,
     LOGIN_ROUTE_PATH_IN_PARAMS,
     MOBILE_SUPPORT_ROUTE_PATH,
-    MY_PAGE_ROUTE_PATH
+    MY_PAGE_ROUTE_PATH,
+    MANAGE_RECORDINGS_ROUTE_PATH
 } from '../../../usee/usee_config'
 
 declare var APP: Object;
@@ -175,6 +177,9 @@ export default class BaseApp extends Component<*, State> {
                                                 <Route
                                                     path = { MOBILE_SUPPORT_ROUTE_PATH }
                                                     component = { MobileSupportContainer } />
+                                                <Route
+                                                    path = { MANAGE_RECORDINGS_ROUTE_PATH }
+                                                    component = { ManageRecordingsContainer } />
                                                 <Route component = { NotFoundContainer } />
                                             </Switch>
                                         )

@@ -9,6 +9,8 @@ export const MOBILE_SUPPORT_ROUTE_PATH = '/mobileSupport'
 
 export const MY_PAGE_ROUTE_PATH = '/myPage'
 
+export const MANAGE_RECORDINGS_ROUTE_PATH = '/manageRecordings'
+
 
 // Store link
 export const USEE_APP_STORE_LINK = 'https://apps.apple.com/app/id1550547407'

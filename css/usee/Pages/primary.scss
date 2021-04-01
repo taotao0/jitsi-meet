@@ -26,7 +26,6 @@
             min-width: 420px;
             height: 58px;
             margin-top: 30px;
-            background-color: #fff;
             border-radius: 16px;
 
             .pm-input {
@@ -44,6 +43,7 @@
                 border-top-right-radius: 13px;
                 border-bottom-right-radius: 13px;
                 font-weight: bold;
+                background-color: $useeBtnColor;
             }
         }
     }

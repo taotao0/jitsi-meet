@@ -14,6 +14,6 @@ const logininfo = [
 export const SWITCH_WIDTH = 28
 export const SWITCH_HEIGHT = 15
 export const SWITCH_COLOR = 'white'
-export const SWITCH_ONCOLOR = '#006266'
+export const SWITCH_ONCOLOR = '#7991BF'
 
 export default logininfo

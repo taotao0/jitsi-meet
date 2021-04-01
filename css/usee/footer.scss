@@ -1,10 +1,10 @@
 .ft-wrapper {
     height: auto;
-    background-color: $useeLightColor;
+    background-color: $useePrimaryColor;
 }
 
 .ft-menu {
-    border-bottom: 1px solid $useeDarkTextColor;
+    border-bottom: 1px solid $useeDarkBorderColor;
     padding-top: 10px;
     padding-bottom: 10px;
     display: flex;
