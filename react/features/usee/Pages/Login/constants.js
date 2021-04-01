@@ -1,3 +1,5 @@
+export const LANG_PREFIX = 'usee.Pages.Login'
+
 const logininfo = [
     {
         id: 'usee',

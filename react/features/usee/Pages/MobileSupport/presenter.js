@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons'
 import { faAppStore, faGooglePlay } from '@fortawesome/free-brands-svg-icons'
 
+import { LANG_PREFIX } from './constants'
+
 const MobileSupportPresenter = (props) => {
     const { handleStoreBtnClicked } = props
 
@@ -17,7 +19,7 @@ const MobileSupportPresenter = (props) => {
                 icon = { faMobileAlt }
                 size = '5x' /> 
             <h1 className = 'mb-desc'>
-                { t('usee.contents.mobile.description') }
+                { t(`${LANG_PREFIX}.title`) }
             </h1>
             <div className = 'mb-btn-wrapper'>
                 <button

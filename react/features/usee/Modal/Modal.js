@@ -1,6 +1,8 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { LANG_PREFIX } from './constants'
+
 const Modal = (props) => {
     const {
         visible,
@@ -20,13 +22,13 @@ const Modal = (props) => {
                         type = 'submit'
                         name = { id }
                         onClick = { close }>
-                        { t('usee.modal.submit') }
+                        { t(`${LANG_PREFIX}.submit`) }
                     </button>
                     <button
                         type = 'cancel'
                         name = { id }
                         onClick = { close }>
-                        { t('usee.modal.cancel') }
+                        { t(`${LANG_PREFIX}.cancel`) }
                     </button>
                 </div>
             </form>

@@ -26,6 +26,7 @@ import FooterContainer from '../../../usee/Footer'
 
 import PrimaryContainer from '../../../usee/Pages/Primary'
 import LoginContainer from '../../../usee/Pages/Login'
+import MyPageContainer from '../../../usee/Pages/MyPage'
 import MobileSupportContainer from '../../../usee/Pages/MobileSupport'
 import NotFoundContainer from '../../../usee/Pages/NotFound'
 
@@ -168,6 +169,9 @@ export default class BaseApp extends Component<*, State> {
                                                     exact
                                                     path = { LOGIN_ROUTE_PATH }
                                                     component = { LoginContainer } />
+                                                <Route
+                                                    path = { MY_PAGE_ROUTE_PATH }
+                                                    component = { MyPageContainer } />
                                                 <Route
                                                     path = { MOBILE_SUPPORT_ROUTE_PATH }
                                                     component = { MobileSupportContainer } />

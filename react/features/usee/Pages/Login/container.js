@@ -8,6 +8,8 @@ import { useTranslation } from 'react-i18next'
 import LoginPresenter from './presenter'
 import logininfo from '../../Pages/Login/constants'
 
+import { LANG_PREFIX } from './constants'
+
 const LoginContainer = () => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
@@ -52,10 +54,10 @@ const LoginContainer = () => {
             })
     
             _obj === undefined
-                ? setAltMsg(t('usee.contents.login.wrongLoginInfo'))
+                ? setAltMsg(t(`${LANG_PREFIX}.errMsg`))
                 : _obj.pwd === pwd
                     ? setAltMsg("")
-                    : setAltMsg(t('usee.contents.login.wrongLoginInfo'))
+                    : setAltMsg(t(`${LANG_PREFIX}.errMsg`))
 
             dispatch(setLoginInfo(id, pwd, isLoginStateSaved))
         }

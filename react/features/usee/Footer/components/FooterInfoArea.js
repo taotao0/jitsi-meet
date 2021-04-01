@@ -1,6 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { LANG_PREFIX } from '../constants'
 import { COMPANY_LOGO } from '../../usee_config'
 
 const FooterInfoArea = (props) => {
@@ -11,6 +12,9 @@ const FooterInfoArea = (props) => {
 
     const { t } = useTranslation()
 
+    const companyPrefix = `${LANG_PREFIX}.InfoArea.companyDetailInfo`
+    const langPrefix = `${LANG_PREFIX}.InfoArea.language`
+
     return (
         <div className = 'ft-info-wrapper'>
                 <div className = 'ft-info'>
@@ -20,32 +24,32 @@ const FooterInfoArea = (props) => {
                     <div className = 'ft-company-info-wrapper'>
                         <p>
                             <strong>
-                                { t('usee.footer.companyDetailInfo.name') }
+                                { t(`${companyPrefix}.name`) }
                             </strong>
-                            {` | ${t('usee.footer.companyDetailInfo.address')}`}
-                            {` | ${t('usee.footer.companyDetailInfo.CEO')}`}
+                            {` | ${t(`${companyPrefix}.address`)}`}
+                            {` | ${t(`${companyPrefix}.CEO`)}`}
                         </p>
                         <p>
-                            { t('usee.footer.companyDetailInfo.certificateForBusinessNumber') }
-                            {` | ${t('usee.footer.companyDetailInfo.tel')}`}
-                            {` | ${t('usee.footer.companyDetailInfo.fax')}`}
+                            { t(`${companyPrefix}.certificateForBusinessNumber`) }
+                            {` | ${t(`${companyPrefix}.tel`)}`}
+                            {` | ${t(`${companyPrefix}.fax`)}`}
                         </p>
                         <p>
-                            { t('usee.footer.companyDetailInfo.copyRight') }
+                            { t(`${companyPrefix}.copyRight`) }
                         </p>
                     </div>
                 </div>
                 <div className = "ft-lng-select">
-                    { t('usee.footer.language.lang') }
+                    { t(`${langPrefix}.lang`) }
                     <br/>
                     <select
                         value = { langSelect }
                         onChange = { handleSelectChanged }>
                         <option value = "korean">
-                            { t('usee.footer.language.korean') }
+                            { t(`${langPrefix}.korean`) }
                         </option>
                         <option value = "english">
-                            { t('usee.footer.language.english') }
+                            { t(`${langPrefix}.english`) }
                         </option>
                     </select>
                 </div>

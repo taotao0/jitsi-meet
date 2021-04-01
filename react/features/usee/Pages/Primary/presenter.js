@@ -2,6 +2,8 @@ import React from 'react'
 
 import { useTranslation } from 'react-i18next'
 
+import { LANG_PREFIX } from './constants'
+
 const PrimaryPresenter = (props) => {
     const {
         meetingName,
@@ -18,28 +20,25 @@ const PrimaryPresenter = (props) => {
                     className = 'pm-form'
                     onSubmit = { handleJoinMeetingClicked }>
                     <h1 className = 'pm-form-desc'>
-                        { t('usee.contents.main.description') }
+                        { t(`${LANG_PREFIX}.desc`) }
                     </h1>
                     <div className = 'pm-input-wrapper'>
                         <input
                             className = 'pm-input'
                             type = 'text'
                             value = { meetingName }
-                            placeholder = { t('usee.contents.main.inputPlaceholder') }
+                            placeholder = { t(`${LANG_PREFIX}.inputPlaceholder`) }
                             onChange = { handleInputChanged } >
                         </input>
                         <button
                             className = 'pm-input-btn'
                             type = 'submit'>
-                            { t('usee.contents.main.join') }
+                            { t(`${LANG_PREFIX}.joinBtn`) }
                         </button>
                     </div>
                 </form>
             </div>
             <div className = 'pm-fnc-wrapper'>
-                <h1>
-                    기능 명세
-                </h1>
             </div>
         </>
     )

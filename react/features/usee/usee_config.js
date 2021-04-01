@@ -16,7 +16,7 @@ export const USEE_APP_STORE_LINK = 'https://apps.apple.com/app/id1550547407'
 export const USEE_PLAY_STORE_LINK = 'https://play.google.com/store/apps/details?id=org.usee'
 
 // Image alt
-export const COMPANY_LOGO = 'uclick_logo'
+export const COMPANY_LOGO_ALT = 'uclick_logo'
 
 export const GOOGLE_LOGO_ALT = 'google_logo'
 

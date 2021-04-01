@@ -1,7 +1,8 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import Modal from '../../../common/modal'
+import Modal from '../../../Modal'
+import { LANG_PREFIX } from '../constants'
 
 const FindPwdModal = (props) => {
     const { t } = useTranslation()
@@ -12,15 +13,15 @@ const FindPwdModal = (props) => {
         <Modal
             { ...props }
             id = { modalId }>
-            <h3>{ t('usee.modal.findPwd.desc') }</h3>
+            <h3>{ t(`${LANG_PREFIX}.FindPwdModal.desc`) }</h3>
             <input
                 className = 'modal-input'
                 type = 'text'
-                placeholder = { t('usee.modal.findPwd.placeholder1') }/>
+                placeholder = { t(`${LANG_PREFIX}.FindPwdModal.emailPlaceholder`) }/>
             <input
                 className = 'modal-input'
                 type = 'text'
-                placeholder = { t('usee.modal.findPwd.placeholder2') }/>
+                placeholder = { t(`${LANG_PREFIX}.FindPwdModal.idPlaceholder`) }/>
         </Modal>
     )
 }

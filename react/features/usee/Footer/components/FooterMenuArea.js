@@ -2,6 +2,8 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
+import { LANG_PREFIX } from '../constants'
+
 import {
     MOBILE_SUPPORT_ROUTE_PATH,
 
@@ -15,39 +17,41 @@ import {
 const FooterMenuArea = (props) => {
     const { t } = useTranslation()
 
+    const prefix = `${LANG_PREFIX}.MenuArea`
+
     return(
         <div className = 'ft-menu'>
             <ul>
                 <li>
                     <a href = { COMPANY_INTRODUCE }>
-                        { t('usee.footer.companyInfo') }
+                        { t(`${prefix}.companyInfo`) }
                     </a>
                 </li>
                 <li>
                     <a href = { PRIVACY_POLICY }>
-                        { t('usee.footer.privacyPolicy') }
+                        { t(`${prefix}.privacyPolicy`) }
                     </a>
                 </li>
                 <li>
                     <a href = { REJECTITON_UNAUTHORIZED_EMAIL }>
-                        { t('usee.footer.rejectionUnauthorizedEmail') }
+                        { t(`${prefix}.rejectionUnauthorizedEmail`) }
                     </a>
                 </li>
                 <li>
                     <a href = { INFORMATION_DESK }>
-                        { t('usee.footer.infoDesk') }
+                        { t(`${prefix}.infoDesk`) }
                     </a>
                 </li>
                 <li>
                     <a
                         download
                         href = { MANUAL_DOWNLOAD_LINK } >
-                        { t('usee.footer.manual') }
+                        { t(`${prefix}.manual`) }
                     </a>
                 </li>
                 <li className = 'ft-menu-last-item'>
                     <Link to = { MOBILE_SUPPORT_ROUTE_PATH }>
-                        { t('usee.footer.mobileVersion') }
+                        { t(`${prefix}.mobileSupport`) }
                     </Link>
                 </li>
             </ul>

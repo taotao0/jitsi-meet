@@ -4,6 +4,7 @@ import Switch from 'react-switch'
 import { useTranslation } from 'react-i18next'
 
 import {
+    LANG_PREFIX,
     SWITCH_WIDTH,
     SWITCH_HEIGHT,
     SWITCH_COLOR,
@@ -18,6 +19,7 @@ import {
     NAVER_LOGO_ALT,
     KAKAO_LOGO_ALT
 } from '../../usee_config'
+
 
 const LoginPresenter = (props) => {
     const {
@@ -41,13 +43,13 @@ const LoginPresenter = (props) => {
     return (
         <div className = 'common-wrapper lg-wrapper'>
             <div className = 'lg-auth-wrapper'>
-                <h1>{ t('usee.contents.login.login') }</h1>
+                <h1>{ t(`${LANG_PREFIX}.title`) }</h1>
                 <form className = 'lg-auth-form'>
                     <div className = 'lg-input-wrapper'>
                         <input 
                             className = 'lg-input'
                             type = 'text'
-                            placeholder = { t('usee.contents.login.login') }
+                            placeholder = { t(`${LANG_PREFIX}.id`) }
                             name = 'id'
                             ref = { idInput }
                             onChange = { onChange }
@@ -64,7 +66,7 @@ const LoginPresenter = (props) => {
                         <input
                             className = 'lg-input'
                             type = 'password'
-                            placeholder = { t('usee.contents.login.pwd') }
+                            placeholder = { t(`${LANG_PREFIX}.pwd`) }
                             name = 'pwd'
                             ref = { pwdInput }
                             onChange = { onChange }
@@ -78,7 +80,7 @@ const LoginPresenter = (props) => {
                             </button>
                     </div>
                     <div className = 'lg-state-save'>
-                        <p>{ t('usee.contents.login.loginStateSave') }</p>
+                        <p>{ t(`${LANG_PREFIX}.lgStateSave`) }</p>
                         <Switch
                             className = 'lg-switch'
                             checked = { isLoginStateSaved }
@@ -94,18 +96,18 @@ const LoginPresenter = (props) => {
                         className = 'lg-btn'
                         type = 'submit'
                         onClick = { loginBtnClicked } >
-                            { t('usee.contents.login.login') }
+                            { t(`${LANG_PREFIX}.lgBtn`) }
                     </button>
                     <div className = 'lg-find-wrapper'>
                         <a
                             name = 'findId'
                             onClick = { modalOpen }>
-                            { t('usee.contents.login.findId') }
+                            { t(`${LANG_PREFIX}.findId`) }
                         </a>
                         <a
                             name = 'findPwd'
                             onClick = { modalOpen }>
-                            { t('usee.contents.login.findPwd') }
+                            { t(`${LANG_PREFIX}.findPwd`) }
                         </a>
                     </div>
                     <span className = 'err-txt'>
@@ -120,7 +122,7 @@ const LoginPresenter = (props) => {
                 </span>
             </div>
             <p className = 'lg-other-auth-desc'>
-                { t('usee.contents.login.loginWithOtherSns') }
+                { t(`${LANG_PREFIX}.lgOtherAuthDesc`) }
             </p>
             <div className = 'lg-other-auth-logo-wrapper'>
                 <a>
