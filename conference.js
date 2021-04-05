@@ -130,6 +130,12 @@ import { createPresenterEffect } from './react/features/stream-effects/presenter
 import { endpointMessageReceived } from './react/features/subtitles';
 import UIEvents from './service/UI/UIEvents';
 
+// hjjung start
+import { getParticipantCount } from './react/features/base/participants';
+import { setTileView } from './react/features/video-layout/actions';
+import { isLocalVideoTrackDesktop, toggleScreensharing } from './react/features/base/tracks';
+// hjjung end
+
 const logger = Logger.getLogger(__filename);
 
 const eventEmitter = new EventEmitter();
@@ -1776,8 +1782,14 @@ export default {
             .then(() => {
                 this.videoSwitchInProgress = false;
                 if (config.enableScreenshotCapture) {
-                    APP.store.dispatch(toggleScreenshotCaptureEffect(true));
+                    APP.store.dispatch(toggleScreenshotCaptureEffect(true));                    
                 }
+                // 2021.04.01 hjjung
+                // issue : there is infinite mirror loop in tile view mode in chrome browser when screen share is on
+                // fix : in screen share mode, tile view mode is off
+                logger.log('Due to screen share, tileview off start---------------------------------------------');
+                APP.store.dispatch(setTileView(false));
+                logger.log('Due to screen share, tileview off end---------------------------------------------');
                 sendAnalytics(createScreenSharingEvent('started'));
                 logger.log('Screen sharing started');
             })
@@ -1894,6 +1906,21 @@ export default {
             logger.log(`USER ${id} LEFT:`, user);
 
             APP.UI.onSharedVideoStop(id);
+            // hjjung start
+            // check
+            const userCount = getParticipantCount(APP.store.getState());
+            logger.log(`userCount ----> (${userCount})`);
+            if(userCount <= 1) {
+                // 화면 공유 모드 점검
+                const _isScreenSharing = isLocalVideoTrackDesktop(APP.store.getState());
+                logger.log(`_isScreenSharing ----> (${_isScreenSharing})`);
+                if(_isScreenSharing) {
+                    logger.log(`user->(${userCount}), _isScreenSharing->(${_isScreenSharing})`);
+                    logger.log(`-----------> turn off screen sharing`);
+                    APP.store.dispatch(toggleScreensharing());
+                }
+            }
+            // hjjung end
         });
 
         room.on(JitsiConferenceEvents.USER_STATUS_CHANGED, (id, status) => {

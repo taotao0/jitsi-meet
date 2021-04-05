@@ -16,6 +16,8 @@ import { setTileView } from '../actions';
 import { shouldDisplayTileView } from '../functions';
 import logger from '../logger';
 
+import { isLocalVideoTrackDesktop } from '../../base/tracks';
+
 /**
  * The type of the React {@code Component} props of {@link TileViewButton}.
  */
@@ -52,7 +54,8 @@ class TileViewButton<P: Props> extends AbstractButton<P, *> {
      * @returns {void}
      */
     _handleClick() {
-        const { _tileViewEnabled, dispatch } = this.props;
+        // const { _tileViewEnabled, dispatch } = this.props;
+        const { _isScreenSharing, _tileViewEnabled, dispatch } = this.props;
 
         sendAnalytics(createToolbarEvent(
             'tileview.button',
@@ -61,6 +64,7 @@ class TileViewButton<P: Props> extends AbstractButton<P, *> {
             }));
         const value = !_tileViewEnabled;
 
+        logger.debug(`_isScreenSharing : ${_isScreenSharing}`);
         logger.debug(`Tile view ${value ? 'enable' : 'disable'}`);
         dispatch(setTileView(value));
     }
@@ -90,9 +94,21 @@ function _mapStateToProps(state, ownProps) {
     const lonelyMeeting = getParticipantCount(state) < 2;
     const { visible = enabled && !lonelyMeeting } = ownProps;
 
+    // hjjung 2021.04.02
+    // if screen sharing is on, tileview mode cannot be done
+    const _isScreenSharing = isLocalVideoTrackDesktop(state);
+    // logger.debug('-----------------------');
+    // logger.debug(`isLocalVideoTrackDesktop : ${isScreenSharing}`);
+    // logger.debug('-----------------------');
+    let visiblePass = visible;
+    if(_isScreenSharing) {
+        visiblePass = false;
+    }
+
     return {
         _tileViewEnabled: shouldDisplayTileView(state),
-        visible
+        visible: visiblePass,
+        _isScreenSharing
     };
 }
 
