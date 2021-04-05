@@ -1,10 +1,15 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 import MyPagePresenter from './presenter'
 
-const MyPageContainer = () => {
+const MyPageContainer = (props) => {
+    const { userStatus } = useSelector(state => state['features/usee/Pages/Login'], [])
+
     return (
-        <MyPagePresenter />
+        <MyPagePresenter
+            {...props}
+            userStatus = { userStatus }/>
     )
 }
 

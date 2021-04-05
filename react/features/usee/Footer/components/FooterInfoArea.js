@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { LANG_PREFIX } from '../constants'
-import { COMPANY_LOGO } from '../../usee_config'
+import { COMPANY_LOGO_ALT } from '../../usee_config'
 
 const FooterInfoArea = (props) => {
     const {
@@ -20,7 +20,7 @@ const FooterInfoArea = (props) => {
                 <div className = 'ft-info'>
                     <img
                         src = './images/uclicklogo.png'
-                        alt = { COMPANY_LOGO }
+                        alt = { COMPANY_LOGO_ALT }
                         width = '109'
                         height = '47' />
                     <div className = 'ft-company-info-wrapper'>

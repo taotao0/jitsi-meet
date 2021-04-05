@@ -51,3 +51,5 @@ import '../user/reducer';
 import '../video-layout/reducer';
 import '../videosipgw/reducer';
 import '../welcome/reducer';
+
+import '../usee/Pages/Login/ducks';

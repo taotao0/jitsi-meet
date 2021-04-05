@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Switch from 'react-switch'
 
 import { useTranslation } from 'react-i18next'
@@ -23,17 +23,17 @@ import {
 
 const LoginPresenter = (props) => {
     const {
-        loginBtnClicked,
-        LoginInputResetBtnClicked,
-        handleLoginStateSaved,
-        isLoginStateSaved,
-        onChange,
         id,
         pwd,
-        altmsg,
+        autoLogin,
+        failReason,
         modalVisible,
         idInput,
         pwdInput,
+        loginBtnClicked,
+        LoginInputResetBtnClicked,
+        handleSwitchClicked,
+        onChange,
         modalOpen,
         modalClose
     } = props
@@ -80,11 +80,11 @@ const LoginPresenter = (props) => {
                             </button>
                     </div>
                     <div className = 'lg-state-save'>
-                        <p>{ t(`${LANG_PREFIX}.lgStateSave`) }</p>
+                        <p>{ t(`${LANG_PREFIX}.lgAuto`) }</p>
                         <Switch
                             className = 'lg-switch'
-                            checked = { isLoginStateSaved }
-                            onChange = { handleLoginStateSaved }
+                            checked = { autoLogin }
+                            onChange = { handleSwitchClicked }
                             color = { SWITCH_COLOR }
                             onColor = { SWITCH_ONCOLOR }
                             uncheckedIcon = { false }
@@ -110,9 +110,14 @@ const LoginPresenter = (props) => {
                             { t(`${LANG_PREFIX}.findPwd`) }
                         </a>
                     </div>
-                    <span className = 'err-txt'>
-                        { altmsg }
-                    </span>
+                    {
+                        //FIXME:!
+                        failReason && (
+                            <span className = 'err-txt'>
+                                { t(`${LANG_PREFIX}.errMsg`) }
+                            </span>
+                        )
+                    }
                 </form>
             </div>
             <div className = 'lg-sep-wrapper'>

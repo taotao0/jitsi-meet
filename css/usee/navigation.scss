@@ -1,26 +1,34 @@
 .nav-wrapper {
+    height: 50px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding-inline: 80px;
+    padding-right: 80px;
     background-color: $useePrimaryColor;
 
     .nav-menu {
         display: flex;
         padding-left: 0;
+        list-style: none;
 
         li {
-            list-style: none;
-            padding: 0 20px;
+            padding-right: 100px;
 
-            .nav-menu-item {
-                font-size: 18px;
+            a {
+                font-size: 16px;
                 cursor: pointer;
                 text-decoration: none;
-                font-weight: bold;
                 color: $useePrimaryTextColor;
+
+                &.nav-menu-active {
+                    font-weight: 900;
+                }
             }
+        }
+        
+        li:last-child {
+            padding-right: 0px;
         }
     }
 }

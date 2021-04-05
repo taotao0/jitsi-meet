@@ -1,35 +1,32 @@
 import React, { useState, useCallback, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useLocation, useHistory } from 'react-router-dom'
+import queryString from 'query-string'
 
-import { setLoginInfo } from './ducks'
-
-import { useTranslation } from 'react-i18next'
-
+import { doUserLogin } from './ducks'
 import LoginPresenter from './presenter'
-import logininfo from '../../Pages/Login/constants'
 
-import { LANG_PREFIX } from './constants'
 
-const LoginContainer = () => {
-    const { t } = useTranslation()
+const LoginContainer = (props) => {
     const dispatch = useDispatch()
 
-    const value = useSelector(state => state['features/usee/contents/login'], [])
+    const query = queryString.parse(useLocation().search)
+    const history = useHistory()
+    const { failReason } = useSelector(state => state['features/usee/Pages/Login'], [])
 
     const [ inputs, setInputs ] = useState({
         id: "",
         pwd: ""
     })
 
-    const idInput = useRef()
-    const pwdInput = useRef()
-
-    const [ altmsg, setAltMsg ] = useState('')
-    const [ isLoginStateSaved, setLoginStateSaved ] = useState(false)
+    const [ autoLogin, setAutoLogin ] = useState(false)
     const [ modalVisible, setModalVisible ] = useState({
         findId: false,
         findPwd: false
     })
+
+    const idInput = useRef()
+    const pwdInput = useRef()
 
     const { id, pwd } = inputs
 
@@ -40,30 +37,20 @@ const LoginContainer = () => {
         })
     }, [inputs])
 
-    const _handleLoginStateSaved = useCallback((isLoginStateSaved) => {
-        setLoginStateSaved(isLoginStateSaved)
-    }, [isLoginStateSaved])
+    const _handleSwitchClicked = useCallback((value) => {
+        setAutoLogin(value)
+    }, [])
 
     const _handleLoginBtnClicked = useCallback((event) => {
         if ((id === '') || (pwd === '')) {
             id === '' ? idInput.current.focus() : pwdInput.current.focus()
-            setAltMsg('')
         } else {
-            const _obj = logininfo.find((elem) => {
-                return elem.id === id
-            })
-    
-            _obj === undefined
-                ? setAltMsg(t(`${LANG_PREFIX}.errMsg`))
-                : _obj.pwd === pwd
-                    ? setAltMsg("")
-                    : setAltMsg(t(`${LANG_PREFIX}.errMsg`))
-
-            dispatch(setLoginInfo(id, pwd, isLoginStateSaved))
+            dispatch(
+                doUserLogin({ id, pwd, autoLogin }, { history, query }))
         }
 
         event.preventDefault()
-    }, [id, pwd, isLoginStateSaved])
+    }, [id, pwd, autoLogin])
 
     const _handleLoginInputResetBtnClicked = useCallback((event) => {
         if ( id && id.length > 0 && event.currentTarget.name === 'id') {
@@ -99,17 +86,17 @@ const LoginContainer = () => {
 
     return (
         <LoginPresenter
-            loginBtnClicked = { _handleLoginBtnClicked }
-            LoginInputResetBtnClicked = { _handleLoginInputResetBtnClicked }
-            handleLoginStateSaved = { _handleLoginStateSaved }
-            isLoginStateSaved = { isLoginStateSaved }
-            onChange = { onChange }
             id = { id }
             pwd = { pwd }
-            altmsg = { altmsg }
+            autoLogin = { autoLogin }
+            failReason = { failReason }
             modalVisible = { modalVisible }
             idInput = { idInput }
             pwdInput = { pwdInput }
+            loginBtnClicked = { _handleLoginBtnClicked }
+            LoginInputResetBtnClicked = { _handleLoginInputResetBtnClicked }
+            handleSwitchClicked = { _handleSwitchClicked }
+            onChange = { onChange }
             modalOpen = { _modalOpen }
             modalClose = { _modalClose } />
     )

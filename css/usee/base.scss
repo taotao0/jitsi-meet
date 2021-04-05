@@ -8,10 +8,16 @@
 
     .main-wrapper {
         width: 100vw;
-        min-height: calc(100% - 208px);
+        min-height: calc(100% - 224px);
     }
 }
 
 .err-txt {
     color: red;
+}
+
+button {
+    background-color: $useeBtnColor;
+    color: $useePrimaryTextColor;
+    border: none;
 }

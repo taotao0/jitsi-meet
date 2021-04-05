@@ -1,27 +1,42 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 import { LANG_PREFIX } from './constants'
-import { COMPANY_LOGO_ALT } from '../usee_config'
 
 const NavigationPresenter = (props) => {
     const { t } = useTranslation()
 
     return (
         <nav className = 'nav-wrapper'>
-            <Link to = '/'>
-                <img
-                    src = '../../../../images/usee-logo.png'
-                    alt = { COMPANY_LOGO_ALT } />
-            </Link>
             <ul className = 'nav-menu'>
                 <li>
-                    <Link
-                        className = 'nav-menu-item'
+                    <NavLink
+                        activeClassName = 'nav-menu-active'
+                        to = '/introProduction'>
+                        { t(`${LANG_PREFIX}.introProduction`) }
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
+                        activeClassName = 'nav-menu-active'
+                        to = '/introFunction'>
+                        { t(`${LANG_PREFIX}.introFunction`) }
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
+                        activeClassName = 'nav-menu-active'
+                        to = '/pricesPolicy'>
+                        { t(`${LANG_PREFIX}.pricesPolicy`) }
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
+                        activeClassName = 'nav-menu-active'
                         to = '/myPage'>
                         { t(`${LANG_PREFIX}.myPage`) }
-                    </Link>
+                    </NavLink>
                 </li>
             </ul>
         </nav>

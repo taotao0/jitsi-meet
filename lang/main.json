@@ -948,10 +948,16 @@
         "HeaderGNB": {
             "login": "로그인",
             "logout": "로그아웃",
-            "welcomeDesc": "xx님 환영합니다!"
+            "memberJoin": "회원가입",
+            "WelcomeUser": {
+                "welcome": "{{user}}님 환영합니다!"
+            }
         },
         "Navigation": {
-            "myPage": "마이페이지"
+            "introProduction": "제품 소개",
+            "introFunction": "기능 소개",
+            "pricesPolicy": "가격 정책",
+            "myPage": "마이 페이지"
         },
         "Footer": {
             "MenuArea": {
@@ -997,7 +1003,7 @@
                 "id": "아이디",
                 "pwd": "비밀번호",
                 "lgBtn": "로그인",
-                "lgStateSave": "로그인 상태 유지",
+                "lgAuto": "로그인 상태 유지",
                 "findId": "아이디 찾기",
                 "findPwd": "패스워드 찾기",
                 "lgOtherAuthDesc": "다른 계정으로도 이용이 가능합니다",

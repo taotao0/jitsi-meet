@@ -164,9 +164,9 @@ export default class BaseApp extends Component<*, State> {
                                                     exact
                                                     path = { PRIMARY_ROUTE_PATH }
                                                     component = { PrimaryContainer } />
-                                                <Route
+                                                {/* <Route
                                                     path = { LOGIN_ROUTE_PATH_IN_PARAMS }
-                                                    component = { LoginContainer } />
+                                                    component = { LoginContainer } /> */}
                                                 <Route
                                                     exact
                                                     path = { LOGIN_ROUTE_PATH }

@@ -5,6 +5,8 @@ export const LOGIN_ROUTE_PATH = '/login'
 
 export const LOGIN_ROUTE_PATH_IN_PARAMS = '/login/:from'
 
+export const MEMBER_JOIN_ROUTE_PATH = 'memberJoin'
+
 export const MOBILE_SUPPORT_ROUTE_PATH = '/mobileSupport'
 
 export const MY_PAGE_ROUTE_PATH = '/myPage'

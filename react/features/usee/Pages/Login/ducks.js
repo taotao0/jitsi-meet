@@ -1,35 +1,94 @@
 import { ReducerRegistry } from '../../../base/redux'
 
-export const SET_LOGIN_INFO = 'SET_LOGIN_INFO'
+import TestUser, { UserStatus, LoginFailReason } from './constants'
 
-export function setLoginInfo(id, pwd, isLoginStateSaved) {
-    return {
-        type: SET_LOGIN_INFO,
-        id: id,
-        pwd: pwd,
-        isLoginStateSaved: isLoginStateSaved
+/* Action Type */
+export const LOGIN_SUCCESSED = 'LOGIN_SUCCESSED'
+export const LOGIN_FAILED = 'LOGIN_FAILED'
+export const USER_LOGOUT = 'USER_LOGOUT'
+
+/* Actions */
+export const doUserLogin = (userInfo, pageInfo) => {
+    return (dispatch, getState) => {
+        //FIXME: Backend API call
+
+        let failReason = ''
+        const { testId, testPwd } = TestUser
+
+        if (testId !== userInfo.id) {
+            failReason = LoginFailReason.BYID
+
+            return dispatch(loginFailed(failReason))
+        } else if (testPwd !== userInfo.pwd) {
+            failReason = LoginFailReason.BYPWD
+
+            return dispatch(loginFailed(failReason))
+        }
+
+        return dispatch(loginSuccessed(userInfo, pageInfo))
     }
 }
 
-const defaultState = {
-    id: '',
-    pwd: '',
-    isLoginStateSaved: false
+export const doUserLogout = () => {
+    //FIXME: Backend API call
+
+    return {
+        type: USER_LOGOUT
+    }
 }
 
-ReducerRegistry.register('features/usee/contents/login',
+const loginSuccessed = (userInfo, pageInfo) => {
+    return {
+        type: LOGIN_SUCCESSED,
+        userInfo,
+        pageInfo
+    }
+}
+
+const loginFailed = (failReason) => {
+    return {
+        type: LOGIN_FAILED,
+        failReason,
+    }
+}
+
+/* Default State */
+const defaultState = {
+    userStatus: UserStatus.VISITOR,
+}
+
+/* Reducer */
+ReducerRegistry.register('features/usee/Pages/Login',
     (state = defaultState, action) => {
         switch (action.type) {
-            case SET_LOGIN_INFO : {
+            case LOGIN_SUCCESSED: {
+                const { userInfo } = action
+
                 return {
                     ...state,
-                    id: action.id,
-                    pwd: action.pwd,
-                    isLoginStateSaved: action.isLoginStateSaved
+                    userStatus: UserStatus.MEMBER,
+                    userInfo,
                 }
             }
-        }
 
-        return state
+            case LOGIN_FAILED: {
+                const { failReason } = action
+
+                return {
+                    ...state,
+                    failReason,
+                }
+            }
+
+            case USER_LOGOUT: {
+                return {
+                    userStatus: UserStatus.VISITOR
+                }
+            }
+
+            default: {
+                return state
+            }
+        }
     }
 )
