@@ -30,14 +30,15 @@ import MyPageContainer from '../../../usee/Pages/MyPage'
 import ManageRecordingsContainer from '../../../usee/Pages/ManageRecordings'
 import MobileSupportContainer from '../../../usee/Pages/MobileSupport'
 import NotFoundContainer from '../../../usee/Pages/NotFound'
+import FindAuthContainer from '../../../usee/Pages/FindAuth'
 
 import {
     PRIMARY_ROUTE_PATH,
     LOGIN_ROUTE_PATH,
-    LOGIN_ROUTE_PATH_IN_PARAMS,
     MOBILE_SUPPORT_ROUTE_PATH,
     MY_PAGE_ROUTE_PATH,
-    MANAGE_RECORDINGS_ROUTE_PATH
+    MANAGE_RECORDINGS_ROUTE_PATH,
+    FIND_AUTH_ROUTE_PATH
 } from '../../../usee/usee_config'
 
 declare var APP: Object;
@@ -164,9 +165,6 @@ export default class BaseApp extends Component<*, State> {
                                                     exact
                                                     path = { PRIMARY_ROUTE_PATH }
                                                     component = { PrimaryContainer } />
-                                                {/* <Route
-                                                    path = { LOGIN_ROUTE_PATH_IN_PARAMS }
-                                                    component = { LoginContainer } /> */}
                                                 <Route
                                                     exact
                                                     path = { LOGIN_ROUTE_PATH }
@@ -180,6 +178,9 @@ export default class BaseApp extends Component<*, State> {
                                                 <Route
                                                     path = { MANAGE_RECORDINGS_ROUTE_PATH }
                                                     component = { ManageRecordingsContainer } />
+                                                <Route
+                                                    path = { FIND_AUTH_ROUTE_PATH }
+                                                    component = { FindAuthContainer } />
                                                 <Route component = { NotFoundContainer } />
                                             </Switch>
                                         )

@@ -18,12 +18,7 @@ const LoginContainer = (props) => {
         id: "",
         pwd: ""
     })
-
     const [ autoLogin, setAutoLogin ] = useState(false)
-    const [ modalVisible, setModalVisible ] = useState({
-        findId: false,
-        findPwd: false
-    })
 
     const idInput = useRef()
     const pwdInput = useRef()
@@ -68,37 +63,18 @@ const LoginContainer = (props) => {
         event.preventDefault()
     }, [id, pwd, inputs])
 
-    const _modalOpen = useCallback((event) => {
-        setModalVisible({
-            ...modalVisible,
-            [event.currentTarget.name]: true,
-        })
-    }, [modalVisible])
-
-    const _modalClose = useCallback((event) => {
-        setModalVisible({
-            ...modalVisible,
-            [event.currentTarget.name]: false,
-        })
-
-        event.preventDefault()
-    }, [modalVisible])
-
     return (
         <LoginPresenter
             id = { id }
             pwd = { pwd }
             autoLogin = { autoLogin }
             failReason = { failReason }
-            modalVisible = { modalVisible }
             idInput = { idInput }
             pwdInput = { pwdInput }
             loginBtnClicked = { _handleLoginBtnClicked }
             LoginInputResetBtnClicked = { _handleLoginInputResetBtnClicked }
             handleSwitchClicked = { _handleSwitchClicked }
-            onChange = { onChange }
-            modalOpen = { _modalOpen }
-            modalClose = { _modalClose } />
+            onChange = { onChange } />
     )
 }
 

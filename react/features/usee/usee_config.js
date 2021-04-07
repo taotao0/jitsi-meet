@@ -13,6 +13,14 @@ export const MY_PAGE_ROUTE_PATH = '/myPage'
 
 export const MANAGE_RECORDINGS_ROUTE_PATH = '/manageRecordings'
 
+export const INTRO_PRODUCTION_ROUTE_PATH = '/introProduction'
+
+export const INTRO_FUNCTION_ROUTE_PATH = '/introFunction'
+
+export const PRICES_POLICY_ROUTE_PATH = '/pricesPolicy'
+
+export const FIND_AUTH_ROUTE_PATH = '/findAuth'
+
 
 // Store link
 export const USEE_APP_STORE_LINK = 'https://apps.apple.com/app/id1550547407'

@@ -2,7 +2,7 @@ import { ReducerRegistry } from '../../../base/redux'
 
 import TestUser, { UserStatus, LoginFailReason } from './constants'
 
-/* Action Type */
+/* Action Types */
 export const LOGIN_SUCCESSED = 'LOGIN_SUCCESSED'
 export const LOGIN_FAILED = 'LOGIN_FAILED'
 export const USER_LOGOUT = 'USER_LOGOUT'
@@ -10,8 +10,12 @@ export const USER_LOGOUT = 'USER_LOGOUT'
 /* Actions */
 export const doUserLogin = (userInfo, pageInfo) => {
     return (dispatch, getState) => {
-        //FIXME: Backend API call
-
+        /*
+            FIXME:
+                Backend API call
+                SUCCESSED와 FAILED는 Back-end api의 응답 코드로 핸들링 할 것!
+                없어질 Enum
+        */
         let failReason = ''
         const { testId, testPwd } = TestUser
 
@@ -30,7 +34,12 @@ export const doUserLogin = (userInfo, pageInfo) => {
 }
 
 export const doUserLogout = () => {
-    //FIXME: Backend API call
+    /*
+        FIXME: 
+            별도의 Back-end api가 필요없다?
+            store에 저장한 session-token을 지워준다.
+            Local Storage에 저장된 것도 지워준다.
+    */
 
     return {
         type: USER_LOGOUT

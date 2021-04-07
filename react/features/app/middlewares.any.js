@@ -47,5 +47,6 @@ import '../video-quality/middleware';
 import '../videosipgw/middleware';
 
 import '../usee/Pages/Login/middleware'
+import '../usee/Pages/FindAuth/middleware'
 
 import './middleware';

@@ -1,6 +1,11 @@
 .common-wrapper {
     padding-top: 70px;
     text-align: center;
+    color: $useeDarkTextColor;
+
+    h1 {
+        margin-bottom: 35px;
+    }
 }
 
 .usee-wrapper {

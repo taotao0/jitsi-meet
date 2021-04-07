@@ -3,6 +3,12 @@ import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 import { LANG_PREFIX } from './constants'
+import {
+    INTRO_PRODUCTION_ROUTE_PATH,
+    INTRO_FUNCTION_ROUTE_PATH,
+    PRICES_POLICY_ROUTE_PATH,
+    MY_PAGE_ROUTE_PATH
+} from '../usee_config'
 
 const NavigationPresenter = (props) => {
     const { t } = useTranslation()
@@ -13,28 +19,28 @@ const NavigationPresenter = (props) => {
                 <li>
                     <NavLink
                         activeClassName = 'nav-menu-active'
-                        to = '/introProduction'>
+                        to = {INTRO_PRODUCTION_ROUTE_PATH}>
                         { t(`${LANG_PREFIX}.introProduction`) }
                     </NavLink>
                 </li>
                 <li>
                     <NavLink
                         activeClassName = 'nav-menu-active'
-                        to = '/introFunction'>
+                        to = {INTRO_FUNCTION_ROUTE_PATH}>
                         { t(`${LANG_PREFIX}.introFunction`) }
                     </NavLink>
                 </li>
                 <li>
                     <NavLink
                         activeClassName = 'nav-menu-active'
-                        to = '/pricesPolicy'>
+                        to = {PRICES_POLICY_ROUTE_PATH}>
                         { t(`${LANG_PREFIX}.pricesPolicy`) }
                     </NavLink>
                 </li>
                 <li>
                     <NavLink
                         activeClassName = 'nav-menu-active'
-                        to = '/myPage'>
+                        to = {MY_PAGE_ROUTE_PATH}>
                         { t(`${LANG_PREFIX}.myPage`) }
                     </NavLink>
                 </li>

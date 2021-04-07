@@ -1,11 +1,7 @@
 .lg-wrapper {
     height: auto;
 
-    .lg-auth-wrapper  {
-        h1 {
-            margin-bottom: 35px; 
-        }
-
+    // .lg-auth-wrapper  {
         .lg-auth-form {
             width: 300px;
             margin: 0 auto;
@@ -92,7 +88,7 @@
                 }
             }
         }
-    }
+    // }
 
     .lg-sep-wrapper {
         display: flex;

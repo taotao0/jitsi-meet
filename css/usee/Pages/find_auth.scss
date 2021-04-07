@@ -1,0 +1,93 @@
+.fa-wrapper {
+
+}
+
+.tablist-wrapper {
+    width: 400px;
+    margin: 0 auto;
+    
+    display: flex;
+    flex-direction: column;
+
+    .tablist-menu {
+        display: flex;
+        list-style: none;
+        padding-inline-start: 0;
+        font-size: 18px;
+        line-height: 40px;
+
+        li {
+            flex: 1;
+
+            .tab-link {
+                display: block;
+
+                text-decoration: none;
+                color: $useeDarkTextColor;
+
+                border: 1px solid $useeBorderColor;
+                border-radius: 10px;    
+
+                &.active-tab {
+                    background-color: $useePrimaryColor;
+                }
+            }
+        }
+    }
+
+    hr {
+        width: 100%;
+        margin-block: 25px;
+        color: $useeBorderColor;
+    }
+}
+
+.wa-wrapper {
+    padding-inline: 15px;
+
+    .sa-wrapper {
+        display: flex;
+        justify-content: space-between;
+        font-size: 16px;
+    
+        .sa-method-wrapper {
+            display: flex;
+            align-items: center;
+    
+            input[type='radio']#email {
+                margin-right: 7px;
+            }
+        }
+    }
+    
+    .ae-wrapper {
+        text-align: initial;
+        padding-block: 15px;
+
+        ul {
+            list-style: square;
+            margin-bottom: 20px;
+        }
+
+        form {
+            text-align: center;
+
+            input.input-auth-email {
+                width: 70%;
+                height: 35px;
+                margin-right: 10px;
+
+            }
+
+            button[type='submit'] {
+                height: 35px;
+                padding: 10px;
+                border-radius: 7px;
+            }
+            
+            .err-msg {
+                padding-top: 10px;
+            }
+        }
+    }
+}

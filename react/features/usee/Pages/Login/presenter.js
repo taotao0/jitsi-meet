@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import Switch from 'react-switch'
-
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
 import {
     LANG_PREFIX,
@@ -11,13 +11,14 @@ import {
     SWITCH_ONCOLOR
 } from '../../Pages/Login/constants'
 
-import FindIdModal from './components/FindIdModal'
-import FindPwdModal from './components/FindPwdModal'
+import { FindAuthTab } from '../FindAuth/constants'
 
 import {
     GOOGLE_LOGO_ALT,
     NAVER_LOGO_ALT,
-    KAKAO_LOGO_ALT
+    KAKAO_LOGO_ALT,
+    
+    FIND_AUTH_ROUTE_PATH
 } from '../../usee_config'
 
 
@@ -27,22 +28,19 @@ const LoginPresenter = (props) => {
         pwd,
         autoLogin,
         failReason,
-        modalVisible,
         idInput,
         pwdInput,
         loginBtnClicked,
         LoginInputResetBtnClicked,
         handleSwitchClicked,
         onChange,
-        modalOpen,
-        modalClose
     } = props
 
     const { t } = useTranslation()
 
     return (
         <div className = 'common-wrapper lg-wrapper'>
-            <div className = 'lg-auth-wrapper'>
+            <div>
                 <h1>{ t(`${LANG_PREFIX}.title`) }</h1>
                 <form className = 'lg-auth-form'>
                     <div className = 'lg-input-wrapper'>
@@ -99,19 +97,14 @@ const LoginPresenter = (props) => {
                             { t(`${LANG_PREFIX}.lgBtn`) }
                     </button>
                     <div className = 'lg-find-wrapper'>
-                        <a
-                            name = 'findId'
-                            onClick = { modalOpen }>
+                        <Link to = {`${FIND_AUTH_ROUTE_PATH}?tabName=${FindAuthTab.idTab}`}>
                             { t(`${LANG_PREFIX}.findId`) }
-                        </a>
-                        <a
-                            name = 'findPwd'
-                            onClick = { modalOpen }>
+                        </Link>
+                        <Link to = {`${FIND_AUTH_ROUTE_PATH}?tabName=${FindAuthTab.pwdTab}`}>
                             { t(`${LANG_PREFIX}.findPwd`) }
-                        </a>
+                        </Link>
                     </div>
                     {
-                        //FIXME:!
                         failReason && (
                             <span className = 'err-txt'>
                                 { t(`${LANG_PREFIX}.errMsg`) }
@@ -146,12 +139,6 @@ const LoginPresenter = (props) => {
                         alt = { KAKAO_LOGO_ALT } />
                 </a>
             </div>
-            <FindIdModal
-                visible = { modalVisible.findId }
-                close = { modalClose }/>
-            <FindPwdModal
-                visible = { modalVisible.findPwd }
-                close = { modalClose } />
         </div>
     )
 }

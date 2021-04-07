@@ -12,6 +12,11 @@ export const UserStatus = {
     MEMBER: 'MEMBER'
 }
 
+/*
+    FIXME:
+        Back-end api 연동 이후, 응답 코드로 핸들링할 것!
+        삭제 예정
+*/
 export const LoginStatus = {
     SUCCESSED: 'SUCCESS',
     FAILED: 'FAILED'
@@ -20,9 +25,12 @@ export const LoginStatus = {
 export const LoginFailReason = {
     BYID: 'BYID',
     BYPWD: 'BYPWD',
-    BOTH: 'BOTH'
 }
 
+/*
+    FIXME:
+        Back-end api 연동 이후 삭제 예정
+*/
 const TestUser = {
     testId: 'usee',
     testPwd: '1234'
