@@ -1,5 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 import AuthEmailPresenter from './presenter'
 
@@ -11,7 +13,10 @@ import {
 
 
 const AuthEmailContainer = (props) => {
-    const { activeTab } = props
+    const { activeTab, fromPage } = props
+    const history = useHistory()
+    const { t } = useTranslation()
+
     const [ input, setInput ] = useState('')
 
     const inputRef = useRef()
@@ -23,10 +28,10 @@ const AuthEmailContainer = (props) => {
     }, [])
 
     const _handleSubmitBtnClicked = useCallback((event) => {
-        dispatch(findAuthByEmail(input, activeTab, inputRef))
+        dispatch(findAuthByEmail(input, activeTab, fromPage, history, t, inputRef))
 
         event.preventDefault()
-    }, [input, activeTab, inputRef])
+    }, [input, activeTab, fromPage, history, t, inputRef])
 
     useEffect(() => {
         dispatch(emailStatusInitialize())

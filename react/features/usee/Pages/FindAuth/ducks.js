@@ -13,7 +13,7 @@ export const EMAIL_VALID = 'EMAIL_VALID'
 export const EMAIL_INVALID = 'EMAIL_INVALID'
 
 /* Actions */
-export const findAuthByEmail = (email, activeTab, inputElem) => {
+export const findAuthByEmail = (email, activeTab, fromPage, history, t, inputElem) => {
     return (dispatch, getState) => {
         /* 
             FIXME: Back-end API가 통합되면 분기 처리할 필요 없음
@@ -25,11 +25,11 @@ export const findAuthByEmail = (email, activeTab, inputElem) => {
         */
         if (activeTab === FindAuthTab.idTab) {
             isValidEmail(email)
-                ? dispatch(emailStatusValid())
+                ? dispatch(emailStatusValid(activeTab, fromPage, history, t))
                 : dispatch(emailStatusInvalid(inputElem))
         } else {
             isValidEmail(email)
-            ? dispatch(emailStatusValid())
+            ? dispatch(emailStatusValid(activeTab, fromPage, history, t))
             : dispatch(emailStatusInvalid(inputElem))
         }
     }
@@ -41,9 +41,15 @@ export const emailStatusInitialize = () => {
     }
 }
 
-const emailStatusValid = () => {
+const emailStatusValid = (activeTab, fromPage, history, t) => {
     return {
-        type: EMAIL_VALID
+        type: EMAIL_VALID,
+        modalProps: {
+            activeTab,
+            fromPage,
+            history,
+            t
+        }
     }
 }
 
@@ -88,4 +94,5 @@ ReducerRegistry.register('features/usee/Pages/FindAuth',
                 return state
             }
         }
-    })
+    }
+)

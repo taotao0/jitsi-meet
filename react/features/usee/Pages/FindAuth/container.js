@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react'
+import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import queryString from 'query-string'
 
@@ -9,7 +10,9 @@ import { AuthMethod } from './constants'
 const FindAuthContainer = (props) => {
     const [ authMethod, setAuthMethod ] = useState(AuthMethod.EMAIL)
 
-    const activeTab = queryString.parse(useLocation().search).tabName
+    const modalInfo = useSelector(state => state['features/usee/Modal'], [])
+
+    const { tabName, from } = queryString.parse(useLocation().search)
 
     const _handleAuthMehodClicked = useCallback((event) => {
         const _authMethod = event.currentTarget.id
@@ -19,10 +22,14 @@ const FindAuthContainer = (props) => {
         }
     }, [authMethod])
 
+    console.log('FindAuthContaier Call')
+
     return (
         <FindAuthPresenter
-            activeTab = { activeTab }
+            activeTab = { tabName }
+            fromPage = { from }
             authMethod = { authMethod }
+            ModalInfo = { modalInfo }
             handleAuthMethodClicked = { _handleAuthMehodClicked } />
     )
 }

@@ -11,6 +11,7 @@ const withAuth = (WrappedComponent) => {
         const {
             activeTab,
             authMethod,
+            fromPage,
             handleAuthMethodClicked
         } = props
 
@@ -33,7 +34,9 @@ const withAuth = (WrappedComponent) => {
                         </label>
                     </div>
                 </div>
-                <WrappedComponent activeTab = { activeTab } />
+                <WrappedComponent
+                    activeTab = { activeTab }
+                    fromPage = { fromPage } />
             </div>
         )
     }

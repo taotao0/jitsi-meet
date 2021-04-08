@@ -5,52 +5,95 @@
     left: 0;
     bottom: 0;
     z-index: 999;
-    display: none;
-    background-color: $useeTranslucentBgColor;
     
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    .modal-container {
-        min-width: 360px;
-        padding: 20px 30px 10px;
-        border-radius: 20px;
+    background-color: $useeTranslucentBgColor;
+}
 
-        .button-container {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-top: 30px;
+.nm-wrapper {
+    min-width: 400px;
+    padding: 7px;
+    border-radius: 5px;
+    background-color: $useeBgColor;
 
-            button {
-                margin-left: 10px;
-                font-size: 18px;
-                font-weight: bold;
-                border-radius: 7px;
-                padding: 5px 15px;
-            }
+    h3 {
+        font-weight: bold;
+    }
+
+    .nm-msg-wrapper {
+        padding-block: 15px;
+        font-size: 14px;
+    }
+
+    .nm-btn-wrapper {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        button[type='submit'] {
+            padding-inline: 10px;
+            padding-block: 6px;
+            border-radius: 4px;
         }
     }
 }
 
-.modal-wrapper.open {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: modal-open .5s;
-}
+// .modal-wrapper {
+//     position: fixed;
+//     top: 0;
+//     right: 0;
+//     left: 0;
+//     bottom: 0;
+//     z-index: 999;
+//     display: none;
+//     background-color: $useeTranslucentBgColor;
+    
 
-.modal-input {
-    display: block;
-    margin-block: 10px;
-    width: 70%;
-    height: 30px;
-    font-weight: bold;
-}
+//     .modal-container {
+//         min-width: 360px;
+//         padding: 20px 30px 10px;
+//         border-radius: 20px;
 
-@keyframes modal-open {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
+//         .button-container {
+//             display: flex;
+//             justify-content: flex-end;
+//             align-items: center;
+//             margin-top: 30px;
+
+//             button {
+//                 margin-left: 10px;
+//                 font-size: 18px;
+//                 font-weight: bold;
+//                 border-radius: 7px;
+//                 padding: 5px 15px;
+//             }
+//         }
+//     }
+// }
+
+// .modal-wrapper.open {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     animation: modal-open .5s;
+// }
+
+// .modal-input {
+//     display: block;
+//     margin-block: 10px;
+//     width: 70%;
+//     height: 30px;
+//     font-weight: bold;
+// }
+
+// @keyframes modal-open {
+//     from {
+//         opacity: 0;
+//     }
+//     to {
+//         opacity: 1;
+//     }
+// }

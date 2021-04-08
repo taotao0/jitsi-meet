@@ -2,14 +2,14 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
+import { makeTabLink } from '../functions'
 import { LANG_PREFIX } from '../constants'
-
-import { FIND_AUTH_ROUTE_PATH } from '../../../usee_config'
 
 const TabList = (props) => {
     const {
         list,
         activeTab,
+        fromPage,
         children
     } = props
 
@@ -24,7 +24,7 @@ const TabList = (props) => {
                             <li key = {elem}>
                                 <Link
                                     className = { activeTab === elem ? 'tab-link active-tab' : 'tab-link'}
-                                    to = {`${FIND_AUTH_ROUTE_PATH}?tabName=${elem}`}>
+                                    to = { makeTabLink(elem, fromPage) }>
                                     { t(`${LANG_PREFIX}.${elem}`) }
                                 </Link>
                             </li>

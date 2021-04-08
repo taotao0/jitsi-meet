@@ -68,6 +68,7 @@ const LoginContainer = (props) => {
             id = { id }
             pwd = { pwd }
             autoLogin = { autoLogin }
+            query = { query }
             failReason = { failReason }
             idInput = { idInput }
             pwdInput = { pwdInput }

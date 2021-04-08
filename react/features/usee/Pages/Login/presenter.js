@@ -3,6 +3,8 @@ import Switch from 'react-switch'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
+import { makeFindAuthLink } from './functions'
+
 import {
     LANG_PREFIX,
     SWITCH_WIDTH,
@@ -17,8 +19,6 @@ import {
     GOOGLE_LOGO_ALT,
     NAVER_LOGO_ALT,
     KAKAO_LOGO_ALT,
-    
-    FIND_AUTH_ROUTE_PATH
 } from '../../usee_config'
 
 
@@ -27,6 +27,7 @@ const LoginPresenter = (props) => {
         id,
         pwd,
         autoLogin,
+        query,
         failReason,
         idInput,
         pwdInput,
@@ -97,10 +98,10 @@ const LoginPresenter = (props) => {
                             { t(`${LANG_PREFIX}.lgBtn`) }
                     </button>
                     <div className = 'lg-find-wrapper'>
-                        <Link to = {`${FIND_AUTH_ROUTE_PATH}?tabName=${FindAuthTab.idTab}`}>
+                        <Link to = { makeFindAuthLink(FindAuthTab.idTab, query) }>
                             { t(`${LANG_PREFIX}.findId`) }
                         </Link>
-                        <Link to = {`${FIND_AUTH_ROUTE_PATH}?tabName=${FindAuthTab.pwdTab}`}>
+                        <Link to = { makeFindAuthLink(FindAuthTab.pwdTab, query) }>
                             { t(`${LANG_PREFIX}.findPwd`) }
                         </Link>
                     </div>
