@@ -851,7 +851,14 @@
                 }
             },
             "MyPage": {
-                "title": "마이페이지"
+                "title": "프로필 정보",
+                "id": "아이디",
+                "nickName": "닉네임",
+                "email": "이메일",
+                "resetPwdBtn": "비밀번호 재설정",
+                "changeProfileBtn": "프로필 변경",
+                "recordListBtn": "녹화 목록",
+                "roomListBtn": "참여한 회의실 목록"
             },
             "RecordManager": {
                 "title": "녹화 관리"

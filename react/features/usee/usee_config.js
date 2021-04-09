@@ -35,6 +35,8 @@ export const NAVER_LOGO_ALT = 'naver_logo'
 
 export const KAKAO_LOGO_ALT = 'kakao_logo'
 
+export const USER_AVATAR_ALT = 'user-avatar'
+
 // Static html
 export const COMPANY_INTRODUCE = 'http://uclick.co.kr/sub1/sub1_2.html'
 

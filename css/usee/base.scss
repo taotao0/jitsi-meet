@@ -1,10 +1,18 @@
 .common-wrapper {
     padding-top: 70px;
     text-align: center;
-    color: $useeDarkTextColor;
 
     h1 {
         margin-bottom: 35px;
+    }
+}
+
+.section-wrapper {
+    margin: auto 80px;
+    
+    h2 {
+        color: $useeDarkTextColor;
+        padding-block: 7px;
     }
 }
 
