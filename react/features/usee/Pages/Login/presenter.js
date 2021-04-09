@@ -3,6 +3,8 @@ import Switch from 'react-switch'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
+import UseeInput from '../../Common/UseeInput'
+
 import { makeFindAuthLink } from './functions'
 
 import {
@@ -44,40 +46,34 @@ const LoginPresenter = (props) => {
             <div>
                 <h1>{ t(`${LANG_PREFIX}.title`) }</h1>
                 <form className = 'lg-auth-form'>
-                    <div className = 'lg-input-wrapper'>
-                        <input 
-                            className = 'lg-input'
-                            type = 'text'
-                            placeholder = { t(`${LANG_PREFIX}.id`) }
-                            name = 'id'
-                            ref = { idInput }
-                            onChange = { onChange }
-                            value = { id } />
-                            <button
-                                className = 'lg-input-x-btn'
-                                type = 'button'
-                                name = 'id'
-                                onClick = { LoginInputResetBtnClicked }>
-                                <img src = '../../../../images/Xbutton.png' />
-                            </button>
-                    </div>
-                    <div className = 'lg-input-wrapper'>
-                        <input
-                            className = 'lg-input'
-                            type = 'password'
-                            placeholder = { t(`${LANG_PREFIX}.pwd`) }
-                            name = 'pwd'
-                            ref = { pwdInput }
-                            onChange = { onChange }
-                            value = { pwd } />
-                            <button
-                                className = 'lg-input-x-btn'
-                                type = 'button'
-                                name = 'pwd'
-                                onClick = { LoginInputResetBtnClicked }>
-                                <img src = '../../../../images/Xbutton.png' />
-                            </button>
-                    </div>
+                    <UseeInput
+                        inputProps = {{
+                            type: 'text',
+                            placeholder: t(`${LANG_PREFIX}.id`),
+                            name: 'id',
+                            ref: idInput,
+                            value: id,
+                            onChange: onChange,
+                        }}
+                        xBtnProps = {{
+                            type: 'button',
+                            name: 'id',
+                            onClick: LoginInputResetBtnClicked
+                        }} />
+                    <UseeInput
+                        inputProps = {{
+                            type: 'password',
+                            placeholder: t(`${LANG_PREFIX}.pwd`),
+                            name: 'pwd',
+                            ref: pwdInput,
+                            value: pwd,
+                            onChange: onChange
+                        }}
+                        xBtnProps = {{
+                            type: 'button',
+                            name: 'pwd',
+                            onClick: LoginInputResetBtnClicked
+                        }} />
                     <div className = 'lg-state-save'>
                         <p>{ t(`${LANG_PREFIX}.lgAuto`) }</p>
                         <Switch

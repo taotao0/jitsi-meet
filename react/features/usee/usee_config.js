@@ -19,6 +19,7 @@ export const PRICES_POLICY_ROUTE_PATH = '/pricesPolicy'
 
 export const FIND_AUTH_ROUTE_PATH = '/findAuth'
 
+export const REST_PASSWORD_ROUTE_PATH = '/resetPassword'
 
 // Store link
 export const USEE_APP_STORE_LINK = 'https://apps.apple.com/app/id1550547407'

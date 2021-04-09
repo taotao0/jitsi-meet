@@ -31,6 +31,7 @@ import ManageRecordingsContainer from '../../../usee/Pages/ManageRecordings'
 import MobileSupportContainer from '../../../usee/Pages/MobileSupport'
 import NotFoundContainer from '../../../usee/Pages/NotFound'
 import FindAuthContainer from '../../../usee/Pages/FindAuth'
+import ResetPasswordContainer from '../../../usee/Pages/ResetPassword'
 
 import {
     PRIMARY_ROUTE_PATH,
@@ -38,7 +39,8 @@ import {
     MOBILE_SUPPORT_ROUTE_PATH,
     MY_PAGE_ROUTE_PATH,
     MANAGE_RECORDINGS_ROUTE_PATH,
-    FIND_AUTH_ROUTE_PATH
+    FIND_AUTH_ROUTE_PATH,
+    REST_PASSWORD_ROUTE_PATH
 } from '../../../usee/usee_config'
 
 declare var APP: Object;
@@ -181,6 +183,9 @@ export default class BaseApp extends Component<*, State> {
                                                 <Route
                                                     path = { FIND_AUTH_ROUTE_PATH }
                                                     component = { FindAuthContainer } />
+                                                <Route
+                                                    path = { REST_PASSWORD_ROUTE_PATH }
+                                                    component = { ResetPasswordContainer } />
                                                 <Route component = { NotFoundContainer } />
                                             </Switch>
                                         )

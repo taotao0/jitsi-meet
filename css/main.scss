@@ -110,11 +110,13 @@ $flagsImagePath: "../images/";
 @import 'usee/header_gnb';
 @import 'usee/navigation';
 @import 'usee/footer';
+@import 'usee/common';
 
 @import 'usee/Pages/login';
 @import 'usee/Pages/primary';
 @import 'usee/Pages/mobile_support';
 @import 'usee/Pages/find_auth';
+@import 'usee/Pages/reset_password';
 
 // @import 'usee/contents';
 

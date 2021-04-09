@@ -1,94 +1,57 @@
 .lg-wrapper {
     height: auto;
 
-    // .lg-auth-wrapper  {
-        .lg-auth-form {
-            width: 300px;
-            margin: 0 auto;
+    .lg-auth-form {
+        width: 300px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+
+        .lg-state-save {
             display: flex;
-            flex-direction: column;
+            justify-content: flex-end;
+            margin-top: 5px;
+            margin-bottom: 5px;
 
-            .lg-input-wrapper {
-                width: 300px;
-                height: 40px;
-                margin-bottom: 5px;
-                border-radius: 7px;
-                border: 1px solid $useeBorderColor;
-                display: flex;
-                box-sizing: border-box;
-    
-                &:focus-within {
-                    border: 2px solid $useeDarkBorderColor;
-                }
-    
-                .lg-input {
-                    width: 270px;
-                    border: none;
-                    border-radius: 7px;
-                    font-size: 13px;
-                    font-weight: bold;
-                }
-    
-                .lg-input-x-btn {
-                    background-color: transparent;
-
-                    &:focus {
-                        outline: none;
-                    }
-        
-                    img {
-                        width: 17px;
-                        height: 17px;
-                    }
-                }
-            }
-    
-            .lg-state-save {
-                display: flex;
-                justify-content: flex-end;
-                margin-top: 5px;
-                margin-bottom: 5px;
-    
-                .lg-switch {
-                    margin-left: 5px;
-                }
-            }
-
-            .lg-btn {
-                width: 300px;
-                height: 40px;
-                font-size: 13px;
-                font-weight: bold;
-                border-radius: 7px;
-                margin-top: 8px
-            }
-    
-            .lg-find-wrapper {
-                display: flex;
-                justify-content: flex-end;
-                margin-top: 5px;
-                height: 30px;
-    
-                a {
-                    text-decoration: none;
-                    cursor: pointer;
-
-                    &:hover {
-                        font-weight: bold;
-                    }
-
-                    &:first-child {
-                        &::after {
-                            padding: 0 4px;
-                            content: '/';
-                        }
-                    }
-
-                    color: $useeDarkTextColor;
-                }
+            .lg-switch {
+                margin-left: 5px;
             }
         }
-    // }
+
+        .lg-btn {
+            width: 300px;
+            height: 40px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 7px;
+            margin-top: 8px
+        }
+
+        .lg-find-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 5px;
+            height: 30px;
+
+            a {
+                text-decoration: none;
+                cursor: pointer;
+
+                &:hover {
+                    font-weight: bold;
+                }
+
+                &:first-child {
+                    &::after {
+                        padding: 0 4px;
+                        content: '/';
+                    }
+                }
+
+                color: $useeDarkTextColor;
+            }
+        }
+    }
 
     .lg-sep-wrapper {
         display: flex;

@@ -1047,6 +1047,14 @@
                     "noticeMsgById": "입력하신 이메일로 아이디가 발송되었습니다! \n 이메일을 확인해주세요:)",
                     "noticeMsgByPwd": "이메일이 발송되었습니다. 본인 인증을 통해 비밀번호를 재설정해주세요:)"
                 }
+            },
+            "ResetPassword": {
+                "title": "비밀번호 재설정",
+                "newPwdPlaceholder": "새 비밀번호",
+                "rePwdPlaceholder": "비밀번호 재입력",
+                "errMsg": "비밀번호가 맞지 않습니다. 다시 확인해주세요:)",
+                "submit": "확인",
+                "noticeMsg": "비밀번호가 재설정되었습니다. 변경된 비밀번호로 로그인해주세요:)"
             }
         }
     }
