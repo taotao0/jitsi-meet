@@ -21,6 +21,8 @@ export const FIND_AUTH_ROUTE_PATH = '/findAuth'
 
 export const REST_PASSWORD_ROUTE_PATH = '/resetPassword'
 
+export const PARTICIPATED_ROOM_LIST_ROUTE_PATH = '/participatedRoomList'
+
 // Store link
 export const USEE_APP_STORE_LINK = 'https://apps.apple.com/app/id1550547407'
 

@@ -11,7 +11,9 @@ import { UserStatus } from '../Login/constants'
 import {
     USER_AVATAR_ALT,
     LOGIN_ROUTE_PATH,
-    MY_PAGE_ROUTE_PATH
+    MY_PAGE_ROUTE_PATH,
+    MANAGE_RECORDINGS_ROUTE_PATH,
+    PARTICIPATED_ROOM_LIST_ROUTE_PATH
 } from '../../usee_config'
 
 const MyPagePresenter = (props) => {
@@ -55,14 +57,14 @@ const MyPagePresenter = (props) => {
                         </ul>
                         <ul className = 'mp-my-menu'>
                             <li>
-                                <ArrowMenuItem
-                                    title = { t(`${LANG_PREFIX}.recordListBtn`)}
-                                    arrowBtnClicked = { () => null } />
+                                <Link to = { `${MANAGE_RECORDINGS_ROUTE_PATH}` }>    
+                                    <ArrowMenuItem title = { t(`${LANG_PREFIX}.recordListBtn`)} />
+                                </Link>
                             </li>
                             <li>
-                                <ArrowMenuItem
-                                    title = { t(`${LANG_PREFIX}.roomListBtn`)}
-                                    arrowBtnClicked = { () => null } />
+                                <Link to = { `${PARTICIPATED_ROOM_LIST_ROUTE_PATH}` }>
+                                    <ArrowMenuItem title = { t(`${LANG_PREFIX}.roomListBtn`)} />
+                                </Link>
                             </li>
                         </ul>
                     </section>

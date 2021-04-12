@@ -39,10 +39,14 @@
         text-align: initial;
         margin-top: 20px;
         padding-inline: 60px;
-
+        
         li {
             line-height: 20px;
             padding-block: 10px;
+
+            a {
+                text-decoration: none;
+            }
         }
     }
 }
@@ -64,6 +68,10 @@
 
 .am-wrapper {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    text-align: initial;
 
     span {
         flex: 1;
@@ -72,12 +80,7 @@
         color: $useeDarkTextColor;
     }
 
-    button {
-        width: 20px;
-        background-color: transparent;
-
-        .fa-angle-right {
-            color: $useeBtnColor;
-        }
+    .fa-angle-right {
+        color: $useeBtnColor;
     }
 }
