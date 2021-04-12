@@ -24,6 +24,7 @@ const MyPagePresenter = (props) => {
             userStatus === UserStatus.MEMBER
                 ? (
                     <section className = 'common-wrapper section-wrapper'>
+                        <h1>{ t(`${LANG_PREFIX}.title`) }</h1>
                         <img
                             className = 'user-avatar'
                             src = '../../../../../../../images/user-temp.png'
