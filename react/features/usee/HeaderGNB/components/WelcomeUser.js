@@ -7,16 +7,16 @@ import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { LANG_PREFIX } from '../constants'
 
 const WelcomeUser = (props) => {
-    const { userInfo } = props
+    const { loginUserInfo } = props
     const { t } = useTranslation()
 
     return (
         <>
             <FontAwesomeIcon icon = { faUser } />
             {
-                userInfo && (
+                loginUserInfo && (
                 <span className = 'user-welcome-txt'>
-                    { t(`${LANG_PREFIX}.WelcomeUser.welcome`, { user: `${userInfo.id}` }) }
+                    { t(`${LANG_PREFIX}.WelcomeUser.welcome`, { user: `${loginUserInfo.nickName}` }) }
                 </span>
                 )
             }        

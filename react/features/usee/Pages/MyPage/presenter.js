@@ -17,13 +17,13 @@ import {
 } from '../../usee_config'
 
 const MyPagePresenter = (props) => {
-    const { userStatus } = props
+    const { loginState } = props
     const { t } = useTranslation()
 
     return (
         <>
         {
-            userStatus === UserStatus.MEMBER
+            loginState.userStatus === UserStatus.MEMBER
                 ? (
                     <section className = 'common-wrapper section-wrapper'>
                         <h1>{ t(`${LANG_PREFIX}.title`) }</h1>
@@ -35,13 +35,13 @@ const MyPagePresenter = (props) => {
                         <div className = 'mp-info-wrapper'>
                             <SimpleInfoView
                                 title = { t(`${LANG_PREFIX}.id`) }
-                                value = 'Uclick' />
+                                value = { loginState.loginUserInfo?.id } />
                             <SimpleInfoView
                                 title = { t(`${LANG_PREFIX}.nickName`) }
-                                value = 'Usee' />
+                                value = { loginState.loginUserInfo?.nickName } />
                             <SimpleInfoView
                                 title = { t(`${LANG_PREFIX}.email`) }
-                                value = 'usee@usee.co.kr' />
+                                value = { loginState.loginUserInfo?.email } />
                         </div>
                         <ul className = 'mp-btn-menu'>
                             <li>

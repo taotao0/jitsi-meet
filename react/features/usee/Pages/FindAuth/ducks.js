@@ -1,49 +1,54 @@
+import axios from 'axios'
+import queryString from 'query-string'
+
 import { ReducerRegistry } from '../../../base/redux'
 
-import { isValidEmail } from './functions'
-
 import {
-    FindAuthTab,
-    AuthEmailStatus
+    AuthEmailStatus,
+    AuthFailReason
 } from './constants'
 
 /* Action types */
-export const EMAIL_STATUS_INITIAL = 'EMAIL_STATUS_INITIAL'
-export const EMAIL_VALID = 'EMAIL_VALID'
-export const EMAIL_INVALID = 'EMAIL_INVALID'
+export const AUTH_EMAIL_SUCCESSED = 'AUTH_EMAIL_SUCCESSED'
+export const AUTH_EMAIL_FAILED = 'AUTH_EMAIL_FAILED'
+export const AUTH_FAIL_REASON_INITIALIZE = 'AUTH_FAIL_REASON_INITIALIZE'
 
 /* Actions */
-export const findAuthByEmail = (email, activeTab, fromPage, history, t, inputElem) => {
+export const findAuthByEmail = (email, activeTab, fromPage, history, t) => {
     return (dispatch, getState) => {
-        /* 
-            FIXME: Back-end API가 통합되면 분기 처리할 필요 없음
-            ex) findAuthByEmail( email, something )
-                - email : 사용자가 입력한 이메일 주소
-                - something : 아이디 찾기인지, 비밀번호 찾기인지
-            - 하단의 코드는 위의 내용이 결정되는대로 변경 예정!
-            합치기로 함!
-        */
-        if (activeTab === FindAuthTab.idTab) {
-            isValidEmail(email)
-                ? dispatch(emailStatusValid(activeTab, fromPage, history, t))
-                : dispatch(emailStatusInvalid(inputElem))
-        } else {
-            isValidEmail(email)
-            ? dispatch(emailStatusValid(activeTab, fromPage, history, t))
-            : dispatch(emailStatusInvalid(inputElem))
-        }
+        dispatch(authFailReasonInitialize())
+
+        axios.post('/api/v1/Auth/Find',
+            queryString.stringify({
+                type: activeTab,
+                email: email,
+            })
+        ).then(res => {
+            const { status } = res.data
+
+            if (status === AuthEmailStatus.SUCCESSED) {
+                dispatch(authEmailSuccessed(activeTab, fromPage, history, t))
+            } else if (status === AuthEmailStatus.FAILED) {
+                const { failReason } = res.data
+
+                dispatch(authEmailFailed(failReason))
+            }
+        }).catch(err => {
+            console.log('AuthEmailError', error)
+        })
     }
 }
 
-export const emailStatusInitialize = () => {
+export const authFailReasonInitialize = () => {
     return {
-        type: EMAIL_STATUS_INITIAL
+        type: AUTH_FAIL_REASON_INITIALIZE,
+
     }
 }
 
-const emailStatusValid = (activeTab, fromPage, history, t) => {
+export const authEmailSuccessed = (activeTab, fromPage, history, t) => {
     return {
-        type: EMAIL_VALID,
+        type: AUTH_EMAIL_SUCCESSED,
         modalProps: {
             activeTab,
             fromPage,
@@ -53,40 +58,42 @@ const emailStatusValid = (activeTab, fromPage, history, t) => {
     }
 }
 
-const emailStatusInvalid = (inputElem) => {
+export const authEmailFailed = (failReason) => {
     return {
-        type: EMAIL_INVALID,
-        inputElem
+        type: AUTH_EMAIL_FAILED,
+        failReason
     }
 }
 
 /* Default state */
 const defaultState = {
-    status: AuthEmailStatus.INITIAL
+    failReason: AuthFailReason.NONE
 }
 
 /* Reducer */
 ReducerRegistry.register('features/usee/Pages/FindAuth',
     (state = defaultState, action) => {
         switch (action.type) {
-            case EMAIL_STATUS_INITIAL: {
+            case AUTH_EMAIL_SUCCESSED: {
                 return {
                     ...state,
-                    status: AuthEmailStatus.INITIAL
+                    failReason: AuthFailReason.NONE,
                 }
             }
 
-            case EMAIL_VALID: {
+            case AUTH_EMAIL_FAILED: {
+                const { failReason } = action
+
                 return {
                     ...state,
-                    status: AuthEmailStatus.VALID
+                    failReason
                 }
             }
 
-            case EMAIL_INVALID: {
+            case AUTH_FAIL_REASON_INITIALIZE: {
                 return {
                     ...state,
-                    status: AuthEmailStatus.INVALID
+                    failReason: AuthFailReason.NONE,
                 }
             }
 

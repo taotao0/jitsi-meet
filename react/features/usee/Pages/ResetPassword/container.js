@@ -16,7 +16,7 @@ const ResetPasswordContainer = () => {
 
     const { t } = useTranslation()
     const history = useHistory()
-    const { tempToken } = queryString.parse(useLocation().search)
+    const { token } = queryString.parse(useLocation().search)
 
     const [ inputValue, setInputValue ] = useState({ newPwd: '', rePwd: '' })
     const [ errMsgVisible, setErrMsgVisible ] = useState(false)
@@ -49,7 +49,7 @@ const ResetPasswordContainer = () => {
     
                 rePwdRef.current.focus()
             } else {
-                dispatch(resetPassword(newPwd, tempToken, t, history))
+                dispatch(resetPassword(newPwd, token, t, history))
                 setErrMsgVisible(false)
             }        
         }

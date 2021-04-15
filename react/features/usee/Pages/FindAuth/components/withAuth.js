@@ -1,9 +1,11 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
 import {
     LANG_PREFIX,
-    AuthMethod
+    AuthMethod,
+    AuthFailReason
 } from '../constants'
 
 const withAuth = (WrappedComponent) => {
@@ -16,6 +18,7 @@ const withAuth = (WrappedComponent) => {
         } = props
 
         const { t } = useTranslation()
+        const { failReason } = useSelector(state => state['features/usee/Pages/FindAuth'], [])
 
         const SELECT_AUTH_LANG_PREFIX = `${LANG_PREFIX}.WithAuth`
 
@@ -36,7 +39,18 @@ const withAuth = (WrappedComponent) => {
                 </div>
                 <WrappedComponent
                     activeTab = { activeTab }
-                    fromPage = { fromPage } />
+                    fromPage = { fromPage }
+                    failReason = { failReason } />
+                {
+                    failReason && 
+                        <div className = 'err-txt err-msg'>
+                            {
+                                failReason === AuthFailReason.BYEMAIL
+                                    ? t(`${SELECT_AUTH_LANG_PREFIX}.errMsg`)
+                                    : null
+                            }
+                        </div>
+                }
             </div>
         )
     }

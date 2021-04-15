@@ -22,7 +22,7 @@ const FindAuthContainer = (props) => {
         }
     }, [authMethod])
 
-    console.log('FindAuthContaier Call')
+    console.log('FindAuthContainer call')
 
     return (
         <FindAuthPresenter

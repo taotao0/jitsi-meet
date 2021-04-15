@@ -1,35 +1,60 @@
+import axios from 'axios'
+import queryString from 'query-string'
+
 import { ReducerRegistry } from '../../../base/redux'
 
-import TestUser, { UserStatus, LoginFailReason } from './constants'
+import {
+    UserStatus,
+    LoginStatus,
+    LoginFailReason
+} from './constants'
 
 /* Action Types */
 export const LOGIN_SUCCESSED = 'LOGIN_SUCCESSED'
 export const LOGIN_FAILED = 'LOGIN_FAILED'
 export const USER_LOGOUT = 'USER_LOGOUT'
+export const LOGIN_FAIL_REASON_INITIALIZE = 'LOGIN_FAIL_REASON_INITIALIZE'
 
 /* Actions */
+export const doAutoLogin = (token) => {
+    return (dispatch, getState) => {
+        /* FIXME: Backend-api call */
+        
+    }
+}
+
 export const doUserLogin = (userInfo, pageInfo) => {
     return (dispatch, getState) => {
-        /*
-            FIXME:
-                Backend API call
-                SUCCESSED와 FAILED는 Back-end api의 응답 코드로 핸들링 할 것!
-                없어질 Enum
-        */
-        let failReason = ''
-        const { testId, testPwd } = TestUser
+        dispatch(loginFailReasonInitialize())
 
-        if (testId !== userInfo.id) {
-            failReason = LoginFailReason.BYID
+        const { id, pwd, autoLogin } = userInfo
 
-            return dispatch(loginFailed(failReason))
-        } else if (testPwd !== userInfo.pwd) {
-            failReason = LoginFailReason.BYPWD
+        axios.post('/api/v1/Auth/SignIn',
+            queryString.stringify({
+                userId: id,
+                password: pwd
+            })
+        ).then(res => {
+            const { status } = res.data
 
-            return dispatch(loginFailed(failReason))
-        }
+            if (status === LoginStatus.SUCCESSED) {
+                const { userInfo } = res.data
 
-        return dispatch(loginSuccessed(userInfo, pageInfo))
+                const loginUserInfo = {
+                    ...userInfo,
+                    /* FIXME: */
+                    id,
+                    autoLogin,
+                }
+                dispatch(loginSuccessed(loginUserInfo, pageInfo))
+            } else if (status === LoginStatus.FAILED) {
+                const { failReason } = res.data
+
+                dispatch(loginFailed(failReason))
+            }
+        }).catch(err => {
+            console.log(`Auth Error`, err)
+        })
     }
 }
 
@@ -46,10 +71,10 @@ export const doUserLogout = () => {
     }
 }
 
-const loginSuccessed = (userInfo, pageInfo) => {
+const loginSuccessed = (loginUserInfo, pageInfo) => {
     return {
         type: LOGIN_SUCCESSED,
-        userInfo,
+        loginUserInfo,
         pageInfo
     }
 }
@@ -61,9 +86,16 @@ const loginFailed = (failReason) => {
     }
 }
 
+export const loginFailReasonInitialize = () => {
+    return {
+        type: LOGIN_FAIL_REASON_INITIALIZE,
+    }
+}
+
 /* Default State */
 const defaultState = {
     userStatus: UserStatus.VISITOR,
+    failReason: LoginFailReason.NONE,
 }
 
 /* Reducer */
@@ -71,12 +103,13 @@ ReducerRegistry.register('features/usee/Pages/Login',
     (state = defaultState, action) => {
         switch (action.type) {
             case LOGIN_SUCCESSED: {
-                const { userInfo } = action
+                const { loginUserInfo } = action
 
                 return {
                     ...state,
                     userStatus: UserStatus.MEMBER,
-                    userInfo,
+                    failReason: LoginFailReason.NONE,
+                    loginUserInfo,
                 }
             }
 
@@ -91,7 +124,15 @@ ReducerRegistry.register('features/usee/Pages/Login',
 
             case USER_LOGOUT: {
                 return {
-                    userStatus: UserStatus.VISITOR
+                    userStatus: UserStatus.VISITOR,
+                    failReason: LoginFailReason.NONE,
+                }
+            }
+
+            case LOGIN_FAIL_REASON_INITIALIZE: {
+                return {
+                    ...state,
+                    failReason: LoginFailReason.NONE,
                 }
             }
 

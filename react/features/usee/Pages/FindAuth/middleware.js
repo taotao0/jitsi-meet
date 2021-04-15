@@ -1,9 +1,6 @@
 import { MiddlewareRegistry } from '../../../base/redux'
 
-import {
-    EMAIL_VALID,
-    EMAIL_INVALID
-} from './ducks'
+import { AUTH_EMAIL_SUCCESSED } from './ducks'
 import {
     openModal,
     closeModal
@@ -18,7 +15,7 @@ MiddlewareRegistry.register(store => next => action => {
     const result = next(action)
 
     switch (action.type) {
-        case EMAIL_VALID: {
+        case AUTH_EMAIL_SUCCESSED: {
             const { modalProps : { activeTab, fromPage, history, t }} = action
 
             const noticeMsg =
@@ -41,14 +38,6 @@ MiddlewareRegistry.register(store => next => action => {
                 openModal(NoticeModal, { noticeMsg, onSubmit })
             )
 
-            break
-        }
-
-        case EMAIL_INVALID: {
-            const { inputElem } = action
-
-            inputElem && inputElem.current.focus()
-            // 포커스
             break
         }
     }

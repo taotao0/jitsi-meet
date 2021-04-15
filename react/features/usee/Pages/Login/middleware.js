@@ -1,4 +1,5 @@
 import { MiddlewareRegistry } from '../../../base/redux'
+import { jitsiLocalStorage } from '@jitsi/js-utils';
 
 import { LOGIN_SUCCESSED } from './ducks'
 
@@ -15,6 +16,12 @@ MiddlewareRegistry.register(store => next => action => {
                 ? history.push(from)
                 : history.push(PRIMARY_ROUTE_PATH)
             
+            const { loginUserInfo: { session_token, autoLogin } } = store.getState()['features/usee/Pages/Login']
+
+            if (autoLogin) {
+                jitsiLocalStorage.setItem('UseeLoginInfo', JSON.stringify({ session_token, autoLogin }))
+            }
+
             break
         }
     }

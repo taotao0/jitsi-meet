@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import Switch from 'react-switch'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
@@ -15,6 +15,7 @@ import {
     SWITCH_ONCOLOR
 } from '../../Pages/Login/constants'
 
+import { LoginFailReason } from './constants'
 import { FindAuthTab } from '../FindAuth/constants'
 
 import {
@@ -104,7 +105,13 @@ const LoginPresenter = (props) => {
                     {
                         failReason && (
                             <span className = 'err-txt'>
-                                { t(`${LANG_PREFIX}.errMsg`) }
+                                {
+                                    failReason === LoginFailReason.BYID
+                                        ? t(`${LANG_PREFIX}.errMsgById`)
+                                        : failReason === LoginFailReason.BYPW
+                                            ? t(`${LANG_PREFIX}.errMsgByPw`)
+                                            : null
+                                }
                             </span>
                         )
                     }

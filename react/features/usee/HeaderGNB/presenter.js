@@ -11,14 +11,14 @@ import {
 import {
     COMPANY_LOGO_ALT,
     LOGIN_ROUTE_PATH,
-    MEMBER_JOIN_ROUTE_PATH
+    MEMBER_JOIN_ROUTE_PATH,
 } from '../usee_config'
 import { UserStatus } from '../Pages/Login/constants'
 
 const HeaderGNBPresenter = (props) => {
     const {
         showMenu,
-        loginInfo : { userStatus, userInfo },
+        loginUserInfo : { userStatus, loginUserInfo },
         logoutBtnClicked
     } = props
     const { t } = useTranslation()
@@ -35,7 +35,12 @@ const HeaderGNBPresenter = (props) => {
             </Link>            
             <ul className = 'gnb-menu'>
                 <li className = { isAuth && 'gnb-menu-visible' }>
-                    <WelcomeUser userInfo = { userInfo } />
+                    <WelcomeUser loginUserInfo = { loginUserInfo } />
+                </li>
+                <li className = { isAuth && 'gnb-menu-visible' }>
+                    <a>
+                        { t(`${LANG_PREFIX}.personalRoomJoin`) }
+                    </a>
                 </li>
                 <li className = { showMenu && 'gnb-menu-visible' }>
                     {

@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next'
 import {
     LANG_PREFIX,
     FindAuthTab,
-    AuthEmailStatus
 } from '../../constants'
 
 const AuthEmailPresenter = (props) => {
@@ -12,7 +11,6 @@ const AuthEmailPresenter = (props) => {
         activeTab,
         input,
         inputRef,
-        status,
         handleInputChanged,
         handleSubmitBtnClicked
     } = props
@@ -46,12 +44,6 @@ const AuthEmailPresenter = (props) => {
                 <button type = 'submit'>
                     { t(`${AUTH_EMAIL_LANG_PREFIX}.submit`) }
                 </button>
-                {
-                    status === AuthEmailStatus.INVALID && 
-                        <div className = 'err-txt err-msg'>
-                            { t(`${AUTH_EMAIL_LANG_PREFIX}.errMsg`) }
-                        </div>
-                }
             </form>
         </div>
     )

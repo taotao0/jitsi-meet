@@ -10,7 +10,7 @@ import { doUserLogout } from '../Pages/Login/ducks'
 
 const HeaderGNBContainer = () => {
     const dispatch = useDispatch()
-    const loginInfo = useSelector(state => state['features/usee/Pages/Login'], [])
+    const loginUserInfo = useSelector(state => state['features/usee/Pages/Login'], [])
     const isLoginPath = compareCurrentPathToLoginPath(useLocation().pathname)
 
     const _logoutBtnClicked = useCallback(() => {
@@ -19,7 +19,7 @@ const HeaderGNBContainer = () => {
 
     return (
         <HeaderGNBPresenter
-            loginInfo = { loginInfo }
+            loginUserInfo = { loginUserInfo }
             showMenu = { !isLoginPath }
             logoutBtnClicked = { _logoutBtnClicked } />
     )
