@@ -1,3 +1,6 @@
+// Local Storage Key
+export const USEE_LOGIN_KEY = 'USEE_LOGIN_KEY'
+
 // Route path
 export const PRIMARY_ROUTE_PATH = '/'
 

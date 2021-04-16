@@ -7,6 +7,8 @@ import { DialogContainer } from '../../base/dialog';
 import { ChromeExtensionBanner } from '../../chrome-extension-banner';
 import { AbstractApp } from './AbstractApp';
 
+import { doAutoLogin } from '../../usee/Pages/Login/ducks'
+
 // Register middlewares and reducers.
 import '../middlewares';
 import '../reducers';
@@ -17,6 +19,17 @@ import '../reducers';
  * @extends AbstractApp
  */
 export class App extends AbstractApp {
+    _init: Promise<*>;
+
+    componentDidMount() {
+        super.componentDidMount()
+        
+        this._init.then(() => {
+            this.state.store?.dispatch(doAutoLogin())
+        }).catch(err => {
+            console.log('error : ', err)
+        })
+    }
     /**
      * Overrides the parent method to inject {@link AtlasKitThemeProvider} as
      * the top most component.

@@ -35,7 +35,7 @@ const MyPagePresenter = (props) => {
                         <div className = 'mp-info-wrapper'>
                             <SimpleInfoView
                                 title = { t(`${LANG_PREFIX}.id`) }
-                                value = { loginState.loginUserInfo?.id } />
+                                value = { loginState.loginUserInfo?.userId } />
                             <SimpleInfoView
                                 title = { t(`${LANG_PREFIX}.nickName`) }
                                 value = { loginState.loginUserInfo?.nickName } />

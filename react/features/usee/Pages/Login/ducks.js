@@ -1,5 +1,6 @@
 import axios from 'axios'
 import queryString from 'query-string'
+import { jitsiLocalStorage } from '@jitsi/js-utils';
 
 import { ReducerRegistry } from '../../../base/redux'
 
@@ -9,6 +10,8 @@ import {
     LoginFailReason
 } from './constants'
 
+import { USEE_LOGIN_KEY } from '../../usee_config'
+
 /* Action Types */
 export const LOGIN_SUCCESSED = 'LOGIN_SUCCESSED'
 export const LOGIN_FAILED = 'LOGIN_FAILED'
@@ -16,10 +19,34 @@ export const USER_LOGOUT = 'USER_LOGOUT'
 export const LOGIN_FAIL_REASON_INITIALIZE = 'LOGIN_FAIL_REASON_INITIALIZE'
 
 /* Actions */
-export const doAutoLogin = (token) => {
+export const doAutoLogin = () => {
     return (dispatch, getState) => {
-        /* FIXME: Backend-api call */
-        
+        const UseeLoginInfo = JSON.parse(jitsiLocalStorage.getItem(USEE_LOGIN_KEY))
+
+        if (UseeLoginInfo && UseeLoginInfo.autoLogin) {
+            const { session_token, autoLogin } = UseeLoginInfo
+
+            axios({
+                url: '/api/v1/Auth/SignIn/Token',
+                method: 'post',
+                headers: {
+                    'Authorization': session_token,
+                }
+            }).then(res => {
+                const { data } = res
+
+                if (data.status === LoginStatus.SUCCESSED) {
+                    const loginUserInfo = {
+                        ...data.userInfo,
+                        autoLogin,
+                    }
+
+                    dispatch(loginSuccessed(loginUserInfo, null))
+                }
+            }).catch(err => {
+                console.log('Auto Login error : ', err)
+            })
+        }
     }
 }
 
@@ -42,8 +69,6 @@ export const doUserLogin = (userInfo, pageInfo) => {
 
                 const loginUserInfo = {
                     ...userInfo,
-                    /* FIXME: */
-                    id,
                     autoLogin,
                 }
                 dispatch(loginSuccessed(loginUserInfo, pageInfo))
