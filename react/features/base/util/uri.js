@@ -1,4 +1,5 @@
 // @flow
+import queryString from 'query-string'
 
 import { parseURLParams } from './parseURLParams';
 import { normalizeNFKC } from './strings';
@@ -345,7 +346,7 @@ export function parseURIString(uri: ?string) {
     const { pathname } = obj;
 
     // XXX While the components/segments of pathname are URI encoded, Jitsi Meet
-    // on the client and/or server sides still don't support certain characters.
+    // on the client and/or server  sides still don't support certain characters.
     const contextRootEndIndex = pathname.lastIndexOf('/');
     let room = pathname.substring(contextRootEndIndex + 1) || undefined;
 
@@ -361,6 +362,16 @@ export function parseURIString(uri: ?string) {
                 = pathname.substring(0, contextRootEndIndex + 1) + (room || '');
         }
     }
+    // const roomName = queryString.parse(obj.search).name
+
+    // if (roomName) {
+    //     const fixedRoom = _fixRoom(roomName)
+
+    //     if (fixedRoom !== roomName) {
+    //         roomName = fixedRoom
+    //     }
+    // }
+
     obj.room = room;
 
     if (contextRootEndIndex > 1) {

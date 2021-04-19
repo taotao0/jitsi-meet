@@ -19,7 +19,8 @@ const HeaderGNBPresenter = (props) => {
     const {
         showMenu,
         loginUserInfo : { userStatus, loginUserInfo },
-        logoutBtnClicked
+        logoutBtnClicked,
+        personalRoomJoinBtnClicked
     } = props
     const { t } = useTranslation()
 
@@ -38,7 +39,7 @@ const HeaderGNBPresenter = (props) => {
                     <WelcomeUser loginUserInfo = { loginUserInfo } />
                 </li>
                 <li className = { isAuth && 'gnb-menu-visible' }>
-                    <a>
+                    <a onClick = { personalRoomJoinBtnClicked }>
                         { t(`${LANG_PREFIX}.personalRoomJoin`) }
                     </a>
                 </li>
@@ -46,7 +47,7 @@ const HeaderGNBPresenter = (props) => {
                     {
                         isAuth
                             ? (
-                                <a onClick = {logoutBtnClicked}>
+                                <a onClick = { logoutBtnClicked }>
                                     { t(`${LANG_PREFIX}.logout`) }
                                 </a>
                             )

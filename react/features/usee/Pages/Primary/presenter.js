@@ -6,7 +6,7 @@ import { LANG_PREFIX } from './constants'
 
 const PrimaryPresenter = (props) => {
     const {
-        meetingName,
+        roomName,
         handleInputChanged,
         handleJoinMeetingClicked
     } = props
@@ -26,7 +26,7 @@ const PrimaryPresenter = (props) => {
                         <input
                             className = 'pm-input'
                             type = 'text'
-                            value = { meetingName }
+                            value = { roomName }
                             placeholder = { t(`${LANG_PREFIX}.inputPlaceholder`) }
                             onChange = { handleInputChanged } >
                         </input>

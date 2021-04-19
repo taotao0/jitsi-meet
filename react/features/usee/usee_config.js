@@ -1,5 +1,5 @@
 // Local Storage Key
-export const USEE_LOGIN_KEY = 'USEE_LOGIN_KEY'
+export const USEE_LS_LOGIN_KEY = 'features/usee/Pages/Login'
 
 // Route path
 export const PRIMARY_ROUTE_PATH = '/'

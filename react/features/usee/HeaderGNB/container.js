@@ -6,6 +6,7 @@ import HeaderGNBPresenter from './presenter'
 
 import { compareCurrentPathToLoginPath } from './functions'
 
+import { doPersonalRoomJoin } from './ducks'
 import { doUserLogout } from '../Pages/Login/ducks'
 
 const HeaderGNBContainer = () => {
@@ -17,11 +18,16 @@ const HeaderGNBContainer = () => {
         dispatch(doUserLogout())
     }, [])
 
+    const _personalRoomJoinBtnClicked = useCallback(() => {
+        dispatch(doPersonalRoomJoin())
+    }, [])
+
     return (
         <HeaderGNBPresenter
             loginUserInfo = { loginUserInfo }
             showMenu = { !isLoginPath }
-            logoutBtnClicked = { _logoutBtnClicked } />
+            logoutBtnClicked = { _logoutBtnClicked }
+            personalRoomJoinBtnClicked = { _personalRoomJoinBtnClicked }/>
     )
 }
 

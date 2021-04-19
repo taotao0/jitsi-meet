@@ -8,7 +8,8 @@
         flex-direction: column;
 
         .lg-state-save {
-            display: flex;
+            /* FIXME: */
+            display: none;
             justify-content: flex-end;
             margin-top: 5px;
             margin-bottom: 5px;

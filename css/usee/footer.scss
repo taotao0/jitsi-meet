@@ -25,7 +25,7 @@
             }
 
             a {
-                color: $useeDarkTextColor;
+                color: $useeLightTextColor;
             }
         }
 
@@ -46,6 +46,7 @@
     justify-content: space-between;
     padding: 20px 80px;
     align-items: center;
+    color: $useePrimaryTextColor;
 
     .ft-info {
         display: flex;

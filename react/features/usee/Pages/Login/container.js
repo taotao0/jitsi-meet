@@ -23,7 +23,7 @@ const LoginContainer = (props) => {
         id: '',
         pwd: ''
     })
-    const [ autoLogin, setAutoLogin ] = useState(false)
+    // const [ autoLogin, setAutoLogin ] = useState(false)
 
     const idInput = useRef()
     const pwdInput = useRef()
@@ -35,9 +35,9 @@ const LoginContainer = (props) => {
         })
     }, [inputs])
 
-    const _handleSwitchClicked = useCallback((value) => {
-        setAutoLogin(value)
-    }, [])
+    // const _handleSwitchClicked = useCallback((value) => {
+    //     setAutoLogin(value)
+    // }, [])
 
     const _handleLoginBtnClicked = useCallback((event) => {
         const { id, pwd } = inputs
@@ -46,11 +46,11 @@ const LoginContainer = (props) => {
             id === '' ? idInput.current.focus() : pwdInput.current.focus()
         } else {
             dispatch(
-                doUserLogin({ id, pwd, autoLogin }, { history, query }))
+                doUserLogin({ id, pwd, /*autoLogin*/ }, { history, query }))
         }
 
         event.preventDefault()
-    }, [inputs, autoLogin])
+    }, [inputs, /*autoLogin*/])
 
     const _handleLoginInputResetBtnClicked = useCallback((event) => {
         const { id, pwd } = inputs
@@ -91,14 +91,14 @@ const LoginContainer = (props) => {
         <LoginPresenter
             id = { inputs.id }
             pwd = { inputs.pwd }
-            autoLogin = { autoLogin }
+            //autoLogin = { autoLogin }
             query = { query }
             failReason = { failReason }
             idInput = { idInput }
             pwdInput = { pwdInput }
             loginBtnClicked = { _handleLoginBtnClicked }
             LoginInputResetBtnClicked = { _handleLoginInputResetBtnClicked }
-            handleSwitchClicked = { _handleSwitchClicked }
+            // handleSwitchClicked = { _handleSwitchClicked }
             onChange = { onChange } />
     )
 }

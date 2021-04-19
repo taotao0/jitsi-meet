@@ -1,21 +1,31 @@
 import React, { useState, useCallback } from 'react'
+import { useDispatch } from 'react-redux'
 
 import PrimaryPresenter from './presenter'
 
+import { appNavigate } from '../../../app/actions'
+
 const PrimaryContainer = () => {
-    const [ meetingName, setMeetingName ] = useState('')
+    const dispatch = useDispatch()
+
+    const [ roomName, setRoomName ] = useState('')
 
     const _handleInputChanged = useCallback((event) => {
-        setMeetingName(event.target.value)
+        setRoomName(event.target.value)
     }, [])
 
     const _handleJoinMeetingClicked = useCallback((event) => {
+        if (roomName !== '') {
+            // dispatch(appNavigate(`/Room?name=${roomName}`))
+            dispatch(appNavigate(`/Room/${roomName}`))
+        }
+
         event.preventDefault()
-    }, [])
+    }, [roomName])
 
     return (
         <PrimaryPresenter
-            meetingName = { meetingName }
+            roomName = { roomName }
             handleInputChanged = { _handleInputChanged }
             handleJoinMeetingClicked = { _handleJoinMeetingClicked } />
     )

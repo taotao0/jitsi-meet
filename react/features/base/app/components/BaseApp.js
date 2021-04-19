@@ -148,56 +148,55 @@ export default class BaseApp extends Component<*, State> {
     render() {
         const { route: { component, props }, store } = this.state;
 
-
-
         if (store) {
             return (
                 <I18nextProvider i18n = { i18next }>
                     <Provider store = { store }>
-                        <div className = 'usee-wrapper'>
-                            <HeaderGNBContainer />
-                            <NavigationContainer />
-                            <main className = 'main-wrapper'>
-                                {
-                                    component
-                                        ? this._createMainElement(component, props)
-                                        : (
-                                            <Switch>
-                                                <Route
-                                                    exact
-                                                    path = { PRIMARY_ROUTE_PATH }
-                                                    component = { PrimaryContainer } />
-                                                <Route
-                                                    exact
-                                                    path = { LOGIN_ROUTE_PATH }
-                                                    component = { LoginContainer } />
-                                                <Route
-                                                    path = { MY_PAGE_ROUTE_PATH }
-                                                    component = { MyPageContainer } />
-                                                <Route
-                                                    path = { MOBILE_SUPPORT_ROUTE_PATH }
-                                                    component = { MobileSupportContainer } />
-                                                <Route
-                                                    path = { MANAGE_RECORDINGS_ROUTE_PATH }
-                                                    component = { ManageRecordingsContainer } />
-                                                <Route
-                                                    path = { FIND_AUTH_ROUTE_PATH }
-                                                    component = { FindAuthContainer } />
-                                                <Route
-                                                    path = { REST_PASSWORD_ROUTE_PATH }
-                                                    component = { ResetPasswordContainer } />
-                                                <Route component = { NotFoundContainer } />
-                                            </Switch>
-                                        )
-                                }
-                            </main>
-                            <FooterContainer />
-
-                            {/* { this._createMainElement(component, props) } */}
-                            {/* <SoundCollection />
-                            { this._createExtraElement() }
-                            { this._renderDialogContainer() } */}
-                        </div>
+                        {
+                            component
+                                ? this._createMainElement(component, props)
+                                : (
+                                    <div className = 'usee-wrapper'>
+                                        <HeaderGNBContainer />
+                                        <NavigationContainer />
+                                        <main className = 'main-wrapper'>
+                                            {
+                                                <Switch>
+                                                    <Route
+                                                        exact
+                                                        path = { PRIMARY_ROUTE_PATH }
+                                                        component = { PrimaryContainer } />
+                                                    <Route
+                                                        exact
+                                                        path = { LOGIN_ROUTE_PATH }
+                                                        component = { LoginContainer } />
+                                                    <Route
+                                                        path = { MY_PAGE_ROUTE_PATH }
+                                                        component = { MyPageContainer } />
+                                                    <Route
+                                                        path = { MOBILE_SUPPORT_ROUTE_PATH }
+                                                        component = { MobileSupportContainer } />
+                                                    <Route
+                                                        path = { MANAGE_RECORDINGS_ROUTE_PATH }
+                                                        component = { ManageRecordingsContainer } />
+                                                    <Route
+                                                        path = { FIND_AUTH_ROUTE_PATH }
+                                                        component = { FindAuthContainer } />
+                                                    <Route
+                                                        path = { REST_PASSWORD_ROUTE_PATH }
+                                                        component = { ResetPasswordContainer } />
+                                                    <Route component = { NotFoundContainer } />
+                                                </Switch>
+                                            }
+                                        </main>
+                                        <FooterContainer />
+                                        {/* { this._createMainElement(component, props) } */}
+                                        {/* <SoundCollection />
+                                        { this._createExtraElement() }
+                                        { this._renderDialogContainer() } */}
+                                    </div>
+                                )
+                        }
                     </Provider>
                 </I18nextProvider>
             );

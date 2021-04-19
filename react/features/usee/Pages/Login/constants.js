@@ -19,6 +19,6 @@ export const LoginStatus = {
 
 export const LoginFailReason = {
     NONE: 'NONE',
-    BYID: 'BYID',
+    BYID: 'BYID', 
     BYPW: 'BYPW',
 }

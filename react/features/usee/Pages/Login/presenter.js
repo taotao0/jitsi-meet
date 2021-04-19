@@ -29,14 +29,14 @@ const LoginPresenter = (props) => {
     const {
         id,
         pwd,
-        autoLogin,
+        //autoLogin,
         query,
         failReason,
         idInput,
         pwdInput,
         loginBtnClicked,
         LoginInputResetBtnClicked,
-        handleSwitchClicked,
+        // handleSwitchClicked,
         onChange,
     } = props
 
@@ -75,7 +75,7 @@ const LoginPresenter = (props) => {
                             name: 'pwd',
                             onClick: LoginInputResetBtnClicked
                         }} />
-                    <div className = 'lg-state-save'>
+                    {/* <div className = 'lg-state-save'>
                         <p>{ t(`${LANG_PREFIX}.lgAuto`) }</p>
                         <Switch
                             className = 'lg-switch'
@@ -87,7 +87,7 @@ const LoginPresenter = (props) => {
                             checkedIcon = { false }
                             width = { SWITCH_WIDTH }
                             height = { SWITCH_HEIGHT } />
-                    </div>
+                    </div> */}
                     <button
                         className = 'lg-btn'
                         type = 'submit'

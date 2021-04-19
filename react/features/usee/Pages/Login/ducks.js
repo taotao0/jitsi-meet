@@ -2,7 +2,7 @@ import axios from 'axios'
 import queryString from 'query-string'
 import { jitsiLocalStorage } from '@jitsi/js-utils';
 
-import { ReducerRegistry } from '../../../base/redux'
+import { ReducerRegistry, PersistenceRegistry } from '../../../base/redux'
 
 import {
     UserStatus,
@@ -10,18 +10,20 @@ import {
     LoginFailReason
 } from './constants'
 
-import { USEE_LOGIN_KEY } from '../../usee_config'
+import { USEE_LS_LOGIN_KEY } from '../../usee_config'
 
 /* Action Types */
 export const LOGIN_SUCCESSED = 'LOGIN_SUCCESSED'
 export const LOGIN_FAILED = 'LOGIN_FAILED'
 export const USER_LOGOUT = 'USER_LOGOUT'
 export const LOGIN_FAIL_REASON_INITIALIZE = 'LOGIN_FAIL_REASON_INITIALIZE'
+// export const USER_FORCE_CLOSE = 'USER_FORCE_CLOSE'
 
 /* Actions */
+// FIXME: Not Used Action, autologin fix it!
 export const doAutoLogin = () => {
     return (dispatch, getState) => {
-        const UseeLoginInfo = JSON.parse(jitsiLocalStorage.getItem(USEE_LOGIN_KEY))
+        const UseeLoginInfo = JSON.parse(jitsiLocalStorage.getItem(USEE_LS_LOGIN_KEY))
 
         if (UseeLoginInfo && UseeLoginInfo.autoLogin) {
             const { session_token, autoLogin } = UseeLoginInfo
@@ -54,7 +56,7 @@ export const doUserLogin = (userInfo, pageInfo) => {
     return (dispatch, getState) => {
         dispatch(loginFailReasonInitialize())
 
-        const { id, pwd, autoLogin } = userInfo
+        const { id, pwd, /*autoLogin*/ } = userInfo
 
         axios.post('/api/v1/Auth/SignIn',
             queryString.stringify({
@@ -66,11 +68,8 @@ export const doUserLogin = (userInfo, pageInfo) => {
 
             if (status === LoginStatus.SUCCESSED) {
                 const { userInfo } = res.data
+                const loginUserInfo = { ...userInfo, /*autoLogin*/ }
 
-                const loginUserInfo = {
-                    ...userInfo,
-                    autoLogin,
-                }
                 dispatch(loginSuccessed(loginUserInfo, pageInfo))
             } else if (status === LoginStatus.FAILED) {
                 const { failReason } = res.data
@@ -84,13 +83,6 @@ export const doUserLogin = (userInfo, pageInfo) => {
 }
 
 export const doUserLogout = () => {
-    /*
-        FIXME: 
-            별도의 Back-end api가 필요없다?
-            store에 저장한 session-token을 지워준다.
-            Local Storage에 저장된 것도 지워준다.
-    */
-
     return {
         type: USER_LOGOUT
     }
@@ -117,14 +109,38 @@ export const loginFailReasonInitialize = () => {
     }
 }
 
+// export const userForceClose = () => {
+//     return (dispatch, getState) => {
+//         const userState = getState()[USEE_LS_LOGIN_KEY]
+
+//         if (userState.userStatus === UserStatus.MEMBER) {
+//             if (userState.loginUserInfo.autoLogin) {
+//                 const userInfo = {
+//                     ...userState,
+//                     userStatus: UserStatus.VISITOR
+//                 }
+
+//                 return dispatch({
+//                     type: USER_FORCE_CLOSE,
+//                     userInfo
+//                 })
+//             } else {
+//                 jitsiLocalStorage.removeItem(USEE_LS_LOGIN_KEY)
+//             }
+//         }
+//     }
+// }
+
 /* Default State */
 const defaultState = {
     userStatus: UserStatus.VISITOR,
     failReason: LoginFailReason.NONE,
 }
 
+PersistenceRegistry.register(USEE_LS_LOGIN_KEY)
+
 /* Reducer */
-ReducerRegistry.register('features/usee/Pages/Login',
+ReducerRegistry.register(USEE_LS_LOGIN_KEY,
     (state = defaultState, action) => {
         switch (action.type) {
             case LOGIN_SUCCESSED: {
@@ -160,6 +176,15 @@ ReducerRegistry.register('features/usee/Pages/Login',
                     failReason: LoginFailReason.NONE,
                 }
             }
+
+            // case USER_FORCE_CLOSE: {
+            //     const { userInfo } = action
+
+            //     return {
+            //         ...state,
+            //         userInfo,
+            //     }
+            // }
 
             default: {
                 return state
