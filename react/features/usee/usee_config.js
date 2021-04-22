@@ -43,7 +43,7 @@ export const KAKAO_LOGO_ALT = 'kakao_logo'
 export const USER_AVATAR_ALT = 'user-avatar'
 
 // Static html
-export const COMPANY_INTRODUCE = 'http://uclick.co.kr/sub1/sub1_2.html'
+export const COMPANY_INTRODUCE = 'http://uclick.co.kr/sub1/sub1_4.html'
 
 export const PRIVACY_POLICY = 'https://usee.co.kr/static/202102_terms_of_service.html'
 

@@ -29,7 +29,7 @@ const MyPagePresenter = (props) => {
                         <h1>{ t(`${LANG_PREFIX}.title`) }</h1>
                         <img
                             className = 'user-avatar'
-                            src = '../../../../../../../images/user-temp.png'
+                            src = './images/user-temp.png'
                             alt = { USER_AVATAR_ALT }
                             style = {{ width: 180, height: 180, borderRadius: 90 }} />
                         <div className = 'mp-info-wrapper'>
