@@ -55,7 +55,7 @@
     }
 
     .lg-sep-wrapper {
-        display: flex;
+        display: none;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -74,6 +74,7 @@
     }
 
     .lg-other-auth-desc {
+        display: none;
         margin-top: 20px;
         font-size: 15px;
         font-weight: bold;
@@ -81,6 +82,7 @@
     }
 
     .lg-other-auth-logo-wrapper {
+        display: none;
         margin-top: 20px;
 
         a > img {

@@ -14,7 +14,7 @@ const MobileSupportPresenter = (props) => {
 
     return (
         <div className = 'common-wrapper mb-wrapper'>
-            <h1 className = 'mb-desc'>
+            <h1>
                 { t(`${LANG_PREFIX}.title`) }
             </h1>
             <div className = 'mb-btn-wrapper'>

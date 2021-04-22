@@ -31,16 +31,10 @@
         .mr-filter-filename-input {
             display: flex;
             flex-direction: row;
-            border: 1px solid $useeDarkBorderColor;
-            box-sizing: border-box;
+            border-radius: 4px;
 
             .mr-filter-input {
-                border: hidden;
                 width: 225px;
-            }
-
-            &:focus-within {
-                border: 2px solid $useeDarkBorderColor;
             }
 
             button[type="submit"] {
@@ -203,11 +197,10 @@
 
             .file-size {
                 width: 20%;
-                margin-right: 10px;
             }
 
             .recording-date {
-                width: 35%;
+                width: 25%;
             }
         }
     }
