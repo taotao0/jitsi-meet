@@ -8,11 +8,15 @@ import {
     Functions
 } from './constants'
 
+import { UserStatus } from '../Login/constants'
+
 const PrimaryPresenter = (props) => {
     const {
         roomName,
+        loginState,
         handleInputChanged,
-        handleJoinMeetingClicked
+        handleJoinMeetingClicked,
+        handlePersonalRoomJoinBtnClicked
     } = props
 
     const { t } = useTranslation()
@@ -56,6 +60,15 @@ const PrimaryPresenter = (props) => {
                             { t(`${LANG_PREFIX}.joinBtn`) }
                         </button>
                     </div>
+                    {
+                        loginState.userStatus === UserStatus.MEMBER && (
+                            <button className = 'pm-room-btn'>
+                                <a onClick = { handlePersonalRoomJoinBtnClicked }>
+                                    { t(`${LANG_PREFIX}.personalRoomJoin`) }
+                                </a>
+                            </button>
+                        )
+                    }    
                 </form>                
             </div>
             <div className = 'pm-fnc-wrapper'>

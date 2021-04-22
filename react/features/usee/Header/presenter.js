@@ -74,11 +74,6 @@ const HeaderPresenter = (props) => {
                 <li className = { isAuth && 'account-menu-visible' }>
                     <WelcomeUser loginUserInfo = { loginUserInfo } />
                 </li>
-                <li className = { isAuth && 'account-menu-visible' }>
-                    <a onClick = { personalRoomJoinBtnClicked }>
-                        { t(`${LANG_PREFIX}.personalRoomJoin`) }
-                    </a>
-                </li>
                 <li className = { showMenu && 'account-menu-visible' }>
                     {
                         isAuth

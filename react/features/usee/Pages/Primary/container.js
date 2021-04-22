@@ -1,12 +1,17 @@
 import React, { useState, useCallback } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import PrimaryPresenter from './presenter'
 
 import { appNavigate } from '../../../app/actions'
 
+import { doPersonalRoomJoin } from '../../Header/ducks'
+
+import { USEE_LS_LOGIN_KEY } from '../../usee_config'
+
 const PrimaryContainer = () => {
     const dispatch = useDispatch()
+    const loginState = useSelector(state => state[USEE_LS_LOGIN_KEY], [])
 
     const [ roomName, setRoomName ] = useState('')
 
@@ -23,11 +28,17 @@ const PrimaryContainer = () => {
         event.preventDefault()
     }, [roomName])
 
+    const _handlePersonalRoomJoinBtnClicked = useCallback(() => {
+        dispatch(doPersonalRoomJoin())
+    }, [])
+
     return (
         <PrimaryPresenter
             roomName = { roomName }
+            loginState = { loginState }
             handleInputChanged = { _handleInputChanged }
-            handleJoinMeetingClicked = { _handleJoinMeetingClicked } />
+            handleJoinMeetingClicked = { _handleJoinMeetingClicked }
+            handlePersonalRoomJoinBtnClicked = { _handlePersonalRoomJoinBtnClicked } />
     )
 }
 
