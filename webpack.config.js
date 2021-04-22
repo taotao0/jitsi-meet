@@ -195,7 +195,7 @@ module.exports = [
         entry: {
             'app.bundle': './app.js'
         },
-        performance: getPerformanceHints(4 * 1024 * 1024)
+        performance: getPerformanceHints(5 * 1024 * 1024)
     }),
     Object.assign({}, config, {
         entry: {
@@ -219,7 +219,7 @@ module.exports = [
         entry: {
             'do_external_connect': './connection_optimization/do_external_connect.js'
         },
-        performance: getPerformanceHints(5 * 1024)
+        performance: getPerformanceHints(10 * 1024)
     }),
     Object.assign({}, config, {
         entry: {
@@ -231,7 +231,7 @@ module.exports = [
         entry: {
             'analytics-ga': './react/features/analytics/handlers/GoogleAnalyticsHandler.js'
         },
-        performance: getPerformanceHints(5 * 1024)
+        performance: getPerformanceHints(10 * 1024)
     }),
     Object.assign({}, config, {
         entry: {
@@ -281,7 +281,7 @@ module.exports = [
             library: 'JitsiMeetExternalAPI',
             libraryTarget: 'umd'
         }),
-        performance: getPerformanceHints(35 * 1024)
+        performance: getPerformanceHints(36 * 1024)
     })
 ];
 
