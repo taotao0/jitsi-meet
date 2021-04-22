@@ -19,10 +19,10 @@ const FooterInfoArea = (props) => {
         <div className = 'ft-info-wrapper'>
                 <div className = 'ft-info'>
                     <img
-                        src = './images/uclicklogo.png'
-                        alt = { COMPANY_LOGO_ALT }
-                        width = '109'
-                        height = '47' />
+                        className = 'ft-info-img'
+                        src = './images/uclick-logo.png'
+                        srcset="./images/uclick-logo@2x.png 2x, ./images/uclick-logo@3x.png 3x"
+                        alt = { COMPANY_LOGO_ALT } />
                     <div className = 'ft-company-info-wrapper'>
                         <p>
                             <strong>
@@ -30,10 +30,11 @@ const FooterInfoArea = (props) => {
                             </strong>
                             {` | ${t(`${companyPrefix}.address`)}`}
                             {` | ${t(`${companyPrefix}.CEO`)}`}
+                            {` | ${t(`${companyPrefix}.certificateForBusinessNumber`)}` }
                         </p>
                         <p>
-                            { t(`${companyPrefix}.certificateForBusinessNumber`) }
-                            {` | ${t(`${companyPrefix}.tel`)}`}
+                            
+                            {`${t(`${companyPrefix}.tel`)}`}
                             {` | ${t(`${companyPrefix}.fax`)}`}
                         </p>
                         <p>
@@ -42,8 +43,9 @@ const FooterInfoArea = (props) => {
                     </div>
                 </div>
                 <div className = "ft-lng-select">
-                    { t(`${langPrefix}.lang`) }
-                    <br/>
+                    <span>
+                        { t(`${langPrefix}.lang`) }
+                    </span>
                     <select
                         value = { langSelect }
                         onChange = { handleSelectChanged }>

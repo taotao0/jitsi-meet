@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
-import {
-    setCheckedFiles
-} from '../../ducks'
+import { setCheckedFiles } from '../../ducks'
+
+import { LANG_PREFIX } from '../../constants'
 
 const withCard = (WrappedComponent) => {
     return (props) => {
@@ -13,29 +14,36 @@ const withCard = (WrappedComponent) => {
             filterList, 
             checkedFiles,
         } = useSelector(state => state['features/usee/Pages/ManageRecordings'], [])
+        const { t } = useTranslation()
 
-        const [ checkState, setCheckState ] = useState(false)
+        const _handleCheckStateChanged = useCallback((event, path) => {
 
-        const _handleCheckStateChanged = useCallback((event, uid, path) => {
-
-            dispatch(setCheckedFiles({ uid, path }))
+            dispatch(setCheckedFiles(path))
         }, [])
 
-        const _isChecked = (uid, path) => {
-            const result = checkedFiles.find(elem => JSON.stringify(elem) === JSON.stringify({uid, path}))
+        const _isChecked = (path) => {
+            const result = checkedFiles.find(elem => elem ===  path)
         
             return result === undefined ? false : true
         }
 
         return (
-            filterList.map((elem, index) => {
-                return <WrappedComponent
-                            key = { index }
-                            { ...elem }
-                            checked = { _isChecked(elem.uid, elem.path) }
-                            checkStateChanged = { _handleCheckStateChanged } />
-
-            })
+            <>
+            {
+                filterList.length > 0
+                    ? (
+                        filterList.map((elem, index) => {
+                            return <WrappedComponent
+                                        key = { index }
+                                        { ...elem }
+                                        checked = { _isChecked(elem.path) }
+                                        checkStateChanged = { _handleCheckStateChanged } />
+            
+                        })
+                    )
+                    : <div>{ t(`${LANG_PREFIX}.emptyRecordList`) }</div> 
+            }
+            </>
         )
     }
 };

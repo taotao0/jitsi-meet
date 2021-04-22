@@ -10,11 +10,12 @@
         padding-block: 20px;
         background-color: $useePrimaryColor;
         border-radius: 15px;
+        color: $useeLightTextColor;
 
         p {
             text-align: initial;
             margin-bottom: 5px;
-            color: $useeLightTextColor;
+            // color: $useeLightTextColor;
         }
 
         .mr-filter-datepicker-range {

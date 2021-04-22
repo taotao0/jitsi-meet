@@ -25,7 +25,7 @@ const DetailCard = (props) => {
                 className = 'mr-file-detail-checkbox'
                 type = 'checkbox'
                 checked = { checked }
-                onChange = { (e) => checkStateChanged(e, uid, path) } />
+                onChange = { (e) => checkStateChanged(e, path) } />
             {
                 !thumbnail && <FontAwesomeIcon
                                 className = 'video-file-icon'

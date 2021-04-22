@@ -28,7 +28,7 @@ const RecordingFilters = (props) => {
     return (
         <form className = 'mr-filter-form'>
             <div>
-                <p>시작날짜 선택</p>
+                <p>{ t(`${LANG_PREFIX}.selectDate`) }</p>
                 <div className = 'mr-filter-datepicker-range'>
                     <DatePicker
                         selected = { startDate }
@@ -52,7 +52,7 @@ const RecordingFilters = (props) => {
                 </div>
             </div>
             <div>
-                <p>파일 이름</p>
+                <p>{ t(`${LANG_PREFIX}.fileName`) }</p>
                 <div className = 'mr-filter-filename-input'>
                     <input
                         className = 'mr-filter-input'

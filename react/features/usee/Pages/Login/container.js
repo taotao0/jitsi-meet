@@ -17,7 +17,7 @@ const LoginContainer = (props) => {
 
     const query = queryString.parse(useLocation().search)
     const history = useHistory()
-    const { failReason } = useSelector(state => state['features/usee/Pages/Login'], [])
+    const { failReason, userStatus } = useSelector(state => state['features/usee/Pages/Login'], [])
 
     const [ inputs, setInputs ] = useState({
         id: '',
@@ -93,6 +93,7 @@ const LoginContainer = (props) => {
             pwd = { inputs.pwd }
             //autoLogin = { autoLogin }
             query = { query }
+            userStatus = { userStatus }
             failReason = { failReason }
             idInput = { idInput }
             pwdInput = { pwdInput }

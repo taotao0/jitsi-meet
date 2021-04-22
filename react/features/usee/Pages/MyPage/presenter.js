@@ -7,9 +7,9 @@ import ArrowMenuItem from './components/ArrowMenuItem'
 
 import { LANG_PREFIX } from './constants'
 import { UserStatus } from '../Login/constants'
+import { IconDefaultAvatar } from '../../../base/icons'
 
 import {
-    USER_AVATAR_ALT,
     LOGIN_ROUTE_PATH,
     MY_PAGE_ROUTE_PATH,
     MANAGE_RECORDINGS_ROUTE_PATH,
@@ -27,11 +27,9 @@ const MyPagePresenter = (props) => {
                 ? (
                     <section className = 'common-wrapper section-wrapper'>
                         <h1>{ t(`${LANG_PREFIX}.title`) }</h1>
-                        <img
-                            className = 'user-avatar'
-                            src = '../../../../../../../images/user-temp.png'
-                            alt = { USER_AVATAR_ALT }
-                            style = {{ width: 180, height: 180, borderRadius: 90 }} />
+                        <div className = 'mp-info-img'>
+                            <IconDefaultAvatar />
+                        </div>
                         <div className = 'mp-info-wrapper'>
                             <SimpleInfoView
                                 title = { t(`${LANG_PREFIX}.id`) }

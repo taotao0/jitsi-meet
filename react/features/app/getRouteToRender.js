@@ -45,8 +45,8 @@ export function _getRouteToRender(stateful: Function | Object): Promise<Route> {
     }
 
     // FIXME: URL 규칙을 정해야 한다!!! /
-    // return _getWebConferenceRoute(state) || _getContentsRoute(state)
-    return _getContentsRoute(state)
+    return _getWebConferenceRoute(state) || _getContentsRoute(state)
+    // return _getContentsRoute(state)
 }
 
 /**

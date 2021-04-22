@@ -2,12 +2,14 @@ import axios from 'axios'
 import queryString from 'query-string'
 
 import { ReducerRegistry } from '../../../base/redux'
-import { RecordStatus } from './constants'
+
+import { openModal, closeModal } from '../../Modal/ducks'
+import NoticeModal from '../../Modal/components/NoticeModal'
+
+import { RecordStatus, LANG_PREFIX } from './constants'
 import { USEE_LS_LOGIN_KEY } from '../../usee_config'
 
 export const SET_FIND_RECORDING_FILE_FILTER = 'SET_FIND_RECORDING_FILE_FILTER'
-export const SET_DELETE_RECORDING_ITEMS = 'SET_DELETE_RECORDING_ITEMS'
-export const SET_DOWNLOAD_RECORDING_ITEMS = 'SET_DOWNLOAD_RECORDING_ITEMS'
 export const SET_ALL_FILES_CHECKED = 'SET_ALL_FILES_CHECKED'
 export const SET_CHECKED_FILES = 'SET_CHECKED_FILES'
 export const SET_RECORDING_LIST = 'SET_RECORDING_LIST'
@@ -21,15 +23,69 @@ export const setFindRecordingFileFilter = (startDate, endDate, fileName) => {
     }
 }
 
-export const setDeleteRecordingItems = () => {
-    return {
-        type: SET_DELETE_RECORDING_ITEMS,
+export const downloadRecordItems = (t) => {
+    return (dispatch, getState) => {
+        const loginState = getState()[USEE_LS_LOGIN_KEY]
+        const recordState = getState()['features/usee/Pages/ManageRecordings']
+
+        if (recordState.checkedFiles.length === 1) {
+            let jsonObj = new Object()
+
+            jsonObj.path = recordState.checkedFiles
+            jsonObj = queryString.stringify(jsonObj)
+
+            axios({
+                url: '/api/v1/RecordHistory/DownloadLinkList',
+                method: 'post',
+                headers: {
+                    'Authorization': loginState?.loginUserInfo?.session_token,
+                },
+                data: jsonObj
+            }).then(res => {
+                const { status } = res.data
+
+                if (status === RecordStatus.SUCCESSED) {
+                    window.location.href = res.data.uri                    
+                }
+            }).catch((err => {
+                console.log("RecordHistory", err)
+            }))
+        } else {
+            _handleErrMsg('DOWNLOAD', dispatch, getState, t)
+        }
     }
 }
 
-export const setDownloadRecordingItems = () => {
-    return {
-        type : SET_DOWNLOAD_RECORDING_ITEMS,
+export const deleteRecordItems = (t) => {
+    return (dispatch, getState) => {
+        const loginState = getState()[USEE_LS_LOGIN_KEY]
+        const recordState = getState()['features/usee/Pages/ManageRecordings']
+
+        if (recordState.checkedFiles.length > 0) {
+            let jsonObj = new Object()
+
+            jsonObj.path = recordState.checkedFiles
+            jsonObj = queryString.stringify(jsonObj)
+
+            axios({
+                url: '/api/v1/RecordHistory/DeleteList',
+                method: 'post',
+                headers: {
+                    'Authorization': loginState?.loginUserInfo?.session_token,
+                },
+                data: jsonObj
+            }).then(res => {
+                const { status } = res.data
+
+                if (status === RecordStatus.SUCCESSED) {
+                    return dispatch(getRecordingListFromServer())
+                }
+            }).catch((err => {
+                console.log("RecordHistory", err)
+            }))
+        } else {
+            _handleErrMsg('DELETE', dispatch, getState, t)
+        }
     }
 }
 
@@ -128,28 +184,14 @@ ReducerRegistry.register('features/usee/Pages/ManageRecordings',
                 }
             }
 
-            case SET_DELETE_RECORDING_ITEMS : {
-                return {
-                    ...state,
-                    checkedFiles: state.checkedFiles
-                }
-            }
-
-            case SET_DOWNLOAD_RECORDING_ITEMS : {
-                return {
-                    ...state,
-                    checkedFiles: state.checkedFiles
-                }
-            }
-
             case SET_ALL_FILES_CHECKED : {
                 let checkedFiles = []
 
                 if (!state.isCheckedAll) {
                     checkedFiles = state.filterList.map((elem) => {
-                        const { uid, path } = elem
+                        const { path } = elem
 
-                        return { uid, path }
+                        return path
                     })
                 }
 
@@ -166,7 +208,7 @@ ReducerRegistry.register('features/usee/Pages/ManageRecordings',
                 const checkedFiles = state.checkedFiles.slice()
 
                 const idx = checkedFiles.findIndex((elem) => {
-                    return elem.uid === checkItem.uid
+                    return elem === checkItem.path
                 })
 
                 idx === -1
@@ -194,3 +236,17 @@ ReducerRegistry.register('features/usee/Pages/ManageRecordings',
         }
     }
 )
+
+const _handleErrMsg = (type, dispatch, getState, t) => {
+    let noticeMsg = t(`${LANG_PREFIX}.errEmptyMsg`)
+
+    if (type === 'DOWNLOAD') {
+        const { checkedFiles } = getState()['features/usee/Pages/ManageRecordings']
+
+        if (checkedFiles.length > 1) {
+            noticeMsg = t(`${LANG_PREFIX}.errSelectMsg`)
+        }
+    }
+
+    dispatch(openModal(NoticeModal, { noticeMsg, onSubmit: () => { dispatch(closeModal())}}))
+}

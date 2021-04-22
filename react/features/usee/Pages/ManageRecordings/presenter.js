@@ -15,7 +15,7 @@ import { UserStatus } from '../Login/constants'
 import {
     LOGIN_ROUTE_PATH,
     MANAGE_RECORDINGS_ROUTE_PATH
- } from '../../usee_config'
+} from '../../usee_config'
 
 const ManageRecordingsPresenter = (props) => {
     const {
@@ -26,15 +26,13 @@ const ManageRecordingsPresenter = (props) => {
         endDateInput,
         fileNameInput,
         activeRadio,
-        recordingList,
         isCheckedAll,
+        ModalInfo,
         setStartDate,
         setEndDate,
         fileNameChanged,
         findFileBtnClicked,
-        checkedAllBtnClicked,
-        deleteBtnClicked,
-        downloadBtnClicked,
+        handleOptionBtnClicked,
         activeRadioClicked
     } = props
 
@@ -58,18 +56,15 @@ const ManageRecordingsPresenter = (props) => {
                                 setStartDate = { setStartDate }
                                 setEndDate = { setEndDate }
                                 fileNameChanged = { fileNameChanged }
-                                findFileBtnClicked = { findFileBtnClicked }
-                                checkedAllBtnClicked = { checkedAllBtnClicked }
-                                deleteBtnClicked = { deleteBtnClicked }
-                                downloadBtnClicked = { downloadBtnClicked } />
+                                findFileBtnClicked = { findFileBtnClicked } />
                             <div className = 'mr-filter-btn-radio-wrapper'>
                                 <ul>
                                     <li>
                                         <button
                                             className = 'mr-filter-option-btn'
-                                            id = 'select-all-btn'
+                                            name = 'selectAll'
                                             type = 'submit'
-                                            onClick = { checkedAllBtnClicked }>
+                                            onClick = { handleOptionBtnClicked }>
                                             {
                                                 isCheckedAll
                                                 ? t(`${LANG_PREFIX}.unSelectAll`)
@@ -80,25 +75,25 @@ const ManageRecordingsPresenter = (props) => {
                                     <li>
                                         <button
                                             className = 'mr-filter-option-btn'
-                                            id = 'delete-btn'
+                                            name = 'delete'
                                             type = 'submit'
-                                            onClick = { deleteBtnClicked }>
+                                            onClick = { handleOptionBtnClicked }>
                                                 { t(`${LANG_PREFIX}.delete`) }
                                         </button>
                                     </li>
                                     <li>
                                         <button
                                             className = 'mr-filter-option-btn'
-                                            id = 'download-btn'
+                                            name = 'download'
                                             type = 'submit'
-                                            onClick = { downloadBtnClicked }>
+                                            onClick = { handleOptionBtnClicked }>
                                                 { t(`${LANG_PREFIX}.download`) }
                                         </button>
                                     </li>
                                 </ul>
 
                                 <div className = 'check-basic-detail'>
-                                    <p>보기 선택</p>
+                                    <p>{ t(`${LANG_PREFIX}.selectView`) }</p>
                                     <input
                                         type = 'radio'
                                         id = { ActiveRadio.BASIC }
@@ -107,7 +102,7 @@ const ManageRecordingsPresenter = (props) => {
                                         value = { ActiveRadio.BASIC }
                                         onChange = { activeRadioClicked } />
                                     <label htmlFor = { ActiveRadio.BASIC }>
-                                        일반
+                                        { t(`${LANG_PREFIX}.basicView`) }
                                     </label>
                                     <input
                                         type = 'radio'
@@ -117,12 +112,16 @@ const ManageRecordingsPresenter = (props) => {
                                         value = { ActiveRadio.DETAIL }
                                         onChange = { activeRadioClicked } />
                                     <label htmlFor = { ActiveRadio.DETAIL}>
-                                        자세히
+                                        { t(`${LANG_PREFIX}.detailView`) }
                                     </label>
                                 </div>
                             </div>
-                        <RecordingLists
-                            activeRadio = { activeRadio } />
+                            <RecordingLists
+                                activeRadio = { activeRadio } />
+                        {
+                            ModalInfo && ModalInfo.modalComponent && 
+                                ModalInfo.modalComponent(ModalInfo.modalComponentProps)
+                        }
                     </div>
                 )
                 : (

@@ -1,4 +1,4 @@
-export const LANG_PREFIX = 'usee.Pages.RecordManager'
+export const LANG_PREFIX = 'usee.Pages.ManageRecordings'
 
 export const RECORD_FILE_STATUS = {
     COMPLETE: 'COMPLETE',

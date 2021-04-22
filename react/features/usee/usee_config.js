@@ -34,6 +34,8 @@ export const USEE_PLAY_STORE_LINK = 'https://play.google.com/store/apps/details?
 // Image alt
 export const COMPANY_LOGO_ALT = 'uclick_logo'
 
+export const ACCOUNT_ALT = 'account'
+
 export const GOOGLE_LOGO_ALT = 'google_logo'
 
 export const NAVER_LOGO_ALT = 'naver_logo'

@@ -12,40 +12,7 @@
     justify-content: space-between;
     align-items: center;
 
-    .gnb-menu {
-        display: flex;
-        padding-left: 0;
-        list-style: none;
-
-        li {
-            padding-left: 30px;
-            display: none;
-
-            a {
-                cursor: pointer;
-                text-decoration: none;
-                font-weight: normal;
-                color: $useePrimaryTextColor;
-
-                &.gnb-menu-active {
-                    font-weight: 900;
-                }
-            }
-        }
-
-        li:first-child {
-            padding-left: 0px;
-        }
-
-        li.gnb-menu-visible {
-            display: list-item;
-        }
-    }
-    .gnb-lg {
-        font-weight: bold;
-        color: $useePrimaryTextColor;
-        text-decoration: none;
-    }
+    
 }
 .fa-user {
     margin-right: 10px;

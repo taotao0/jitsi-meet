@@ -4,13 +4,13 @@ import { useTranslation } from 'react-i18next'
 
 import {
     setFindRecordingFileFilter,
-    setDeleteRecordingItems,
-    setDownloadRecordingItems,
     setAllFilesChecked,
-    getRecordingListFromServer
+    getRecordingListFromServer,
+    downloadRecordItems,
+    deleteRecordItems
 } from './ducks'
 
-import { LANG_PREFIX, ActiveRadio } from './constants'
+import { ActiveRadio } from './constants'
 
 import ManageRecordingsPresenter from './presenter'
 
@@ -21,7 +21,8 @@ const ManageRecordingsContainer = () => {
     const {
         recordingList,
         isCheckedAll,
-     } = useSelector(state => state['features/usee/Pages/ManageRecordings'], [])
+    } = useSelector(state => state['features/usee/Pages/ManageRecordings'], [])
+    const modalInfo = useSelector(state => state['features/usee/Modal'], [])
 
     const [ startDate, setStartDate ] = useState('')
     const [ endDate, setEndDate ] = useState('')
@@ -43,19 +44,16 @@ const ManageRecordingsContainer = () => {
         event.preventDefault()
     }, [startDate, endDate, fileName])
 
-    const _handleCheckedAllBtnClicked = useCallback((event) => {
-        dispatch(setAllFilesChecked())
-        event.preventDefault()
-    }, [])
+    const _handleOptionBtnClicked = useCallback((event) => {
+        const target = event.currentTarget
 
-    const _handleDeleteBtnClicked = useCallback((event) => {
-        dispatch(setDeleteRecordingItems())
-        event.preventDefault()
-    }, [])
-
-    const _handleDownloadBtnClicked = useCallback((event) => {
-        dispatch(setDownloadRecordingItems())
-        event.preventDefault()
+        target.name === 'selectAll'
+            ? dispatch(setAllFilesChecked())
+            : target.name === 'delete'
+                ? dispatch(deleteRecordItems(t))
+                : target.name === 'download'
+                    ? dispatch(downloadRecordItems(t))
+                    : null
     }, [])
 
     const _handleActiveRadioClicked = useCallback((event) => {
@@ -81,13 +79,12 @@ const ManageRecordingsContainer = () => {
             activeRadio = { activeRadio }
             recordingList = { recordingList }
             isCheckedAll = { isCheckedAll }
+            ModalInfo = { modalInfo }
             setStartDate = { date => setStartDate(date) }
             setEndDate = { date => setEndDate(date) }
             fileNameChanged = { _handleFileNameChanged }
             findFileBtnClicked = { _handleFindFileBtnClicked }
-            checkedAllBtnClicked = { _handleCheckedAllBtnClicked }
-            deleteBtnClicked = { _handleDeleteBtnClicked }
-            downloadBtnClicked = { _handleDownloadBtnClicked }
+            handleOptionBtnClicked = { _handleOptionBtnClicked }
             activeRadioClicked = { _handleActiveRadioClicked } />
     );
 };

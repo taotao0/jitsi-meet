@@ -4,9 +4,9 @@ import { useLocation } from 'react-router-dom'
 
 import HeaderGNBPresenter from './presenter'
 
-import { compareCurrentPathToLoginPath } from './functions'
+import { compareCurrentPathToLoginPath } from '../Header/functions'
 
-import { doPersonalRoomJoin } from './ducks'
+import { doPersonalRoomJoin } from '../Header/ducks'
 import { doUserLogout } from '../Pages/Login/ducks'
 
 const HeaderGNBContainer = () => {

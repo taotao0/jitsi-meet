@@ -2,6 +2,11 @@
     width: 400px;
     margin: 0 auto;
 
+    .mp-info-img {
+        width: 140px;
+        margin: 0 auto;
+    }
+
     .mp-info-wrapper {
         width: 360px;
         margin: 15px auto;
@@ -24,7 +29,7 @@
                 text-decoration: none;
                 font-size: 13px;
                 font-weight: bold;
-                color: $useePrimaryTextColor;
+                color: $useeLightTextColor;
             }
 
             &:first-of-type {

@@ -343,36 +343,32 @@ export function parseURIString(uri: ?string) {
     obj.contextRoot = getLocationContextRoot(obj);
 
     // The room (name) is the last component/segment of pathname.
-    const { pathname } = obj;
+    const { contextRoot, pathname } = obj;
 
     // XXX While the components/segments of pathname are URI encoded, Jitsi Meet
     // on the client and/or server  sides still don't support certain characters.
+
     const contextRootEndIndex = pathname.lastIndexOf('/');
-    let room = pathname.substring(contextRootEndIndex + 1) || undefined;
+    let roomName = undefined;
 
-    if (room) {
-        const fixedRoom = _fixRoom(room);
+    if (contextRoot === '/Room/') {
+        roomName = pathname.substring(contextRootEndIndex + 1);
+    }
 
-        if (fixedRoom !== room) {
-            room = fixedRoom;
+    if (roomName) {
+        const fixedRoom = _fixRoom(roomName);
+
+        if (fixedRoom !== roomName) {
+            roomName = fixedRoom;
 
             // XXX Drive fixedRoom into pathname (because room is derived from
             // pathname).
             obj.pathname
-                = pathname.substring(0, contextRootEndIndex + 1) + (room || '');
+                = pathname.substring(0, contextRootEndIndex + 1) + (roomName || '');
         }
     }
-    // const roomName = queryString.parse(obj.search).name
 
-    // if (roomName) {
-    //     const fixedRoom = _fixRoom(roomName)
-
-    //     if (fixedRoom !== roomName) {
-    //         roomName = fixedRoom
-    //     }
-    // }
-
-    obj.room = room;
+    obj.room = roomName;
 
     if (contextRootEndIndex > 1) {
         // The part of the pathname from the beginning to the room name is the tenant.

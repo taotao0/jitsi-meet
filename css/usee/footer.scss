@@ -1,26 +1,32 @@
 .ft-wrapper {
-    height: auto;
+    display: flex;
+    flex-direction: column;
+    height: 300px;
     background-color: $useePrimaryColor;
 }
 
 .ft-menu {
-    border-bottom: 1px solid $useeDarkBorderColor;
-    padding-top: 10px;
-    padding-bottom: 10px;
     display: flex;
     justify-content: center;
+    height: 60px;
 
     ul {
+        display: flex;
+        height: 100%;
         padding-left: 0;
         overflow: hidden;
 
         li {
-            float: left;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             list-style: none;
             padding-left: 25px;
             font-size: 12px;
+
             &::after {
                 content: '|';
+                color: $useeLightTextColor;
                 padding-left: 25px;
             }
 
@@ -43,13 +49,17 @@
 
 .ft-info-wrapper {
     display: flex;
-    justify-content: space-between;
-    padding: 20px 80px;
+    flex: 1;
+    justify-content: space-around;
     align-items: center;
     color: $useePrimaryTextColor;
 
     .ft-info {
         display: flex;
+
+        .ft-info-img {
+            object-fit: contain;
+        }
 
         .ft-company-info-wrapper {
             padding-left: 50px;
@@ -64,5 +74,6 @@
     }
     select {
         width: 120px;
+        margin-left: 14px;
     }
 }

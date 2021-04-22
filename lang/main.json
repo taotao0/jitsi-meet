@@ -945,16 +945,14 @@
         "toggleLabel": "Enable lobby"
     },
     "usee": {
-        "HeaderGNB": {
+        "Header": {
             "login": "로그인",
             "logout": "로그아웃",
             "memberJoin": "회원가입",
             "personalRoomJoin": "개인 회의실 입장",
             "WelcomeUser": {
                 "welcome": "{{user}}님 환영합니다!"
-            }
-        },
-        "Navigation": {
+            },
             "introProduction": "제품 소개",
             "introFunction": "기능 소개",
             "pricesPolicy": "가격 정책",
@@ -993,9 +991,22 @@
         },
         "Pages": {
             "Primary": {
-                "desc": "실시간 메시징 및 컨텐츠 공유를 \n 사용한 비디오 회의",
+                "desc": "실시간 메시징 및 컨텐츠 \n 공유를 사용한 비디오 회의",
+                "subDesc": "최적의 커뮤니케이션 환경으로 “소통하여 함께하는 우리”가 \n 될 수 있도록 하는 것이 USee의 미션입니다.",
                 "joinBtn": "참여",
-                "inputPlaceholder": "회의실 이름 입력"
+                "inputPlaceholder": "회의실 이름을 입력하세요.",
+                "Contents": {
+                    "desc": "Product Advantage",
+                    "subDesc": "HD급 고품질의 영상과 선명한 음질로 비용, 시간, 공간의 낭비를 절감하고 기업구성원에게 실시간 협업 환경을 제공하는 모바일 기반의 화상회의 솔루션입니다.",
+                    "cost": "Reasonable Cost",
+                    "costDesc": "추가 H/W, S/W 없이 예측 가능한 비용 자동화된관리및운영 On-Demand 확장",
+                    "equipment": "Equipment Support",
+                    "equipmentDesc": "IP전화, 마이크, 카메라, CCTV 연계 표준 프로토콜 기반 확장성 제공 OpenAPI/SDK기반 3rd Party 연동",
+                    "monitoring": "Optimal Monitoring",
+                    "monitoringDesc": "Dashboard 제공 과금, 통계 정보 제공 운영관리 전용 포탈",
+                    "stability": "Service Stability",
+                    "stabilityDesc": "클라우드 기반 인프라 유연성 영상, 음질 품질 보장"
+                }
             },
             "MobileSupport": {
                 "title": "모바일 다운로드"
@@ -1031,13 +1042,21 @@
                 "recordListBtn": "녹화 목록",
                 "roomListBtn": "참여한 회의실 목록"
             },
-            "RecordManager": {
+            "ManageRecordings": {
                 "title": "녹화 관리",
                 "confirm": "확인",
                 "unSelectAll": "전체해제",
                 "selectAll": "전체선택",
                 "delete": "삭제",
-                "download": "다운로드"
+                "download": "다운로드",
+                "selectView": "보기 선택",
+                "basicView": "일반",
+                "detailView": "자세히",
+                "selectDate": "날짜 선택",
+                "fileName": "파일 이름",
+                "errEmptyMsg": "선택된 파일이 없습니다:)",
+                "errSelectMsg": "녹화 파일은 한 개만 선택 가능합니다.",
+                "emptyRecordList": "녹화 파일이 없습니다."
             },
             "NotFound": {
                 "desc": "페이지를 불러올 수 없습니다:)"

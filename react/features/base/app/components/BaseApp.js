@@ -20,8 +20,7 @@ import { SoundCollection } from '../../sounds';
 import { appWillMount, appWillUnmount } from '../actions';
 import logger from '../logger';
 
-import HeaderGNBContainer from '../../../usee/HeaderGNB'
-import NavigationContainer from '../../../usee/Navigation'
+import HeaderContainer from '../../../usee/Header'
 import FooterContainer from '../../../usee/Footer'
 
 import PrimaryContainer from '../../../usee/Pages/Primary'
@@ -157,8 +156,7 @@ export default class BaseApp extends Component<*, State> {
                                 ? this._createMainElement(component, props)
                                 : (
                                     <div className = 'usee-wrapper'>
-                                        <HeaderGNBContainer />
-                                        <NavigationContainer />
+                                        <HeaderContainer />
                                         <main className = 'main-wrapper'>
                                             {
                                                 <Switch>
