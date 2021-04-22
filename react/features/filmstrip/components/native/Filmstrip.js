@@ -1,7 +1,8 @@
 // @flow
 
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View, Button, FlatList } from 'react-native';
+import ChatMessage from '../../../chat/components/native/ChatMessage';
 
 import { Container, Platform } from '../../../base/react';
 import { connect } from '../../../base/redux';
@@ -35,7 +36,22 @@ type Props = {
     /**
      * The indicator which determines whether the filmstrip is visible.
      */
-    _visible: boolean
+    _visible: boolean,
+
+    /**
+     * The indicator which determines whether the filmstrip is visible.
+     */
+    _messages: Array<Object>
+};
+
+/**
+ * The type of the React {@link Component} state of {@link Filmstrip}.
+ */
+type State = {
+    /**
+     * Chatting view status.
+     */
+    chatEnabled: boolean
 };
 
 /**
@@ -77,6 +93,14 @@ class Filmstrip extends Component<Props> {
         // do not have much of a choice but to continue rendering LocalThumbnail
         // as any other remote Thumbnail on Android.
         this._separateLocalThumbnail = Platform.OS !== 'android';
+
+        this.state = {
+            chatEnabled: false,
+        };
+
+        this._onChatButtonClick = this._onChatButtonClick.bind(this);
+        this._keyExtractor = this._keyExtractor.bind(this);
+        this._renderMessage = this._renderMessage.bind(this);
     }
 
     /**
@@ -86,7 +110,10 @@ class Filmstrip extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const { _aspectRatio, _enabled, _participants, _visible } = this.props;
+        const { _aspectRatio, _enabled, _participants, _visible, _messages } = this.props;
+        const { chatEnabled } = this.state;
+
+        // console.log(chatEnabled);
 
         if (!_enabled) {
             return null;
@@ -94,6 +121,11 @@ class Filmstrip extends Component<Props> {
 
         const isNarrowAspectRatio = _aspectRatio === ASPECT_RATIO_NARROW;
         const filmstripStyle = isNarrowAspectRatio ? styles.filmstripNarrow : styles.filmstripWide;
+
+        // console.log(`isNarrowAspectRatio=${isNarrowAspectRatio}`);
+        // console.log(`filmstripStyle`);
+        // console.log(filmstripStyle);
+        // console.log(_messages);
 
         return (
             <Container
@@ -103,6 +135,27 @@ class Filmstrip extends Component<Props> {
                     this._separateLocalThumbnail
                         && !isNarrowAspectRatio
                         && <LocalThumbnail />
+                }
+                {
+                    !isNarrowAspectRatio &&
+                    <>
+                    <Button
+                        onPress={ this._onChatButtonClick }
+                        title="Chat"
+                        color="#4169E1"
+                    />
+                    { chatEnabled &&
+                    <View style={{width:150, height:200, backgroundColor:"#FFF8DC"}}>
+                        <FlatList
+                            data={ _messages }
+                            inverted = { true }
+                            inverted = { Boolean(_messages.length) }
+                            keyExtractor = { this._keyExtractor }
+                            renderItem = { this._renderMessage }
+                        />
+                    </View>
+                    }
+                    </>
                 }
                 <ScrollView
                     horizontal = { isNarrowAspectRatio }
@@ -133,6 +186,54 @@ class Filmstrip extends Component<Props> {
                 }
             </Container>
         );
+    }
+
+    _onChatButtonClick: () => void;
+
+    /**
+     * Change chat status.
+     *
+     * @private
+     * @returns {void}
+     */
+    _onChatButtonClick() {
+        const newValue = this.state.chatEnabled;
+        // console.log(newValue);
+        this.setState({
+            chatEnabled: !newValue
+        });
+    }
+
+    _renderMessage: Object => React$Element<*>;
+
+    /**
+     * Renders a single chat message.
+     *
+     * @param {Object} message - The chat message to render.
+     * @returns {React$Element<*>}
+     */
+    _renderMessage({ index, item: message }) {
+        return (
+            <ChatMessage
+                message = { message }
+                showAvatar = { false }
+                showDisplayName = { true }
+                showTimestamp = { true } />
+        );
+    }
+
+    _keyExtractor: Object => string
+
+    /**
+     * Key extractor for the flatlist.
+     *
+     * @param {Object} item - The flatlist item that we need the key to be
+     * generated for.
+     * @param {number} index - The index of the element.
+     * @returns {string}
+     */
+    _keyExtractor(item, index) {
+        return `key_${index}`;
     }
 
     /**
@@ -175,12 +276,16 @@ class Filmstrip extends Component<Props> {
 function _mapStateToProps(state) {
     const participants = state['features/base/participants'];
     const { enabled } = state['features/filmstrip'];
+    const { messages } = state['features/chat'];
+
+    // console.log(messages);
 
     return {
         _aspectRatio: state['features/base/responsive-ui'].aspectRatio,
         _enabled: enabled,
         _participants: participants.filter(p => !p.local),
-        _visible: isFilmstripVisible(state)
+        _visible: isFilmstripVisible(state),
+        _messages: messages,
     };
 }
 

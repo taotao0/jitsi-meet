@@ -104,9 +104,10 @@ class ChatMessage extends AbstractChatMessage<Props> {
      */
     _renderAvatar() {
         const { message } = this.props;
+        const style = this.props.showAvatar? styles.avatarWrapper : styles.avatarWrapperEmpty;
 
         return (
-            <View style = { styles.avatarWrapper }>
+            <View style = { style }>
                 { this.props.showAvatar && <Avatar
                     displayName = { message.displayName }
                     participantId = { message.id }
@@ -130,7 +131,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
 
         return (
             <Text style = { _styles.displayName }>
-                { message.displayName }
+                { '[ ' + message.displayName + ' ]' }
             </Text>
         );
     }

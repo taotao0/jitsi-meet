@@ -23,6 +23,11 @@ export default {
         width: 32
     },
 
+    avatarWrapperEmpty: {
+        marginRight: 8,
+        width: 0
+    },
+
     chatLink: {
         color: ColorPalette.blue
     },
@@ -141,7 +146,8 @@ ColorSchemeRegistry.register('Chat', {
      */
     displayName: {
         color: schemeColor('displayName'),
-        fontSize: 13
+        fontSize: 13,
+        color: 'green',
     },
 
     emptyComponentText: {
