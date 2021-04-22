@@ -21,7 +21,7 @@ const FooterInfoArea = (props) => {
                     <img
                         className = 'ft-info-img'
                         src = './images/uclick-logo.png'
-                        srcset="./images/uclick-logo@2x.png 2x, ./images/uclick-logo@3x.png 3x"
+                        srcSet="./images/uclick-logo@2x.png 2x, ./images/uclick-logo@3x.png 3x"
                         alt = { COMPANY_LOGO_ALT } />
                     <div className = 'ft-company-info-wrapper'>
                         <p>

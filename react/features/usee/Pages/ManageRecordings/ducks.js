@@ -118,7 +118,7 @@ export const getRecordingListFromServer = () => {
                 return dispatch(setRecordingList(res.data.recordList))
             }
         }).catch((err => {
-            console.log("RecordHistory", err)
+            console.log("RecordHistory", err)   
         }))
     }
 }
@@ -208,7 +208,7 @@ ReducerRegistry.register('features/usee/Pages/ManageRecordings',
                 const checkedFiles = state.checkedFiles.slice()
 
                 const idx = checkedFiles.findIndex((elem) => {
-                    return elem === checkItem.path
+                    return elem === checkItem
                 })
 
                 idx === -1

@@ -13,7 +13,7 @@ const BasicCard = (props) => {
         uid,
         recordDate,
         size,
-        thumbnail,
+        thumbnailLink,
         status,
         checked,
         checkStateChanged
@@ -26,10 +26,13 @@ const BasicCard = (props) => {
                 checked = { checked }
                 onChange = { (e) => checkStateChanged(e, path) } />
                 {
-                    !thumbnail && <FontAwesomeIcon
-                                    className = 'video-file-icon'
-                                    icon = { faFileVideo }
-                                    size = '4x' /> 
+                    !thumbnailLink 
+                        ? <FontAwesomeIcon
+                            className = 'video-file-icon'
+                            icon = { faFileVideo }
+                            size = '4x' />
+                        : <img
+                            src = { thumbnailLink } />
                 }
                 <div>{uid}</div>
                 <p className = 'file-size'>
