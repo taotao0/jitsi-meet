@@ -189,9 +189,9 @@ export default class BaseApp extends Component<*, State> {
                                         </main>
                                         <FooterContainer />
                                         {/* { this._createMainElement(component, props) } */}
-                                        {/* <SoundCollection />
+                                        <SoundCollection />
                                         { this._createExtraElement() }
-                                        { this._renderDialogContainer() } */}
+                                        { this._renderDialogContainer() } }
                                     </div>
                                 )
                         }
