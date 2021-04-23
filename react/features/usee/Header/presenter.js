@@ -90,13 +90,13 @@ const HeaderPresenter = (props) => {
                             )
                     }
                 </li>
-                <li className = { showMenu && !isAuth && 'account-menu-visible' }>
+                {/* <li className = { showMenu && !isAuth && 'account-menu-visible' }>
                     <NavLink
                         activeClassName = 'account-menu-active'
                         to = { MEMBER_JOIN_ROUTE_PATH }>
                         { t(`${LANG_PREFIX}.memberJoin`)}
                     </NavLink>
-                </li>
+                </li> */}
             </ul>
         </header>
     )
