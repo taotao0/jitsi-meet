@@ -62,10 +62,11 @@ const PrimaryPresenter = (props) => {
                     </div>
                     {
                         loginState.userStatus === UserStatus.MEMBER && (
-                            <button className = 'pm-room-btn'>
-                                <a onClick = { handlePersonalRoomJoinBtnClicked }>
-                                    { t(`${LANG_PREFIX}.personalRoomJoin`) }
-                                </a>
+                            <button
+                                className = 'pm-room-btn'
+                                type = 'submit'
+                                onClick = { handlePersonalRoomJoinBtnClicked }>
+                                { t(`${LANG_PREFIX}.personalRoomJoin`) }
                             </button>
                         )
                     }    

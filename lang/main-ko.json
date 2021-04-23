@@ -849,10 +849,10 @@
                 "lgBtn": "로그인",
                 "lgAuto": "로그인 상태 유지",
                 "findId": "아이디 찾기",
-                "findPwd": "패스워드 찾기",
+                "findPwd": "비밀번호 찾기",
                 "lgOtherAuthDesc": "다른 계정으로도 이용이 가능합니다",
                 "errMsgById": "아이디가 맞지 않습니다. 다시 확인해주세요:)",
-                "errMsgByPw": "패스워드가 맞지 않습니다. 다시 확인해주세요:)",
+                "errMsgByPw": "비밀번호가 맞지 않습니다. 다시 확인해주세요:)",
                 "FindIdModal": {
                     "desc": "등록한 이메일을 입력하세요.",
                     "emailPlaceholder": "이메일 입력"

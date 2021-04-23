@@ -13,7 +13,7 @@ const DetailCard = (props) => {
         uid,
         recordDate,
         size,
-        thumbnail,
+        thumbnailLink,
         status,
         checked,
         checkStateChanged
@@ -26,12 +26,15 @@ const DetailCard = (props) => {
                 type = 'checkbox'
                 checked = { checked }
                 onChange = { (e) => checkStateChanged(e, path) } />
-            {
-                !thumbnail && <FontAwesomeIcon
-                                className = 'video-file-icon'
-                                icon = { faFileVideo }
-                                size = '3x' /> 
-            }
+                {
+                    !thumbnailLink
+                        ? <FontAwesomeIcon
+                            className = 'video-file-icon'
+                            icon = { faFileVideo }
+                            size = '3x' />
+                        : <img
+                            src = { thumbnailLink } />
+                }
             <div>{uid}</div>
             <p className = 'file-size'>
                 { getfileSize(size) }

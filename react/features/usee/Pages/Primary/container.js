@@ -21,15 +21,16 @@ const PrimaryContainer = () => {
 
     const _handleJoinMeetingClicked = useCallback((event) => {
         if (roomName !== '') {
-            // dispatch(appNavigate(`/Room?name=${roomName}`))
             dispatch(appNavigate(`/Room/${roomName}`))
         }
 
         event.preventDefault()
     }, [roomName])
 
-    const _handlePersonalRoomJoinBtnClicked = useCallback(() => {
+    const _handlePersonalRoomJoinBtnClicked = useCallback((event) => {
         dispatch(doPersonalRoomJoin())
+
+        event.preventDefault()
     }, [])
 
     return (
