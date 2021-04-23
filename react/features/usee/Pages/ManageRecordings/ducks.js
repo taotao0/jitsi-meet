@@ -46,8 +46,10 @@ export const downloadRecordItems = (t) => {
                 const { status } = res.data
 
                 if (status === RecordStatus.SUCCESSED) {
-                    window.location.href = res.data.uri                    
+                    window.location.href = res.data.uri
                 }
+
+                dispatch(setCleanUpCheckedFiles())
             }).catch((err => {
                 console.log("RecordHistory", err)
             }))
@@ -77,6 +79,8 @@ export const deleteRecordItems = (t) => {
                 data: jsonObj
             }).then(res => {
                 const { status } = res.data
+
+                dispatch(setCleanUpCheckedFiles())
 
                 if (status === RecordStatus.SUCCESSED) {
                     return dispatch(getRecordingListFromServer())
