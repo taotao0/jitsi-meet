@@ -153,7 +153,13 @@ export default class BaseApp extends Component<*, State> {
                     <Provider store = { store }>
                         {
                             component
-                                ? this._createMainElement(component, props)
+                                ?
+								<Fragment>
+								{ this._createMainElement(component, props) }
+                                <SoundCollection />
+                                { this._createExtraElement() }
+								{ this._renderDialogContainer() }
+								</Fragment>
                                 : (
                                     <div className = 'usee-wrapper'>
                                         <HeaderContainer />
@@ -189,9 +195,6 @@ export default class BaseApp extends Component<*, State> {
                                         </main>
                                         <FooterContainer />
                                         {/* { this._createMainElement(component, props) } */}
-                                        <SoundCollection />
-                                        { this._createExtraElement() }
-                                        { this._renderDialogContainer() } }
                                     </div>
                                 )
                         }
