@@ -24,13 +24,13 @@ android {
 
     defaultConfig {
         applicationId 'org.usee'
-        versionCode 2
+        versionCode 3
         versionName project.appVersion
 
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         // ndk {
-        //     // abiFilters "armeabi-v7a", 'arm64-v8a', 'x86', 'x86_64'
+        //     abiFilters "armeabi-v7a", 'arm64-v8a', 'x86', 'x86_64'
         //     // abiFilters 'arm64-v8a', 'x86_64'
         //     // abiFilters.clear()
         // }
