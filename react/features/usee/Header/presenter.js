@@ -21,8 +21,7 @@ const HeaderPresenter = (props) => {
     const {
         loginState : { userStatus, loginUserInfo },
         showMenu,
-        logoutBtnClicked,
-        personalRoomJoinBtnClicked
+        logoutBtnClicked
     } = props
     const { t } = useTranslation()
 
@@ -40,7 +39,7 @@ const HeaderPresenter = (props) => {
                                 alt = { COMPANY_LOGO_ALT } />
                         </Link>  
                     </li>
-                    <li>
+                    {/* <li>
                         <NavLink
                             activeClassName = 'nav-menu-active'
                             to = {INTRO_PRODUCTION_ROUTE_PATH}>
@@ -60,7 +59,7 @@ const HeaderPresenter = (props) => {
                             to = {PRICES_POLICY_ROUTE_PATH}>
                             { t(`${LANG_PREFIX}.pricesPolicy`) }
                         </NavLink>
-                    </li>
+                    </li> */}
                     <li>
                         <NavLink
                             activeClassName = 'nav-menu-active'
