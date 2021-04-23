@@ -87,6 +87,10 @@ import OverflowMenuProfileItem from './OverflowMenuProfileItem';
 import ToolbarButton from './ToolbarButton';
 import VideoSettingsButton from './VideoSettingsButton';
 
+// hjjung start
+import { getParticipantCount } from '../../../base/participants';
+// hjjung end
+
 /**
  * The type of the React {@code Component} props of {@link Toolbox}.
  */
@@ -197,7 +201,9 @@ type Props = {
     /**
      * Invoked to obtain translated strings.
      */
-    t: Function
+    t: Function,
+
+    _lonelyMeeting: boolean
 };
 
 /**
@@ -864,6 +870,15 @@ class Toolbox extends Component<Props, State> {
      * @returns {void}
      */
     _onToolbarToggleScreenshare() {
+        // hjjung start
+        console.log('=======_onToolbarToggleScreenshare start');
+        console.log(`this.props._lonelyMeeting:${this.props._lonelyMeeting}`);
+        console.log('=======_onToolbarToggleScreenshare end');
+        if(this.props._lonelyMeeting) {
+            console.log('pass screen sharing because participants count is just one');
+            return;
+        }
+        // hjjung end
         if (!this.props._desktopSharingEnabled) {
             return;
         }
@@ -1401,6 +1416,9 @@ class Toolbox extends Component<Props, State> {
  * @returns {{}}
  */
 function _mapStateToProps(state) {
+    // hjjung start
+    const lonelyMeeting = getParticipantCount(state) < 2;
+    // hjjung end
     const { conference, locked } = state['features/base/conference'];
     let desktopSharingEnabled = JitsiMeetJS.isDesktopSharingEnabled();
     const {
@@ -1452,7 +1470,8 @@ function _mapStateToProps(state) {
             || sharedVideoStatus === 'start'
             || sharedVideoStatus === 'pause',
         _visible: isToolboxVisible(state),
-        _visibleButtons: equals(visibleButtons, buttons) ? visibleButtons : buttons
+        _visibleButtons: equals(visibleButtons, buttons) ? visibleButtons : buttons,
+        _lonelyMeeting: lonelyMeeting
     };
 }
 
