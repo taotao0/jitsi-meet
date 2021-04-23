@@ -21,7 +21,7 @@ const PrimaryContainer = () => {
 
     const _handleJoinMeetingClicked = useCallback((event) => {
         if (roomName !== '') {
-            dispatch(appNavigate(`/Room/${roomName}`))
+            dispatch(appNavigate(`/room/${roomName}`))
         }
 
         event.preventDefault()

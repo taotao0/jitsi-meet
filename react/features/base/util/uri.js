@@ -351,7 +351,7 @@ export function parseURIString(uri: ?string) {
     const contextRootEndIndex = pathname.lastIndexOf('/');
     let roomName = undefined;
 
-    if (contextRoot === '/Room/') {
+    if (contextRoot === '/room/') {
         roomName = pathname.substring(contextRootEndIndex + 1);
     }
 

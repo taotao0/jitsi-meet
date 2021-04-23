@@ -10,7 +10,7 @@ export const doPersonalRoomJoin = () => {
     return (dispatch, getState) => {
         const loginUserInfo = getState()['features/usee/Pages/Login']
 
-        return dispatch(appNavigate(`/Room/${loginUserInfo?.loginUserInfo?.personal_room_name}`))
+        return dispatch(appNavigate(`/room/${loginUserInfo?.loginUserInfo?.personal_room_name}`))
     }
 }
 /* Default state */
