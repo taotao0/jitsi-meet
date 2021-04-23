@@ -13,6 +13,7 @@ export const SET_FIND_RECORDING_FILE_FILTER = 'SET_FIND_RECORDING_FILE_FILTER'
 export const SET_ALL_FILES_CHECKED = 'SET_ALL_FILES_CHECKED'
 export const SET_CHECKED_FILES = 'SET_CHECKED_FILES'
 export const SET_RECORDING_LIST = 'SET_RECORDING_LIST'
+export const SET_CLEAN_UP_CHECKED_FILES = "SET_CLEAN_UP_CHECKED_FILES"
 
 export const setFindRecordingFileFilter = (startDate, endDate, fileName) => {
     return {
@@ -130,6 +131,12 @@ const setRecordingList = (recordingList) => {
     }
 }
 
+export const setCleanUpCheckedFiles = () => {
+    return {
+        type: SET_CLEAN_UP_CHECKED_FILES
+    }
+}
+
 
 const defaultState = {
     isCheckedAll: false,
@@ -144,6 +151,7 @@ ReducerRegistry.register('features/usee/Pages/ManageRecordings',
             case SET_FIND_RECORDING_FILE_FILTER : {
                 const { startDate, endDate, fileName } = action
                 const _filterList = []
+                const _checkedFiles = []
 
                 let range = {
                     start: Number.MIN_SAFE_INTEGER,
@@ -178,9 +186,12 @@ ReducerRegistry.register('features/usee/Pages/ManageRecordings',
                     }
                 }
 
+                // FIXME: need to compare _filterList and _checkedFiles
+
                 return {
                     ...state,
-                    filterList: _filterList
+                    filterList: _filterList,
+                    checkedFiles: _checkedFiles
                 }
             }
 
@@ -228,6 +239,15 @@ ReducerRegistry.register('features/usee/Pages/ManageRecordings',
                     ...state,
                     recordingList,
                     filterList: recordingList
+                }
+            }
+
+            case SET_CLEAN_UP_CHECKED_FILES : {
+                let checkedFiles = []
+
+                return {
+                    ...state,
+                    checkedFiles,
                 }
             }
             default: {

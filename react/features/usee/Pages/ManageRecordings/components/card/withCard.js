@@ -1,8 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
-import { setCheckedFiles } from '../../ducks'
+import { 
+    setCheckedFiles,
+    setCleanUpCheckedFiles
+ } from '../../ducks'
 
 import { LANG_PREFIX } from '../../constants'
 
@@ -26,6 +29,12 @@ const withCard = (WrappedComponent) => {
         
             return result === undefined ? false : true
         }
+
+        useEffect(() => {
+            return () => {
+                dispatch(setCleanUpCheckedFiles())
+            }
+        }, [])
 
         return (
             <>
