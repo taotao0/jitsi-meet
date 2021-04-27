@@ -11,7 +11,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 // const devServerProxyTarget
 //     = process.env.WEBPACK_DEV_SERVER_PROXY_TARGET || 'https://usee.tk';
 
-const devServerProxyTarget = 'https://usee.tk'
+const devServerProxyTarget = 'https://usee.co.kr'
 
 const analyzeBundle = process.argv.indexOf('--analyze-bundle') !== -1;
 const detectCircularDeps = process.argv.indexOf('--detect-circular-deps') !== -1;
