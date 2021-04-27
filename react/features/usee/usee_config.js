@@ -55,3 +55,6 @@ export const INFORMATION_DESK = 'http://uclick.co.kr/sub5/sub5_1.html'
 
 // Manual download link
 export const MANUAL_DOWNLOAD_LINK = 'https://usee.co.kr/usee-userguide-kr_v1.0.zip'
+
+// USee domain name
+export const USEE_DOMAIN = 'usee.co.kr'
