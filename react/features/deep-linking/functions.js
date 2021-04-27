@@ -24,7 +24,7 @@ export function generateDeepLinkingURL() {
     // appears to be a link with an app-specific scheme, not a Universal
     // Link.
 
-    const appScheme = interfaceConfig.APP_SCHEME || 'org.jitsi.meet';
+    let appScheme = interfaceConfig.APP_SCHEME || 'org.usee';
     const { href } = window.location;
     const regex = new RegExp(URI_PROTOCOL_PATTERN, 'gi');
 
@@ -33,12 +33,13 @@ export function generateDeepLinkingURL() {
     if (Platform.OS === 'android') {
         // https://meet.jit.si/foo -> meet.jit.si/foo
         const url = href.replace(regex, '').substr(2);
-        const pkg = interfaceConfig.ANDROID_APP_PACKAGE || 'org.jitsi.meet';
+        const pkg = interfaceConfig.ANDROID_APP_PACKAGE || 'org.usee';
 
         return `intent://${url}#Intent;scheme=${appScheme};package=${pkg};end`;
     }
 
     // iOS: Replace the protocol part with the app scheme.
+    appScheme = 'com.usee';
     return href.replace(regex, `${appScheme}:`);
 }
 
