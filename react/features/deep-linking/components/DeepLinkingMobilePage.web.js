@@ -159,6 +159,9 @@ class DeepLinkingMobilePage extends Component<Props> {
                             { t(`${_TNS}.downloadApp`) }
                         </button>
                     </a>
+                    <p className = { `${_SNS}__text` }>
+                        { t(`${_TNS}.ifDoNotHaveApp`) }
+                    </p>
                     {
                         isSupportedMobileBrowser()
                             && <a
