@@ -104,7 +104,7 @@ var interfaceConfig = {
     /**
      * Hide the logo on the deep linking pages.
      */
-    HIDE_DEEP_LINKING_LOGO: false,
+    HIDE_DEEP_LINKING_LOGO: true,
 
     /**
      * Hide the invite prompt in the header when alone in the meeting.
@@ -133,12 +133,12 @@ var interfaceConfig = {
      *
      * @type {boolean}
      */
-    MOBILE_APP_PROMO: false,
+    MOBILE_APP_PROMO: true,
 
     /**
      * Specify custom URL for downloading android mobile app.
      */
-    MOBILE_DOWNLOAD_LINK_ANDROID: 'https://play.google.com/store/apps/details?id=usee.co.kr',
+    MOBILE_DOWNLOAD_LINK_ANDROID: 'https://play.google.com/store/apps/details?id=org.usee',
 
     /**
      * Specify custom URL for downloading f droid app.
@@ -148,7 +148,7 @@ var interfaceConfig = {
     /**
      * Specify URL for downloading ios mobile app.
      */
-    MOBILE_DOWNLOAD_LINK_IOS: 'https://itunes.apple.com/us/app/jitsi-meet/usee.co.kr',
+    MOBILE_DOWNLOAD_LINK_IOS: 'https://apps.apple.com/app/id1550547407',
 
     /**
      * Specify URL for downloading manual.
