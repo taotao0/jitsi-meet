@@ -996,6 +996,7 @@
                 "joinBtn": "참여",
                 "inputPlaceholder": "회의실 이름을 입력하세요.",
                 "personalRoomJoin": "개인 회의실 입장",
+                "alertMsg": "개설되지 않은 회의실 입니다. \n 회의실 이름을 확인하세요.",
                 "Contents": {
                     "desc": "Product Advantage",
                     "subDesc": "HD급 고품질의 영상과 선명한 음질로 비용, 시간, 공간의 낭비를 절감하고 기업구성원에게 실시간 협업 환경을 제공하는 모바일 기반의 화상회의 솔루션입니다.",
@@ -1038,6 +1039,7 @@
                 "id": "아이디",
                 "nickName": "닉네임",
                 "email": "이메일",
+                "personalRoomName": "개인 회의실",
                 "resetPwdBtn": "비밀번호 재설정",
                 "changeProfileBtn": "프로필 변경",
                 "recordListBtn": "녹화 목록",

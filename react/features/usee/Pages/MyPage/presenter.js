@@ -40,6 +40,9 @@ const MyPagePresenter = (props) => {
                             <SimpleInfoView
                                 title = { t(`${LANG_PREFIX}.email`) }
                                 value = { loginState.loginUserInfo?.email } />
+                            <SimpleInfoView
+                                title = { t(`${LANG_PREFIX}.personalRoomName`) }
+                                value = { loginState.loginUserInfo?.personal_room_name } />
                         </div>
                         <ul className = 'mp-btn-menu'>
                             <li>

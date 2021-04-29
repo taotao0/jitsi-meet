@@ -1,17 +1,23 @@
 import React, { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import PrimaryPresenter from './presenter'
+import { useTranslation } from 'react-i18next'
 
-import { appNavigate } from '../../../app/actions'
+import PrimaryPresenter from './presenter'
 
 import { doPersonalRoomJoin } from '../../Header/ducks'
 
 import { USEE_LS_LOGIN_KEY } from '../../usee_config'
 
+import {
+    isValidRoomName
+} from './ducks'
+
 const PrimaryContainer = () => {
     const dispatch = useDispatch()
     const loginState = useSelector(state => state[USEE_LS_LOGIN_KEY], [])
+
+    const { t } = useTranslation()
 
     const [ roomName, setRoomName ] = useState('')
 
@@ -21,7 +27,7 @@ const PrimaryContainer = () => {
 
     const _handleJoinMeetingClicked = useCallback((event) => {
         if (roomName !== '') {
-            dispatch(appNavigate(`/room/${roomName}`))
+            dispatch(isValidRoomName(roomName, t))
         }
 
         event.preventDefault()
