@@ -33,7 +33,11 @@ export const isValidRoomName = (roomName, t) => {
                     dispatch(appNavigate(`/room/${roomName}`))
                 }
 
-                dispatch(openModal(InputModal, { title: t(`${LANG_PREFIX}.nickNameMsg`), onSubmit}))
+                const onCancel = () => {
+                    dispatch(closeModal())
+                }
+
+                dispatch(openModal(InputModal, { title: t(`${LANG_PREFIX}.nickNameMsg`), onSubmit, onCancel }))
             } else if (status === RoomValidStatus.FAILED) {
                 alert(t(`${LANG_PREFIX}.alertMsg`))
             }
