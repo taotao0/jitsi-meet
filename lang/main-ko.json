@@ -371,7 +371,7 @@
         "focusRemote": "다른 발신자의 동영상에 포커스",
         "fullScreen": "전체화면 표시 또는 종료",
         "keyboardShortcuts": "키보드 단축키",
-        "localRecording": "로컬 녹음 컨트롤 표시 또는 숨기기",
+        "localRecording": "로컬 녹화 컨트롤 표시 또는 숨기기",
         "mute": "마이크 음소거 또는 음소거 해제",
         "pushToTalk": "대화 요청",
         "raiseHand": "말하기 요청/해제",
@@ -784,6 +784,157 @@
     },
     "helpView": {
         "header": "지원 센터"
+    },
+    "usee": {
+        "Header": {
+            "login": "로그인",
+            "logout": "로그아웃",
+            "memberJoin": "회원가입",
+            "personalRoomJoin": "개인 회의실 입장",
+            "WelcomeUser": {
+                "welcome": "{{user}}님 환영합니다!"
+            },
+            "introProduction": "제품 소개",
+            "introFunction": "기능 소개",
+            "pricesPolicy": "가격 정책",
+            "myPage": "마이 페이지"
+        },
+        "Footer": {
+            "MenuArea": {
+                "companyInfo": "회사소개",
+                "privacyPolicy": "개인정보처리방침",
+                "rejectionUnauthorizedEmail": "이메일무단수집거부",
+                "infoDesk": "안내데스크",
+                "manual": "메뉴얼",
+                "mobileSupport": "모바일지원"
+            },
+            "InfoArea": {
+                "companyDetailInfo": {
+                    "name": "(주)유클릭",
+                    "address": "주소 : 서울시 중구 퇴계로 286 쌍림빌딩 8층/9층",
+                    "CEO": "대표이사 : 엄남한, 김인욱",
+                    "certificateForBusinessNumber": "사업자등록번호 : 110-81-41781",
+                    "tel": "대표전화 : 02-6320-0000",
+                    "fax": "팩스 : 6320-0001",
+                    "copyRight": "COPYRIGHT UCLICK ALL RIGHTS RESERVED."
+                },
+                "language": {
+                    "lang": "언어",
+                    "korean": "한국어",
+                    "english": "영어"
+                }
+            }
+        },
+        "Modal": {
+            "submit": "확인",
+            "cancel": "취소",
+            "notice": "알림"
+        },
+        "Pages": {
+            "Primary": {
+                "desc": "실시간 메시징 및 컨텐츠 \n 공유를 사용한 비디오 회의",
+                "subDesc": "최적의 커뮤니케이션 환경으로 “소통하여 함께하는 우리”가 \n 될 수 있도록 하는 것이 USee의 미션입니다.",
+                "joinBtn": "참여",
+                "inputPlaceholder": "회의실 이름을 입력하세요.",
+                "alertMsg": "개설되지 않은 회의실 입니다. \n 회의실 이름을 확인하세요.",
+                "nickNameMsg": "닉네임을 입력하세요(필수)",
+                "Contents": {
+                    "desc": "Product Advantage",
+                    "subDesc": "HD급 고품질의 영상과 선명한 음질로 비용, 시간, 공간의 낭비를 절감하고 기업구성원에게 실시간 협업 환경을 제공하는 모바일 기반의 화상회의 솔루션입니다.",
+                    "cost": "Reasonable Cost",
+                    "costDesc": "추가 H/W, S/W 없이 예측 가능한 비용 자동화된관리및운영 On-Demand 확장",
+                    "equipment": "Equipment Support",
+                    "equipmentDesc": "IP전화, 마이크, 카메라, CCTV 연계 표준 프로토콜 기반 확장성 제공 OpenAPI/SDK기반 3rd Party 연동",
+                    "monitoring": "Optimal Monitoring",
+                    "monitoringDesc": "Dashboard 제공 과금, 통계 정보 제공 운영관리 전용 포탈",
+                    "stability": "Service Stability",
+                    "stabilityDesc": "클라우드 기반 인프라 유연성 영상, 음질 품질 보장"
+                }
+            },
+            "MobileSupport": {
+                "title": "모바일 다운로드"
+            },
+            "Login": {
+                "title": "로그인",
+                "id": "아이디",
+                "pwd": "비밀번호",
+                "lgBtn": "로그인",
+                "lgAuto": "로그인 상태 유지",
+                "findId": "아이디 찾기",
+                "findPwd": "비밀번호 찾기",
+                "lgOtherAuthDesc": "다른 계정으로도 이용이 가능합니다",
+                "errMsgById": "아이디가 맞지 않습니다. 다시 확인해주세요:)",
+                "errMsgByPw": "비밀번호가 맞지 않습니다. 다시 확인해주세요:)",
+                "FindIdModal": {
+                    "desc": "등록한 이메일을 입력하세요.",
+                    "emailPlaceholder": "이메일 입력"
+                },
+                "FindPwdModal": {
+                    "desc": "등록한 이메일과 아이디를 입력하세요.",
+                    "emailPlaceholder": "이메일 입력",
+                    "idPlaceholder": "아이디 입력"
+                }
+            },
+            "MyPage": {
+                "title": "마이 페이지",
+                "id": "아이디",
+                "nickName": "닉네임",
+                "email": "이메일",
+                "personalRoomName": "개인 회의실",
+                "resetPwdBtn": "비밀번호 재설정",
+                "changeProfileBtn": "프로필 변경",
+                "recordListBtn": "녹화 목록",
+                "roomListBtn": "참여한 회의실 목록"
+            },
+            "ManageRecordings": {
+                "title": "녹화 관리",
+                "confirm": "확인",
+                "unSelectAll": "전체해제",
+                "selectAll": "전체선택",
+                "delete": "삭제",
+                "download": "다운로드",
+                "selectView": "보기 선택",
+                "basicView": "일반",
+                "detailView": "자세히",
+                "selectDate": "날짜 선택",
+                "fileName": "파일 이름",
+                "errEmptyMsg": "선택된 파일이 없습니다:)",
+                "errSelectMsg": "녹화 파일은 한 개만 선택 가능합니다.",
+                "emptyRecordList": "녹화 파일이 없습니다."
+            },
+            "NotFound": {
+                "desc": "페이지를 불러올 수 없습니다:)"
+            },
+            "FindAuth": {
+                "title": "아이디 / 비밀번호 찾기",
+                "idTab": "아이디",
+                "pwdTab": "비밀번호",
+                "sendEmail": "이메일이 발송되었습니다. 메일을 확인하여 본인 인증을 완료해주세요! ",
+                "WithAuth": {
+                    "desc": "본인 인증 선택",
+                    "email": "이메일",
+                    "errMsg": "입력하신 이메일을 다시 확인해주세요:)"
+                },
+                "AuthEmail": {
+                    "desc": "본인 인증을 위해 등록한 이메일을 입력하세요.",
+                    "idDesc": "본인 인증을 완료하시면 등록한 아이디를 찾을 수 있습니다.",
+                    "pwdDesc": "본인 인증을 완료하시면 비밀번호를 재설정할 수 있습니다.",
+                    "inputPlaceholder": "이메일 입력",
+                    "submit": "전송",
+                    "noticeMsgById": "입력하신 이메일로 아이디가 발송되었습니다! \n 이메일을 확인해주세요:)",
+                    "noticeMsgByPwd": "이메일이 발송되었습니다. 본인 인증을 통해 비밀번호를 재설정해주세요:)"
+                }
+            },
+            "ResetPassword": {
+                "title": "비밀번호 재설정",
+                "errMsg": "비밀번호가 맞지 않습니다. 다시 확인해주세요:)",
+                "submit": "확인",
+                "noticeMsg": "비밀번호가 재설정되었습니다. 변경된 비밀번호로 로그인해주세요:)"
+            },
+            "ParticipatedRoomList": {
+                "title": "참여한 회의실 목록"
+            }
+        }
     }
 }
 

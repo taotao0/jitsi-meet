@@ -34,6 +34,8 @@ import {
 } from './functions';
 import logger from './logger';
 
+import { jitsiLocalStorage } from '@jitsi/js-utils';
+
 declare var APP: Object;
 declare var interfaceConfig: Object;
 
@@ -49,6 +51,12 @@ declare var interfaceConfig: Object;
  */
 export function appNavigate(uri: ?string) {
     return async (dispatch: Dispatch<any>, getState: Function) => {
+        // hjjung start
+        // 회의실 입장할 때 sessionId를 삭제하지 않으면 인증창이 뜨지 않고 join이 되는 문제때문에
+        // 회의실 입장할 때 sessionId를 localStorage에서 삭제하고 시작
+        jitsiLocalStorage.removeItem('sessionId');
+        // hjjung end
+
         let location = parseURIString(uri);
 
         // If the specified location (URI) does not identify a host, use the app's

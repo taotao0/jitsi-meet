@@ -7,9 +7,11 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 /**
  * The URL of the Jitsi Meet deployment to be proxy to in the context of
  * development with webpack-dev-server.
- */
-const devServerProxyTarget
-    = process.env.WEBPACK_DEV_SERVER_PROXY_TARGET || 'https://alpha.jitsi.net';
+//  */
+// const devServerProxyTarget
+//     = process.env.WEBPACK_DEV_SERVER_PROXY_TARGET || 'https://usee.tk';
+
+const devServerProxyTarget = 'https://usee.co.kr'
 
 const analyzeBundle = process.argv.indexOf('--analyze-bundle') !== -1;
 const detectCircularDeps = process.argv.indexOf('--detect-circular-deps') !== -1;
@@ -39,6 +41,7 @@ const config = {
         proxy: {
             '/': {
                 bypass: devServerProxyBypass,
+                changeOrigin: true,
                 secure: false,
                 target: devServerProxyTarget,
                 headers: {
@@ -192,7 +195,7 @@ module.exports = [
         entry: {
             'app.bundle': './app.js'
         },
-        performance: getPerformanceHints(4 * 1024 * 1024)
+        performance: getPerformanceHints(5 * 1024 * 1024)
     }),
     Object.assign({}, config, {
         entry: {
@@ -216,7 +219,7 @@ module.exports = [
         entry: {
             'do_external_connect': './connection_optimization/do_external_connect.js'
         },
-        performance: getPerformanceHints(5 * 1024)
+        performance: getPerformanceHints(10 * 1024)
     }),
     Object.assign({}, config, {
         entry: {
@@ -228,7 +231,7 @@ module.exports = [
         entry: {
             'analytics-ga': './react/features/analytics/handlers/GoogleAnalyticsHandler.js'
         },
-        performance: getPerformanceHints(5 * 1024)
+        performance: getPerformanceHints(10 * 1024)
     }),
     Object.assign({}, config, {
         entry: {
@@ -278,7 +281,7 @@ module.exports = [
             library: 'JitsiMeetExternalAPI',
             libraryTarget: 'umd'
         }),
-        performance: getPerformanceHints(35 * 1024)
+        performance: getPerformanceHints(36 * 1024)
     })
 ];
 

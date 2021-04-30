@@ -1,0 +1,23 @@
+.gnb-wrapper {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    height: 30px;
+    background-color: $useeSecondaryColor;
+    padding-inline: 80px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    
+}
+.fa-user {
+    margin-right: 10px;
+}
+
+.fa-user, .user-welcome-txt {
+    color: $useePrimaryTextColor;
+}

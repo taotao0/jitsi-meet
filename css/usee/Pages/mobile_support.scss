@@ -1,0 +1,22 @@
+.mb-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .mb-btn-wrapper {
+        margin-top: 80px;
+
+        .mb-btn {
+            display: block;
+            padding: 15px 30px 15px 30px;
+            margin-bottom: 20px;
+            border-radius: 13px;
+            font-size: 20px;
+        
+            .btn-inner-txt {
+                margin-left: 10px;
+            }
+        }
+    }
+}

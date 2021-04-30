@@ -39,6 +39,8 @@ import {
 } from '../../../react/features/video-layout';
 /* eslint-enable no-unused-vars */
 
+import { isLocalVideoTrackDesktop } from '../../../react/features/base/tracks';
+
 const logger = Logger.getLogger(__filename);
 
 /**
@@ -727,6 +729,8 @@ export default class SmallVideo {
      * @returns {void}
      */
     _onContainerClick(event) {
+        // logger.debug('--------> SmallVideo clicked');
+        // logger.debug(event);
         const triggerPin = this._shouldTriggerPin(event);
 
         if (event.stopPropagation && triggerPin) {
@@ -768,6 +772,20 @@ export default class SmallVideo {
      * @returns {void}
      */
     togglePin() {
+        // hjjung start
+        const localParticipant = getLocalParticipant(APP.store.getState());
+        const _isScreenSharing = isLocalVideoTrackDesktop(APP.store.getState());
+        const isLocal = localParticipant.id === this.id;
+        logger.debug('---------togglePin');
+        // logger.debug(localParticipant);
+        // logger.debug(this.id);
+        logger.debug(`_isScreenSharing[${_isScreenSharing}],isLocal:${isLocal}`);
+        logger.debug('---------togglePin');
+        if(_isScreenSharing && isLocal) {
+            logger.debug(`skip toggle local`);
+            return;
+        }
+        // hjjung end
         const pinnedParticipant = getPinnedParticipant(APP.store.getState()) || {};
         const participantIdToPin = pinnedParticipant && pinnedParticipant.id === this.id ? null : this.id;
 

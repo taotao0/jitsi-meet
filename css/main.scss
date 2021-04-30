@@ -7,6 +7,7 @@
 /* Variables BEGIN */
 
 @import 'variables';
+@import 'usee/variable';
 
 /* Variables END */
 
@@ -103,5 +104,21 @@ $flagsImagePath: "../images/";
 @import 'e2ee';
 @import 'responsive';
 @import 'connection-status';
+
+@import 'usee/base';
+
+@import 'usee/header';
+@import 'usee/footer';
+@import 'usee/common';
+
+@import 'usee/Pages/login';
+@import 'usee/Pages/primary';
+@import 'usee/Pages/mobile_support';
+@import 'usee/Pages/find_auth';
+@import 'usee/Pages/reset_password';
+@import 'usee/Pages/my_page';
+@import 'usee/Pages/manage_recordings';
+
+@import 'usee/modal';
 
 /* Modules END */

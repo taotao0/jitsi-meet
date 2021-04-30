@@ -1,0 +1,36 @@
+.common-wrapper {
+    padding-block: 70px;
+    text-align: center;
+
+    h1 {
+        margin-bottom: 35px;
+    }
+}
+
+.section-wrapper {
+    margin: auto 80px;
+    
+    h2 {
+        color: $useeDarkTextColor;
+        padding-block: 7px;
+    }
+}
+
+.usee-wrapper {
+    height: 100%;
+
+    .main-wrapper {
+        width: 100vw;
+        min-height: calc(100% - 380px);
+    }
+}
+
+.err-txt {
+    color: red;
+}
+
+button {
+    background-color: $useeBtnColor;
+    color: $useeLightTextColor;
+    border: none;
+}

@@ -81,7 +81,6 @@ body {
 }
 /* Default margins */
 p,
-ul,
 ol,
 dl,
 h1,
@@ -116,7 +115,7 @@ h1 {
   font-weight: normal;
   line-height: 1.25;
   text-transform: none;
-  margin: 30px 0 0 0;
+  // margin: 30px 0 0 0;
 }
 h2 {
   color: #333;
@@ -132,7 +131,7 @@ h3 {
   font-weight: normal;
   line-height: 1.5;
   text-transform: none;
-  margin: 30px 0 0 0;
+  // margin: 30px 0 0 0;
 }
 h4 {
   font-size: 16px;
@@ -219,7 +218,6 @@ abbr {
 }
 
 a {
-  color: #3572b0;
   text-decoration: none;
 }
 a:focus,

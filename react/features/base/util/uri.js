@@ -1,4 +1,5 @@
 // @flow
+import queryString from 'query-string'
 
 import { parseURLParams } from './parseURLParams';
 import { normalizeNFKC } from './strings';
