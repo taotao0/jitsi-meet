@@ -1,13 +1,24 @@
 import axios from 'axios'
 
 import { appNavigate } from '../../../app/actions'
+import { updateSettings } from '../../../base/settings/actions'
 
-import { RoomValidStatus, CheckRoomOwner, LANG_PREFIX} from './constants'
+import InputModal from '../../Modal/components/InputModal'
 
+import {
+    openModal,
+    closeModal
+} from '../../Modal/ducks'
+
+import { RoomValidStatus, LANG_PREFIX } from './constants'
+
+/* Action types */
+export const PERSONAL_ROOM_JOIN = 'PERSONAL_ROOM_JOIN'
+
+/* Actions */
 export const isValidRoomName = (roomName, t) => {
     return(dispatch, getState) => {
-        let url = '/api/v1/Room/exist/'
-        url = url.concat(roomName)
+        const url = '/api/v1/Room/exist/' + roomName
 
         axios({
             method: 'get',
@@ -16,7 +27,13 @@ export const isValidRoomName = (roomName, t) => {
             const { status } = res.data
 
             if (status === RoomValidStatus.SUCCESSED) {
-                dispatch(appNavigate(`/room/${roomName}`))
+                const onSubmit = (nickName) => {
+                    dispatch(updateSettings({ displayName: nickName }))
+                    dispatch(closeModal())
+                    dispatch(appNavigate(`/room/${roomName}`))
+                }
+
+                dispatch(openModal(InputModal, { title: t(`${LANG_PREFIX}.nickNameMsg`), onSubmit}))
             } else if (status === RoomValidStatus.FAILED) {
                 alert(t(`${LANG_PREFIX}.alertMsg`))
             }
@@ -25,3 +42,7 @@ export const isValidRoomName = (roomName, t) => {
         })
     }
 }
+
+/* Default state */
+
+/* Reducer */

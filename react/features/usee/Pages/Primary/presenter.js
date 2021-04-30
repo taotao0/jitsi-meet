@@ -14,9 +14,9 @@ const PrimaryPresenter = (props) => {
     const {
         roomName,
         loginState,
+        ModalInfo,
         handleInputChanged,
-        handleJoinMeetingClicked,
-        handlePersonalRoomJoinBtnClicked
+        handleBtnClicked
     } = props
 
     const { t } = useTranslation()
@@ -29,9 +29,7 @@ const PrimaryPresenter = (props) => {
                     src = '../../../../../images/primary.png'
                     srcSet="../../../../../images/primary@2x.png 2x, ../../../../../images/primary@3x.png 3x">
                 </img>
-                <form
-                    className = 'pm-form'
-                    onSubmit = { handleJoinMeetingClicked }>
+                <form className = 'pm-form'>
                     {
                         t(`${LANG_PREFIX}.desc`).split('\n').map(line => (
                             <h1 key = { line } className = 'pm-form-desc'>
@@ -56,7 +54,9 @@ const PrimaryPresenter = (props) => {
                         </input>
                         <button
                             className = 'pm-input-btn'
-                            type = 'submit'>
+                            type = 'button'
+                            name = 'pmInputBtn'
+                            onClick = { handleBtnClicked }>
                             { t(`${LANG_PREFIX}.joinBtn`) }
                         </button>
                     </div>
@@ -64,8 +64,9 @@ const PrimaryPresenter = (props) => {
                         loginState.userStatus === UserStatus.MEMBER && (
                             <button
                                 className = 'pm-room-btn'
-                                type = 'submit'
-                                onClick = { handlePersonalRoomJoinBtnClicked }>
+                                type = 'button'
+                                name = 'pmRoomBtn'
+                                onClick = { handleBtnClicked }>
                                 { t(`${LANG_PREFIX}.personalRoomJoin`) }
                             </button>
                         )
@@ -91,6 +92,10 @@ const PrimaryPresenter = (props) => {
                     }
                 </section>
             </div>
+            {
+                ModalInfo && ModalInfo.modalComponent &&
+                    ModalInfo.modalComponent(ModalInfo.modalComponentProps)
+            }
         </>
     )
 }

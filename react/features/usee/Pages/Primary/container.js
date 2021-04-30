@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next'
 
 import PrimaryPresenter from './presenter'
 
-import { doPersonalRoomJoin } from '../../Header/ducks'
-
 import { USEE_LS_LOGIN_KEY } from '../../usee_config'
 
 import {
@@ -16,6 +14,7 @@ import {
 const PrimaryContainer = () => {
     const dispatch = useDispatch()
     const loginState = useSelector(state => state[USEE_LS_LOGIN_KEY], [])
+    const modalInfo = useSelector(state => state['features/usee/Modal'], [])
 
     const { t } = useTranslation()
 
@@ -25,27 +24,24 @@ const PrimaryContainer = () => {
         setRoomName(event.target.value)
     }, [])
 
-    const _handleJoinMeetingClicked = useCallback((event) => {
-        if (roomName !== '') {
-            dispatch(isValidRoomName(roomName, t))
+    const _handleBtnClicked = useCallback((event) => {
+        const target = event.target
+        let _roomName = roomName
+
+        if (target.name === 'pmRoomBtn') {
+            _roomName = loginState?.loginUserInfo?.personal_room_name
         }
 
-        event.preventDefault()
-    }, [roomName])
-
-    const _handlePersonalRoomJoinBtnClicked = useCallback((event) => {
-        dispatch(doPersonalRoomJoin())
-
-        event.preventDefault()
-    }, [])
+        dispatch(isValidRoomName(_roomName, t))
+    }, [roomName, loginState])
 
     return (
         <PrimaryPresenter
             roomName = { roomName }
             loginState = { loginState }
+            ModalInfo = { modalInfo }
             handleInputChanged = { _handleInputChanged }
-            handleJoinMeetingClicked = { _handleJoinMeetingClicked }
-            handlePersonalRoomJoinBtnClicked = { _handlePersonalRoomJoinBtnClicked } />
+            handleBtnClicked = { _handleBtnClicked } />
     )
 }
 

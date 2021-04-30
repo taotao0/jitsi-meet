@@ -11,8 +11,3 @@ export const RoomValidStatus = {
     SUCCESSED: 'SUCCESSED',
     FAILED: 'FAILED'
 }
-
-export const CheckRoomOwner = {
-    OWNER: 'OWNER',
-    NOTOWNER: 'NOTOWNER'
-}
