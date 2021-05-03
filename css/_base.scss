@@ -29,7 +29,11 @@ body {
     display: flex;
     // overflow: hidden;
     // color: $defaultColor;
-    // background: $defaultBackground;
+    background: initial;
+}
+
+#react {
+    background: #fff;
 }
 
 /**

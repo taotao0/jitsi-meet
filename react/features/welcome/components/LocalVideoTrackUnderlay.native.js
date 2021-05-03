@@ -52,7 +52,7 @@ class LocalVideoTrackUnderlay extends Component<Props> {
                     styles.localVideoTrackUnderlay,
                     this.props.style
                 ] }>
-                <ImageBackground source={require('../../../../images/welcome-background.png')} resizeMode='cover' style={{ flex: 1 }}>
+                <ImageBackground source={require('../../../../images/primary.png')} resizeMode='cover' style={{ flex: 1 }}>
                 {/* <VideoTrack videoTrack = { this.props._localVideoTrack } /> */}
                     <TintedView style={{ opacity: 0.3 }}>
                         { this.props.children }

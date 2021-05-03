@@ -68,7 +68,7 @@ const LoginPresenter = (props) => {
                                         type: 'button',
                                         name: 'id',
                                         onClick: LoginInputResetBtnClicked,
-                                        tabindex: -1
+                                        tabIndex: -1
                                     }} />
                                 <UseeInput
                                     inputProps = {{
@@ -83,7 +83,7 @@ const LoginPresenter = (props) => {
                                         type: 'button',
                                         name: 'pwd',
                                         onClick: LoginInputResetBtnClicked,
-                                        tabindex: -1
+                                        tabIndex: -1
                                     }} />
                                 {/* <div className = 'lg-state-save'>
                                     <p>{ t(`${LANG_PREFIX}.lgAuto`) }</p>
