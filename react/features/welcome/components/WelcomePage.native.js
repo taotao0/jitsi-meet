@@ -75,7 +75,7 @@ class WelcomePage extends AbstractWelcomePage {
     componentDidMount() {
         super.componentDidMount();
 
-        this._updateRoomname();
+        // this._updateRoomname();
 
         const { dispatch } = this.props;
 
@@ -259,7 +259,7 @@ class WelcomePage extends AbstractWelcomePage {
                 accessibilityLabel =
                     { t('welcomepage.accessibilityLabel.join') }
                 onPress = { this._onJoin }
-                style = { styles.button }
+                style = {[styles.button, { width: '80%', height: 40, borderRadius: 30 }]}
                 underlayColor = { ColorPalette.white }>
                 { children }
             </TouchableHighlight>
@@ -301,7 +301,7 @@ class WelcomePage extends AbstractWelcomePage {
                                 onChangeText = { this._onRoomChange }
                                 onFocus = { this._onFieldFocus }
                                 onSubmitEditing = { this._onJoin }
-                                placeholder = { this.state.roomPlaceholder }
+                                placeholder = { '회의실 이름 입력' }
                                 placeholderTextColor = { PLACEHOLDER_TEXT_COLOR }
                                 returnKeyType = { 'go' }
                                 style = { styles.textInput }
@@ -315,6 +315,8 @@ class WelcomePage extends AbstractWelcomePage {
                             }
                         </View>
                     </SafeAreaView>
+                    <View style={styles.seperator} />
+                    <Text style={[styles.enterRoomText, { marginLeft: 10 }]}>최근 목록</Text>
                     <WelcomePageLists disabled = { this.state._fieldFocused } />
                 </View>
                 <WelcomePageSideBar />

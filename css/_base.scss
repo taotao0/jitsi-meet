@@ -17,6 +17,7 @@ textarea {
 html {
     height: 100%;
     width: 100%;
+    margin: 0;
 }
 
 body {
@@ -25,9 +26,14 @@ body {
     height: 100%;
     font-size: 12px;
     font-weight: 400;
-    overflow: hidden;
-    color: $defaultColor;
-    background: $defaultBackground;
+    display: flex;
+    // overflow: hidden;
+    // color: $defaultColor;
+    background: initial;
+}
+
+#react {
+    background: #fff;
 }
 
 /**
@@ -101,20 +107,20 @@ input[type='text'], input[type='password'], textarea {
     resize: none; /* prevents the user-resizing, adjust to taste */
 }
 
-button {
-    color: #FFF;
-    background-color: $buttonBackground;
-    border-radius: $borderRadius;
+// button {
+//     color: #FFF;
+//     background-color: $buttonBackground;
+//     border-radius: $borderRadius;
 
-    &.no-icon {
-        padding: 0 1em;
-    }
-}
+//     &.no-icon {
+//         padding: 0 1em;
+//     }
+// }
 
-button,
-form {
-    display: block;
-}
+// button,
+// form {
+//     display: block;
+// }
 
 .watermark {
     display: block;

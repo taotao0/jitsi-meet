@@ -77,7 +77,6 @@ export default {
     },
 
     staticAvatar: {
-        backgroundColor: ColorPalette.lightGrey,
-        opacity: 0.4
+        backgroundColor: 'gray',
     }
 };

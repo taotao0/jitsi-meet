@@ -29,7 +29,7 @@ function toDisplayableItem(item, defaultServerURL, t) {
         lines: [
             _toDateString(item.date, t),
             _toDurationString(item.duration),
-            serverName
+            // serverName
         ],
         title: safeDecodeURIComponent(location.room),
         url: item.conference
@@ -70,14 +70,17 @@ function _toDateString(itemDate, t) {
     if (dateInMs >= todayInMs) {
         return m.fromNow();
     } else if (dateInMs >= yesterdayInMs) {
-        return t('dateUtils.yesterday');
+        // return 
+        return m.format('MMMM DD, dddd A h:mm')
     } else if (date.getFullYear() !== now.getFullYear()) {
         // We only want to include the year in the date if its not the current
         // year.
-        return m.format('ddd, MMMM DD h:mm A, gggg');
+        // return m.format('ddd, MMMM DD h:mm A, gggg');
+        return m.format('MMMM DD, dddd A h:mm')
     }
 
-    return m.format('ddd, MMMM DD h:mm A');
+    // return m.format('ddd, MMMM DD h:mm A');
+    return m.format('MMMM DD, dddd A h:mm')
 }
 
 /**

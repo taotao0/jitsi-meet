@@ -8,4 +8,4 @@ export const ICON_SHARE = 'images/icon-users.png';
 
 //FIXME: release v1.0을 위한 주석처리
 // export const JITSI_LOGO = 'images/jitsiLogo_square.png';
-export const JITSI_LOGO = 'images/squareicon.png';
+export const JITSI_LOGO = 'images/icon-users.png';

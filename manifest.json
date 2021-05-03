@@ -1,9 +1,9 @@
 {
-  "android_package_name": "org.jitsi.meet",
+  "android_package_name": "org.usee",
   "prefer_related_applications": true,
   "related_applications": [
     {
-      "id": "org.jitsi.meet",
+      "id": "org.usee",
       "platform": "chromeos_play"
     }
   ],

@@ -21,6 +21,7 @@ class GrantModeratorDialog extends AbstractGrantModeratorDialog {
     render() {
         return (
             <ConfirmDialog
+                title = {this.props.t('dialog.grantModeratorTitle')}
                 contentKey = 'dialog.grantModeratorDialog'
                 onSubmit = { this._onSubmit } />
         );

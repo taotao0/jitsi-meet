@@ -4,6 +4,7 @@ import { translate } from '../../base/i18n';
 import { IconMessage, IconReply } from '../../base/icons';
 import { getParticipantById } from '../../base/participants';
 import { connect } from '../../base/redux';
+import { isMobileBrowser } from '../../base/environment/utils'
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
 import { setPrivateMessageRecipient } from '../actions';
 

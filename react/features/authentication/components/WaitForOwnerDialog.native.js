@@ -58,11 +58,14 @@ class WaitForOwnerDialog extends Component<Props> {
      */
     render() {
         const {
-            _room: room
+            _room
         } = this.props;
+
+        const room = decodeURI(_room)
 
         return (
             <ConfirmDialog
+                title = { room }
                 cancelKey = 'dialog.Cancel'
                 contentKey = {
                     {

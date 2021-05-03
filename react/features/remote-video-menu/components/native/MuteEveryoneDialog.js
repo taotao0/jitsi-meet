@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { Text } from 'react-native';
+import { View, Text } from 'react-native';
 
 import { ColorSchemeRegistry } from '../../../base/color-scheme';
 import { ConfirmDialog } from '../../../base/dialog';
@@ -17,7 +17,7 @@ type Props = AbstractProps & {
     /**
      * The color-schemed stylesheet of the base/dialog feature.
      */
-    _dialogStyles: StyleType
+    _dialogStyles: StyleType,
 }
 
 /**
@@ -36,11 +36,16 @@ class MuteEveryoneDialog extends AbstractMuteEveryoneDialog<Props> {
     render() {
         return (
             <ConfirmDialog
-                okKey = 'dialog.muteParticipantButton'
+                okKey = 'dialog.Yes'
                 onSubmit = { this._onSubmit } >
-                <Text style = { this.props._dialogStyles.text }>
-                    { `${this.props.title} \n\n ${this.props.content}` }
-                </Text>
+                <View>
+                    <View style={{ marginTop: 5, marginBottom: 10 }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 18, textAlign: 'center', color: '#2c2c54' }}>{this.props.t('toolbar.muteEveryone')}</Text>
+                    </View>
+                    <Text style = { this.props._dialogStyles.text }>
+                        { `${this.props.title} \n ${this.props.content}` }
+                    </Text>
+                </View>
             </ConfirmDialog>
         );
     }

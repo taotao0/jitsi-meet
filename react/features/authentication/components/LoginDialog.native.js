@@ -161,27 +161,37 @@ class LoginDialog extends Component<Props, State> {
                 onCancel = { this._onCancel }
                 onSubmit = { this._onLogin }>
                 <View style = { styles.loginDialog }>
-                    <TextInput
-                        autoCapitalize = { 'none' }
-                        autoCorrect = { false }
-                        onChangeText = { this._onUsernameChange }
-                        placeholder = { 'user@domain.com' }
-                        placeholderTextColor = { PLACEHOLDER_COLOR }
-                        style = { _dialogStyles.field }
-                        underlineColorAndroid = { FIELD_UNDERLINE }
-                        value = { this.state.username } />
-                    <TextInput
-                        autoCapitalize = { 'none' }
-                        onChangeText = { this._onPasswordChange }
-                        placeholder = { t('dialog.userPassword') }
-                        placeholderTextColor = { PLACEHOLDER_COLOR }
-                        secureTextEntry = { true }
-                        style = { [
-                            _dialogStyles.field,
-                            inputDialogStyle.bottomField
-                        ] }
-                        underlineColorAndroid = { FIELD_UNDERLINE }
-                        value = { this.state.password } />
+                    <View style={{ marginBottom: 5 }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#2c2c54', textAlign: 'center' }}>계정 입력</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Text style={{ fontWeight: 'bold', color: '#2c2c54' }}>계정</Text>
+                        <TextInput
+                            autoCapitalize = { 'none' }
+                            autoCorrect = { false }
+                            onChangeText = { this._onUsernameChange }
+                            placeholder = { '계정' }
+                            placeholderTextColor = { PLACEHOLDER_COLOR }
+                            style = {[_dialogStyles.field, { width: '70%', paddingVertical: 5 }]}
+                            underlineColorAndroid = { FIELD_UNDERLINE }
+                            value = { this.state.username } />
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Text style={{ fontWeight: 'bold', color: '#2c2c54' }}>비밀번호</Text>
+                        <TextInput
+                            autoCapitalize = { 'none' }
+                            onChangeText = { this._onPasswordChange }
+                            placeholder = { t('dialog.userPassword') }
+                            placeholderTextColor = { PLACEHOLDER_COLOR }
+                            secureTextEntry = { true }
+                            style = { [
+                                _dialogStyles.field,
+                                inputDialogStyle.bottomField,
+                                { width: '70%', paddingVertical: 5 }
+                            ] }
+                            underlineColorAndroid = { FIELD_UNDERLINE }
+                            value = { this.state.password } />
+                    </View>
                     { this._renderMessage() }
                 </View>
             </CustomSubmitDialog>

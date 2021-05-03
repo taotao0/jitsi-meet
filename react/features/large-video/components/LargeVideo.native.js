@@ -131,7 +131,7 @@ class LargeVideo extends PureComponent<Props, State> {
                 onPress = { onClick }
                 participantId = { _participantId }
                 style = { _styles.largeVideo }
-                testHintId = 'org.jitsi.meet.LargeVideo'
+                testHintId = 'org.usee.LargeVideo'
                 useConnectivityInfoLabel = { useConnectivityInfoLabel }
                 zOrder = { 0 }
                 zoomEnabled = { true } />

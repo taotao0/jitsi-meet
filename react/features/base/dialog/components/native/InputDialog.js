@@ -45,7 +45,9 @@ type Props = BaseProps & {
     /**
      * Validating of the input.
      */
-    validateInput: ?Function
+    validateInput: ?Function, 
+
+    title: ?string,
 }
 
 type State = {
@@ -83,7 +85,7 @@ class InputDialog extends BaseDialog<Props, State> {
      * @inheritdoc
      */
     _renderContent() {
-        const { _dialogStyles, messageKey, okDisabled, t } = this.props;
+        const { _dialogStyles, messageKey, okDisabled, t, title } = this.props;
 
         return (
             <View>
@@ -92,12 +94,24 @@ class InputDialog extends BaseDialog<Props, State> {
                         brandedDialog.mainWrapper,
                         styles.fieldWrapper
                     ] }>
-                    <Text style = { _dialogStyles.fieldLabel }>
-                        { t(this.props.contentKey) }
-                    </Text>
+                    {
+                        title && (
+                            <View style={{ marginBottom: 5 }}>
+                                <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#2c2c54', textAlign: 'center' }}>{title}</Text>
+                            </View>
+                        )
+                    }
+                    {
+                        this.props.contentKey &&  (
+                            <Text style = { _dialogStyles.fieldLabel }>
+                                { t(this.props.contentKey) }
+                            </Text>
+                        )
+                    }
+                    
                     <TextInput
                         onChangeText = { this._onChangeText }
-                        style = { _dialogStyles.field }
+                        style = {[ _dialogStyles.field, { paddingBottom: 0 } ]}
                         underlineColorAndroid = { FIELD_UNDERLINE }
                         value = { this.state.fieldValue }
                         { ...this.props.textInputProps } />
@@ -116,10 +130,20 @@ class InputDialog extends BaseDialog<Props, State> {
                         style = { [
                             _dialogStyles.button,
                             brandedDialog.buttonFarLeft,
-                            brandedDialog.buttonFarRight
                         ] }>
                         <Text style = { _dialogStyles.buttonLabel }>
                             { t('dialog.Ok') }
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress = { this._onCancel }
+                        style = { [
+                            _dialogStyles.button,
+                            brandedDialog.buttonFarRight,
+                            { borderLeftWidth: 2, borderLeftColor: 'rgba(0, 0, 0, 0.8)' }
+                        ] }>
+                        <Text style = { _dialogStyles.buttonLabel }>
+                            { t('dialog.Cancel') }
                         </Text>
                     </TouchableOpacity>
                 </View>

@@ -63,15 +63,15 @@ class BaseDialog<P: Props, S: State> extends AbstractDialog<P, S> {
                         pointerEvents = 'box-none'
                         style = { [
                             _dialogStyles.dialog,
-                            style
+                            style,
                         ] }>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             onPress = { this._onCancel }
                             style = { styles.closeWrapper }>
                             <Icon
                                 src = { IconClose }
                                 style = { _dialogStyles.closeStyle } />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         { this._renderContent() }
                     </View>
                 </KeyboardAvoidingView>

@@ -10,6 +10,7 @@ import {
     CONNECTION_FAILED,
     getURLWithoutParams
 } from '../base/connection';
+
 import { MiddlewareRegistry } from '../base/redux';
 
 import { reloadNow } from './actions';
@@ -17,13 +18,13 @@ import { _getRouteToRender } from './getRouteToRender';
 
 MiddlewareRegistry.register(store => next => action => {
     switch (action.type) {
-    case CONNECTION_ESTABLISHED:
-        return _connectionEstablished(store, next, action);
-    case CONNECTION_FAILED:
-        return _connectionFailed(store, next, action);
+        case CONNECTION_ESTABLISHED:
+            return _connectionEstablished(store, next, action);
+        case CONNECTION_FAILED:
+            return _connectionFailed(store, next, action);
 
-    case SET_ROOM:
-        return _setRoom(store, next, action);
+        case SET_ROOM:
+            return _setRoom(store, next, action);
     }
 
     return next(action);

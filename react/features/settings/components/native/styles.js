@@ -74,8 +74,8 @@ export default {
      * Style fo the form section separator titles.
      */
     formSectionTitle: {
-        backgroundColor: 'rgba(0, 0, 0, 0.1)',
-        padding: 5
+        backgroundColor: 'rgba(66, 77, 87, 0.1)',
+        padding: 10
     },
 
     /**
@@ -104,5 +104,14 @@ export default {
         marginVertical: 5,
         paddingVertical: 3,
         textAlign: 'left'
+    },
+
+    inputContainerView: {
+        flex: 1,
+        flexDirection: 'row',
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        alignItems: 'center',
+        justifyContent: 'space-between',
     }
 };

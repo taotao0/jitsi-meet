@@ -3,6 +3,8 @@
 import { toState } from '../redux';
 import { toURLString } from '../util';
 
+import { USEE_DOMAIN } from '../../../features/usee/usee_config'
+
 /**
  * Figures out what's the current conference URL which is supposed to indicate what conference is currently active.
  * When not currently in any conference and not trying to join any then 'undefined' is returned.
@@ -139,5 +141,9 @@ export function getURLWithoutParamsNormalized(url: URL): string {
  * {@code user@server.com}).
  */
 export function toJid(id: string, { authdomain, domain }: Object): string {
-    return id.indexOf('@') >= 0 ? id : `${id}@${authdomain || domain}`;
+    // return id.indexOf('@') >= 0 ? id : `${id}@${authdomain || domain}`;
+    // hjjung start
+    // if a user enter only ID without domain, apend usee.co.kr
+    return id.indexOf('@') >= 0 ? id : `${id}@${USEE_DOMAIN}`;
+    // hjjung end
 }

@@ -9,7 +9,7 @@ import AbstractStatelessAvatar, { type Props as AbstractProps } from '../Abstrac
 
 import styles from './styles';
 
-const DEFAULT_AVATAR = require('../../../../../../images/avatar.png');
+const DEFAULT_AVATAR = require('../../../../../../images/guest_avatar.png');
 
 type Props = AbstractProps & {
 

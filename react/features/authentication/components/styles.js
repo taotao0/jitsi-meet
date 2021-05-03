@@ -28,8 +28,8 @@ ColorSchemeRegistry.register('LoginDialog', {
     loginDialog: {
         flex: 0,
         flexDirection: 'column',
-        marginBottom: BoxModel.margin,
-        marginTop: BoxModel.margin
+        // marginBottom: BoxModel.margin,
+        // marginTop: BoxModel.margin
     },
 
     /**

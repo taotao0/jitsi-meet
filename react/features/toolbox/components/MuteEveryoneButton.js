@@ -6,6 +6,7 @@ import { translate } from '../../base/i18n';
 import { IconMuteEveryone } from '../../base/icons';
 import { getLocalParticipant, PARTICIPANT_ROLE } from '../../base/participants';
 import { connect } from '../../base/redux';
+import { isMobileBrowser } from '../../base/environment/utils'
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
 import { MuteEveryoneDialog } from '../../remote-video-menu/components';
 
@@ -33,7 +34,8 @@ type Props = AbstractButtonProps & {
  */
 class MuteEveryoneButton extends AbstractButton<Props, *> {
     accessibilityLabel = 'toolbar.accessibilityLabel.muteEveryone';
-    icon = IconMuteEveryone;
+    // icon = IconMuteEveryone;
+    icon = isMobileBrowser() === true ? null : IconMuteEveryone;
     label = 'toolbar.muteEveryone';
     tooltip = 'toolbar.muteEveryone';
 

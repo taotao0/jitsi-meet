@@ -31,6 +31,7 @@ export type Props = AbstractButtonProps & {
 export default class AbstractMuteEveryoneElseButton extends AbstractButton<Props, *> {
     accessibilityLabel = 'toolbar.accessibilityLabel.muteEveryoneElse';
     icon = IconMuteEveryone;
+    // icon = null;
     label = 'videothumbnail.domuteOthers';
 
     /**

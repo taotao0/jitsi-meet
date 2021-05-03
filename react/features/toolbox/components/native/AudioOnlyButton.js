@@ -28,8 +28,10 @@ type Props = AbstractButtonProps & {
 class AudioOnlyButton extends AbstractButton<Props, *> {
     accessibilityLabel = 'toolbar.accessibilityLabel.audioOnly';
     icon = IconAudioOnly;
+    // icon = null;
     label = 'toolbar.audioOnlyOn';
     toggledIcon = IconAudioOnlyOff;
+    // toggledIcon = null;
     toggledLabel = 'toolbar.audioOnlyOff';
 
     /**

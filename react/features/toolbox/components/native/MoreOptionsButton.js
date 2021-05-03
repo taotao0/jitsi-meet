@@ -1,7 +1,7 @@
 // @flow
 
 import { translate } from '../../../base/i18n';
-import { IconMenu } from '../../../base/icons';
+import { IconMore } from '../../../base/icons';
 import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/components';
 
 
@@ -12,8 +12,10 @@ type Props = AbstractButtonProps;
  */
 class MoreOptionsButton extends AbstractButton<Props, any> {
     accessibilityLabel = 'toolbar.accessibilityLabel.moreOptions';
-    icon = IconMenu;
-    label = 'toolbar.moreOptions';
+    icon = IconMore;
+    // label = 'toolbar.moreOptions';
+    label = null;
+    // showLabel = false;
 }
 
 

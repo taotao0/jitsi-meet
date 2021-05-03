@@ -18,7 +18,11 @@ class DisplayNamePrompt extends AbstractDisplayNamePrompt<*> {
     render() {
         return (
             <InputDialog
-                contentKey = 'dialog.enterDisplayName'
+                title='닉네임 설정'
+                textInputProps={{
+                    placeholder: '닉네임 입력'
+                }}
+                // contentKey = 'dialog.enterDisplayName'
                 onSubmit = { this._onSetDisplayName } />
         );
     }

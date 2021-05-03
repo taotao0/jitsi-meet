@@ -92,13 +92,15 @@ class PasswordRequiredPrompt extends Component<Props, State> {
 
         return (
             <InputDialog
+                title = '추가 잠금 해제'
                 contentKey = 'dialog.passwordLabel'
                 initialValue = { password }
                 messageKey = { password ? 'dialog.incorrectRoomLockPassword' : undefined }
                 onCancel = { this._onCancel }
                 onSubmit = { this._onSubmit }
                 textInputProps = {{
-                    secureTextEntry: true
+                    secureTextEntry: true,
+                    placeholder: '추가 잠금번호 입력'
                 }} />
         );
     }

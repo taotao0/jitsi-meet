@@ -19,8 +19,11 @@ body.welcome-page {
 }
 
 .welcome {
-    background-image: $welcomePageBackground;
+    // background-image: $welcomePageHeaderBackground;
+    // background-size: cover;
+    // background-repeat: no-repeat;
     background-color: #fff;
+
     display: flex;
     flex-direction: column;
     font-family: $welcomePageFontFamily;
@@ -29,12 +32,12 @@ body.welcome-page {
     position: relative;
 
     .header {
-        background-image: $welcomePageHeaderBackground;
-        background-position: $welcomePageHeaderBackgroundPosition;
-        background-repeat: $welcomePageHeaderBackgroundRepeat;
-        background-size: $welcomePageHeaderBackgroundSize;
+        // background-image: $welcomePageHeaderBackground;
+        // background-position: $welcomePageHeaderBackgroundPosition;
+        // background-repeat: $welcomePageHeaderBackgroundRepeat;
+        // background-size: $welcomePageHeaderBackgroundSize;
         padding-bottom: $welcomePageHeaderPaddingBottom;
-        background-color: #131519;
+        // background-color: #131519;
         height: 400px;
         overflow: hidden;
         position: relative;
@@ -290,8 +293,11 @@ body.welcome-page {
     .welcome-page-roomname {
         background: rgba(255, 255, 255, 0.38);
         border-radius: 3px;
-        color: $welcomePageDescriptionColor;
-        padding: 4px;
+        color: #FFFFFF;
+        cursor: pointer;
+        margin-left: 5px;
+        margin-right: 5px;
+        padding: 7px 20px;
         position: absolute;
         top: 32px;
         left: 32px;
@@ -339,7 +345,7 @@ body.welcome-page {
 
     .welcome-cards-container {
         color:#131519;
-        padding-top: 40px;
+        // padding-top: 40px;
     }
 
     .welcome-card-row {
@@ -373,13 +379,7 @@ body.welcome-page {
             box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15);
         }
     }
-
-    .welcome-footer {
-        background: #131519;
-        color: #fff;
-        margin-top: 40px;
-        position: relative;
-    }
+    
 
     .welcome-footer-centered {
         max-width: 688px;

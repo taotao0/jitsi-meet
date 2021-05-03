@@ -10,7 +10,9 @@ if (googleServicesEnabled) {
 // This lets us upload a new build at most every 10 seconds for the
 // next ~680 years.
 // https://stackoverflow.com/a/38643838
-def vcode = (int) (((new Date().getTime() / 1000) - 1546297200) / 10)
+// def vcode = (int) (((new Date().getTime() / 1000) - 1546297200) / 10)
+def enableProguardInReleaseBuilds = true
+def enableSeparateBuildPerCPUArchitecture = true
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -21,15 +23,26 @@ android {
     }
 
     defaultConfig {
-        applicationId 'org.jitsi.meet'
-        versionCode vcode
+        applicationId 'org.usee'
+        versionCode 5
         versionName project.appVersion
 
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        // ndk {
+        //     abiFilters "armeabi-v7a", 'arm64-v8a', 'x86', 'x86_64'
+        //     // abiFilters 'arm64-v8a', 'x86_64'
+        //     // abiFilters.clear()
+        // }
+    }
 
-        ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+    splits {
+        abi {
+            enable enableSeparateBuildPerCPUArchitecture
+            reset()
+            include 'armeabi-v7a','arm64-v8a','x86','x86_64'
+            // include 'arm64-v8a', 'x86_64'
+            universalApk false
         }
     }
 
@@ -39,6 +52,14 @@ android {
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
+        }
+        release {
+            if (project.hasProperty('keystorefile')) {
+                storeFile file(keystorefile)
+                storePassword keystorepassword
+                keyAlias keyalias
+                keyPassword keypassword
+            }
         }
     }
 
@@ -54,6 +75,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-release.pro'
             buildConfigField "boolean", "GOOGLE_SERVICES_ENABLED", "${googleServicesEnabled}"
             buildConfigField "boolean", "LIBRE_BUILD", "${rootProject.ext.libreBuild}"
+            signingConfig signingConfigs.release
+            shrinkResources enableProguardInReleaseBuilds
         }
     }
 
@@ -74,11 +97,45 @@ android {
     }
 }
 
+ext.abiCodes = ['x86':1, 'x86_64':2, 'arm64-v8a':3, 'armeabi-v7a':4]
+
+import com.android.build.OutputFile
+
+// For each APK output variant, override versionCode with a combination of
+// ext.abiCodes * 1000 + variant.versionCode. In this example, variant.versionCode
+// is equal to defaultConfig.versionCode. If you configure product flavors that
+// define their own versionCode, variant.versionCode uses that value instead.
+android.applicationVariants.all { variant ->
+
+  // Assigns a different version code for each output APK
+  // other than the universal APK.
+  variant.outputs.each { output ->
+
+    // Stores the value of ext.abiCodes that is associated with the ABI for this variant.
+    def baseAbiVersionCode =
+            // Determines the ABI for this variant and returns the mapped value.
+            project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+
+    // Because abiCodes.get() returns null for ABIs that are not mapped by ext.abiCodes,
+    // the following code does not override the version code for universal APKs.
+    // However, because we want universal APKs to have the lowest version code,
+    // this outcome is desirable.
+    if (baseAbiVersionCode != null) {
+
+      // Assigns the new version code to versionCodeOverride, which changes the version code
+      // for only the output APK, not for the variant itself. Skipping this step simply
+      // causes Gradle to use the value of variant.versionCode for the APK.
+      output.versionCodeOverride =
+              baseAbiVersionCode * 1000 + variant.versionCode
+    }
+  }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
+    // debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
 
     if (!rootProject.ext.libreBuild) {
         implementation 'com.google.android.gms:play-services-auth:16.0.1'
@@ -173,3 +230,5 @@ gradle.projectsEvaluated {
 if (googleServicesEnabled) {
     apply plugin: 'com.google.gms.google-services'
 }
+
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

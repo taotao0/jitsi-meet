@@ -358,7 +358,7 @@ public class ConnectionService extends android.telecom.ConnectionService {
             WritableNativeMap data = new WritableNativeMap();
             data.putString("callUUID", getCallUUID());
             ReactInstanceManagerHolder.emitEvent(
-                    "org.jitsi.meet:features/connection_service#disconnect",
+                    "org.usee:features/connection_service#disconnect",
                     data);
             // The JavaScript side will not go back to the native with
             // 'endCall', so the Connection must be removed immediately.
@@ -378,7 +378,7 @@ public class ConnectionService extends android.telecom.ConnectionService {
             WritableNativeMap data = new WritableNativeMap();
             data.putString("callUUID", getCallUUID());
             ReactInstanceManagerHolder.emitEvent(
-                    "org.jitsi.meet:features/connection_service#abort",
+                    "org.usee:features/connection_service#abort",
                     data);
             // The JavaScript side will not go back to the native with
             // 'endCall', so the Connection must be removed immediately.

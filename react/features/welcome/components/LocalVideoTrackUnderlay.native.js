@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, ImageBackground } from 'react-native';
 
 import { VideoTrack } from '../../base/media';
 import { TintedView } from '../../base/react';
@@ -52,10 +52,12 @@ class LocalVideoTrackUnderlay extends Component<Props> {
                     styles.localVideoTrackUnderlay,
                     this.props.style
                 ] }>
-                <VideoTrack videoTrack = { this.props._localVideoTrack } />
-                <TintedView>
-                    { this.props.children }
-                </TintedView>
+                <ImageBackground source={require('../../../../images/primary.png')} resizeMode='cover' style={{ flex: 1 }}>
+                {/* <VideoTrack videoTrack = { this.props._localVideoTrack } /> */}
+                    <TintedView style={{ opacity: 0.3 }}>
+                        { this.props.children }
+                    </TintedView>
+                </ImageBackground>
             </View>
         );
     }

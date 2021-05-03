@@ -146,22 +146,24 @@ const SECTION_LIST_STYLES = {
 
     listItemTitle: {
         fontWeight: 'bold',
-        fontSize: 16
+        fontSize: 18
     },
 
     listSection: {
         alignItems: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        // backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        backgroundColor: 'rgba(44, 44, 84, 0.5)',
         flex: 1,
         flexDirection: 'row',
         paddingVertical: 5,
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        borderRadius: 10
     },
 
     listSectionText: {
         color: OVERLAY_FONT_COLOR,
-        fontSize: 14,
-        fontWeight: 'normal'
+        fontSize: 15,
+        fontWeight: 'bold'
     },
 
     pullToRefresh: {

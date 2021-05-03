@@ -44,7 +44,9 @@ export function _getRouteToRender(stateful: Function | Object): Promise<Route> {
         return _getMobileRoute(state);
     }
 
-    return _getWebConferenceRoute(state) || _getWebWelcomePageRoute(state);
+    // FIXME: URL 규칙을 정해야 한다!!! /
+    return _getWebConferenceRoute(state) || _getContentsRoute(state)
+    // return _getContentsRoute(state)
 }
 
 /**
@@ -107,6 +109,16 @@ function _getWebConferenceRoute(state): ?Promise<Route> {
         });
 }
 
+function _getContentsRoute(state): Promise<Route> {
+    const route = _getEmptyRoute();
+
+    if (!isSupportedBrowser()) {
+        route.component = UnsupportedDesktopBrowser
+    }
+
+    return Promise.resolve(route);
+}
+
 /**
  * Returns the {@code Route} to display when trying to access the welcome page.
  *
@@ -119,6 +131,7 @@ function _getWebWelcomePageRoute(state): Promise<Route> {
     if (isWelcomePageUserEnabled(state)) {
         if (isSupportedBrowser()) {
             route.component = WelcomePage;
+            // route.component = BlankPage;
         } else {
             route.component = UnsupportedDesktopBrowser;
         }
