@@ -16,6 +16,8 @@ import {
     isWelcomePageUserEnabled
 } from '../welcome';
 
+import PrimaryContainer from '../usee/Pages/Primary'
+
 /**
  * Object describing application route.
  *
@@ -61,7 +63,7 @@ function _getMobileRoute(state): Promise<Route> {
     if (isRoomValid(state['features/base/conference'].room)) {
         route.component = Conference;
     } else if (isWelcomePageAppEnabled(state)) {
-        route.component = WelcomePage;
+        route.component = PrimaryContainer;
     } else {
         route.component = BlankPage;
     }

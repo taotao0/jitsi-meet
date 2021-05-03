@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { LANG_PREFIX } from '../constants'
+import { LANG_PREFIX } from '../../constants'
 
 const FunctionDescription = (props) => {
     const { elem } = props

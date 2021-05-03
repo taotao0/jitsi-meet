@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import FunctionDescription from './components/FunctionDescription'
+import { FunctionDescription } from './components'
 
 import {
     LANG_PREFIX,
