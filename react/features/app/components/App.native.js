@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import { StatusBar } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
 import { setColorScheme } from '../../base/color-scheme';
@@ -19,6 +20,8 @@ import type { Props as AbstractAppProps } from './AbstractApp';
 // Register middlewares and reducers.
 import '../middlewares';
 import '../reducers';
+
+import PrimaryContainer from '../../usee/Pages/Primary'
 
 declare var __DEV__;
 
@@ -53,6 +56,9 @@ type Props = AbstractAppProps & {
  *
  * @extends AbstractApp
  */
+
+// const Stack = createStackNavigator();
+
 export class App extends AbstractApp {
     _init: Promise<*>;
 
@@ -129,6 +135,12 @@ export class App extends AbstractApp {
         return (
             <DimensionsDetector
                 onDimensionsChanged = { this._onDimensionsChanged }>
+                <StatusBar backgroundColor = '#1b1e25' />
+                {/* <NavigationContainer>
+                    <Stack.Navigator>
+                        <Stack.Screen name = 'Primary' component = {PrimaryContainer} />
+                    </Stack.Navigator>
+                </NavigationContainer> */}
                 { super._createMainElement(component, props) }
             </DimensionsDetector>
         );

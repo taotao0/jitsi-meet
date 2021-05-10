@@ -20,28 +20,6 @@ import { SoundCollection } from '../../sounds';
 import { appWillMount, appWillUnmount } from '../actions';
 import logger from '../logger';
 
-// import HeaderContainer from '../../../usee/Header'
-// import FooterContainer from '../../../usee/Footer'
-
-// import PrimaryContainer from '../../../usee/Pages/Primary'
-// import LoginContainer from '../../../usee/Pages/Login'
-// import MyPageContainer from '../../../usee/Pages/MyPage'
-// import ManageRecordingsContainer from '../../../usee/Pages/ManageRecordings'
-// import MobileSupportContainer from '../../../usee/Pages/MobileSupport'
-// import NotFoundContainer from '../../../usee/Pages/NotFound'
-// import FindAuthContainer from '../../../usee/Pages/FindAuth'
-// import ResetPasswordContainer from '../../../usee/Pages/ResetPassword'
-
-// import {
-//     PRIMARY_ROUTE_PATH,
-//     LOGIN_ROUTE_PATH,
-//     MOBILE_SUPPORT_ROUTE_PATH,
-//     MY_PAGE_ROUTE_PATH,
-//     MANAGE_RECORDINGS_ROUTE_PATH,
-//     FIND_AUTH_ROUTE_PATH,
-//     REST_PASSWORD_ROUTE_PATH
-// } from '../../../usee/usee_config'
-
 declare var APP: Object;
 
 /**
@@ -155,53 +133,6 @@ export default class BaseApp extends Component<*, State> {
                         <SoundCollection />
                         { this._createExtraElement() }
                         { this._renderDialogContainer() }
-                        {/* {
-                            component
-                                ? (
-                                    <>
-                                        { this._createMainElement(component, props) }
-                                        <SoundCollection />
-                                        { this._createExtraElement() }
-                                        { this._renderDialogContainer() }
-                                    </>
-                                )
-                                : (
-                                    <div className = 'usee-wrapper'>
-                                        <HeaderContainer />
-                                        <main className = 'main-wrapper'>
-                                            {
-                                                <Switch>
-                                                    <Route
-                                                        exact
-                                                        path = { PRIMARY_ROUTE_PATH }
-                                                        component = { PrimaryContainer } />
-                                                    <Route
-                                                        exact
-                                                        path = { LOGIN_ROUTE_PATH }
-                                                        component = { LoginContainer } />
-                                                    <Route
-                                                        path = { MY_PAGE_ROUTE_PATH }
-                                                        component = { MyPageContainer } />
-                                                    <Route
-                                                        path = { MOBILE_SUPPORT_ROUTE_PATH }
-                                                        component = { MobileSupportContainer } />
-                                                    <Route
-                                                        path = { MANAGE_RECORDINGS_ROUTE_PATH }
-                                                        component = { ManageRecordingsContainer } />
-                                                    <Route
-                                                        path = { FIND_AUTH_ROUTE_PATH }
-                                                        component = { FindAuthContainer } />
-                                                    <Route
-                                                        path = { REST_PASSWORD_ROUTE_PATH }
-                                                        component = { ResetPasswordContainer } />
-                                                    <Route component = { NotFoundContainer } />
-                                                </Switch>
-                                            }
-                                        </main>
-                                        <FooterContainer />
-                                    </div>
-                                )
-                        } */}
                     </Provider>
                 </I18nextProvider>
             );
