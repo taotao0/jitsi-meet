@@ -62,6 +62,7 @@ const PrimaryPresenter = (props) => {
                     </div>
                     {
                         loginState.userStatus === UserStatus.MEMBER && (
+                            <div className = 'pm-btn-wrapper'>
                             <button
                                 className = 'pm-room-btn'
                                 type = 'button'
@@ -69,6 +70,14 @@ const PrimaryPresenter = (props) => {
                                 onClick = { handleBtnClicked }>
                                 { t(`${LANG_PREFIX}.personalRoomJoin`) }
                             </button>
+                            <button
+                                className = 'pm-room-btn'
+                                type = 'button'
+                                name = 'pmWebinarBtn'
+                                onClick = { handleBtnClicked }>
+                                { t(`${LANG_PREFIX}.webinarRoomCreate`) }
+                            </button>
+                            </div>
                         )
                     }    
                 </form>                

@@ -70,9 +70,16 @@
                 color: $useeLightTextColor;
             }
         }
+        .pm-btn-wrapper{
+            float:left;
+            min-width: 433px;
+            height: 40px;
+            margin-top: 10px;
+            border-radius: 30px;
+        }
 
         .pm-room-btn {
-            min-width: 433px;
+            min-width: 210px;
             height: 40px;
             margin-top: 10px;
             border-radius: 30px;

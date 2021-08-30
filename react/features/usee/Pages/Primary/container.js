@@ -28,7 +28,7 @@ const PrimaryContainer = () => {
         const target = event.target
         let _roomName = roomName
 
-        if (target.name === 'pmRoomBtn') {
+        if (target.name === 'pmRoomBtn'||target.name === 'pmWebinarBtn') {
             _roomName = loginState?.loginUserInfo?.personal_room_name
         }
 

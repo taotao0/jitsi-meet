@@ -997,6 +997,7 @@
                 "joinBtn": "참여",
                 "inputPlaceholder": "회의실 이름을 입력하세요.",
                 "personalRoomJoin": "개인 회의실 입장",
+                "webinarRoomCreate": "웨비나 생성",
                 "alertMsg": "개설되지 않은 회의실 입니다. \n 회의실 이름을 확인하세요.",
                 "nickNameMsg": "닉네임을 입력하세요(필수)",
                 "cancel": "취소",
