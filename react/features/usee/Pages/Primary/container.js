@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import PrimaryPresenter from './presenter'
 
 import { USEE_LS_LOGIN_KEY } from '../../usee_config'
-
+import axios from 'axios'
 import {
     isValidRoomName
 } from './ducks'
@@ -24,15 +24,37 @@ const PrimaryContainer = () => {
         setRoomName(event.target.value)
     }, [])
 
-    const _handleBtnClicked = useCallback((event) => {
+    const _setRoomType=(async (mode)=>{
+        const url = '/api/v1/Room/RoomType/';
+        const ret = await axios({
+            method: 'patch',
+            url: url + mode,
+            headers: {
+                'Authorization': loginState?.loginUserInfo?.session_token,
+            }
+        });
+        if(ret.data.status==='SUCCESSED')return true;
+        return false;
+    })
+
+    const _handleBtnClicked = useCallback(async (event) => {
         const target = event.target
         let _roomName = roomName
 
-        if (target.name === 'pmRoomBtn'||target.name === 'pmWebinarBtn') {
+        if (target.name === 'pmRoomBtn') {
             _roomName = loginState?.loginUserInfo?.personal_room_name
+            const ret = await _setRoomType('DEFAULT');
+            if(ret){
+                dispatch(isValidRoomName(_roomName, t))
+            }
+        }else if(target.name === 'pmWebinarBtn'){
+            _roomName = loginState?.loginUserInfo?.personal_room_name
+            const ret = await _setRoomType('WEBINAR');
+            if(ret){
+                dispatch(isValidRoomName(_roomName, t))
+            }
         }
 
-        dispatch(isValidRoomName(_roomName, t))
     }, [roomName, loginState])
 
     return (
