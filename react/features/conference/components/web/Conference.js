@@ -255,7 +255,7 @@ class Conference extends AbstractConference<Props, *> {
             'tileview', 'videobackgroundblur', 'download', 'help', 'mute-everyone', 'security'
         ];       
         const WEBINAR_HOST_BUTTONS = [
-            'microphone', 'camera', 'fullscreen',
+            'microphone', 'camera', 'fullscreen','desktop','fodeviceselection', 
             'hangup', 'profile', 'chat', 'recording',  
             'settings', 'videoquality', 'invite', 'feedback',
             'videobackgroundblur', 'help', 'security'
@@ -263,7 +263,7 @@ class Conference extends AbstractConference<Props, *> {
         const WEBINAR_GUEST_BUTTONS = [
             'hangup', 'profile', 'chat', 'recording',  
             'videoquality', 'feedback',
-            'videobackgroundblur', 'help', 'security'              
+            'videobackgroundblur', 'help'              
         ]  
 
         const loginInfo = JSON.parse(jitsiLocalStorage.getItem('features/usee/Pages/Login'));
