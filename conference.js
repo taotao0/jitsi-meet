@@ -726,14 +726,18 @@ export default {
      * @returns {Promise}
      */
     async init({ roomName }) {
+        const state = APP.store.getState();
+        if(state['features/conference'].isWebinar){
+            //    
+        }
         const initialOptions = {
             startAudioOnly: config.startAudioOnly,
             startScreenSharing: config.startScreenSharing,
-            startWithAudioMuted: getStartWithAudioMuted(APP.store.getState())
-                || config.startSilent
-                || isUserInteractionRequiredForUnmute(APP.store.getState()),
-            startWithVideoMuted: getStartWithVideoMuted(APP.store.getState())
-                || isUserInteractionRequiredForUnmute(APP.store.getState())
+            startWithAudioMuted: true,//getStartWithAudioMuted(APP.store.getState())
+                //|| config.startSilent
+                //|| isUserInteractionRequiredForUnmute(APP.store.getState()),
+            startWithVideoMuted: true//getStartWithVideoMuted(APP.store.getState())
+                //|| isUserInteractionRequiredForUnmute(APP.store.getState())
         };
 
         this.roomName = roomName;
