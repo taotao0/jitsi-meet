@@ -23,9 +23,18 @@ import {
     abstractMapStateToProps
 } from '../AbstractConference';
 import type { AbstractProps } from '../AbstractConference';
+import {
+    isParticipantModerator,
+    PARTICIPANT_ROLE,
+} from '../../../base/participants';
 
 import Labels from './Labels';
 import { default as Notice } from './Notice';
+
+
+import { changeConferenceMode } from '../../ducks'
+import axios from 'axios'
+import { jitsiLocalStorage } from '@jitsi/js-utils';
 
 declare var APP: Object;
 declare var interfaceConfig: Object;
@@ -86,7 +95,8 @@ type Props = AbstractProps & {
      * If prejoin page is visible or not.
      */
     _showPrejoin: boolean,
-
+    _isWebinar:boolean,
+    _isHost:Boolean,
     dispatch: Function,
     t: Function
 }
@@ -111,6 +121,8 @@ class Conference extends AbstractConference<Props, *> {
         // Throttle and bind this component's mousemove handler to prevent it
         // from firing too often.
         this._originalOnShowToolbar = this._onShowToolbar;
+        //this.props._isWebinar = true;
+        
         this._onShowToolbar = _.throttle(
             () => this._originalOnShowToolbar(),
             100,
@@ -130,6 +142,7 @@ class Conference extends AbstractConference<Props, *> {
      */
     componentDidMount() {
         document.title = `${this.props._roomName} | ${interfaceConfig.APP_NAME}`;
+        
         this._start();
     }
 
@@ -230,27 +243,93 @@ class Conference extends AbstractConference<Props, *> {
     }
 
     /**
+     * Change conference mode ui
+     * 
+     */
+    _changeConferenceUI(){
+        const CONFERENCE_BUTTONS = [
+            'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
+            'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',  
+            'etherpad', 'sharedvideo', 'settings', 'raisehand',
+            'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
+            'tileview', 'videobackgroundblur', 'download', 'help', 'mute-everyone', 'security'
+        ];       
+        const WEBINAR_HOST_BUTTONS = [
+            'microphone', 'camera', 'fullscreen',
+            'hangup', 'profile', 'chat', 'recording',  
+            'settings', 'videoquality', 'invite', 'feedback',
+            'videobackgroundblur', 'help', 'security'
+        ]  
+        const WEBINAR_GUEST_BUTTONS = [
+            'hangup', 'profile', 'chat', 'recording',  
+            'videoquality', 'feedback',
+            'videobackgroundblur', 'help', 'security'              
+        ]  
+
+        const loginInfo = JSON.parse(jitsiLocalStorage.getItem('features/usee/Pages/Login'));
+        /**
+         * Room name get
+         * Login check using LocalStorage(is Member? Visitor?)
+         * user room name compare with room display name
+         *  
+         */
+        console.log("loginInfo",loginInfo);
+        if(this.props._isWebinar&&loginInfo.userStatus==='VISITOR'){//GUEST WEBINAR
+            interfaceConfig.TOOLBAR_BUTTONS=WEBINAR_GUEST_BUTTONS;
+            console.log("NOT HOST&WEBINAR&VISITOR");
+        }else if(this.props._isWebinar&&loginInfo.userStatus==='MEMBER'){//HOST WEBINAR
+            if(loginInfo.loginUserInfo.personal_room_name===this.props._roomName.replaceAll(' ','-')){
+                interfaceConfig.TOOLBAR_BUTTONS=WEBINAR_HOST_BUTTONS;
+                console.log("HOST&WEBINAR");
+            }else{
+                interfaceConfig.TOOLBAR_BUTTONS=WEBINAR_GUEST_BUTTONS;
+                console.log("NOT HOST&WEBINAR");  
+            }
+        }else{  //CONFERENCE
+            interfaceConfig.TOOLBAR_BUTTONS=CONFERENCE_BUTTONS;
+            console.log("CONFERENCE");
+        }
+    }
+
+    async _checkConferenceMode(roomName){
+        const dashRoomName = roomName.replaceAll(' ','-');
+        const url = '/api/v1/Room/RoomType/'+dashRoomName;//+roomName
+        const ret = await axios({
+            method: 'get',
+            url: url
+        });
+        
+        if(ret.data.result==='WEBINAR')return true;
+        else return false;
+    }
+    /**
      * Until we don't rewrite UI using react components
      * we use UI.start from old app. Also method translates
      * component right after it has been mounted.
      *
      * @inheritdoc
      */
-    _start() {
+    async _start() {
+        
         APP.UI.start();
 
         APP.UI.registerListeners();
         APP.UI.bindEvents();
-
         FULL_SCREEN_EVENTS.forEach(name =>
             document.addEventListener(name, this._onFullScreenChange));
 
         const { dispatch, t } = this.props;
-
+        const ret = await this._checkConferenceMode(this.props._roomName);
+        /**
+         * Webinar mode check
+         * Host check
+        */
+        dispatch(changeConferenceMode(ret));
         dispatch(connect());
-
+        this._changeConferenceUI();
         maybeShowSuboptimalExperienceNotification(dispatch, t);
     }
+    
 }
 
 /**
@@ -264,6 +343,8 @@ class Conference extends AbstractConference<Props, *> {
 function _mapStateToProps(state) {
     return {
         ...abstractMapStateToProps(state),
+        _isHost: jitsiLocalStorage.getItem('features/usee/Pages/Login'),
+        _isWebinar: state['features/conference'].isWebinar,
         _iAmRecorder: state['features/base/config'].iAmRecorder,
         _isLobbyScreenVisible: state['features/base/dialog']?.component === LobbyScreen,
         _layoutClassName: LAYOUT_CLASSNAMES[getCurrentLayout(state)],
