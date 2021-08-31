@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { ReducerRegistry } from '../base/redux'
 /* Action types */
 export const CHANGE_CONFERENCE_MODE = 'CHANGE_CONFERENCE_MODE'
