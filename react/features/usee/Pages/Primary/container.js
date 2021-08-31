@@ -53,6 +53,8 @@ const PrimaryContainer = () => {
             if(ret){
                 dispatch(isValidRoomName(_roomName, t))
             }
+        }else{
+            dispatch(isValidRoomName(_roomName, t))
         }
 
     }, [roomName, loginState])
