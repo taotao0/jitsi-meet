@@ -726,10 +726,6 @@ export default {
      * @returns {Promise}
      */
     async init({ roomName }) {
-        const state = APP.store.getState();
-        if(state['features/conference'].isWebinar){
-            //    
-        }
         const initialOptions = {
             startAudioOnly: config.startAudioOnly,
             startScreenSharing: config.startScreenSharing,

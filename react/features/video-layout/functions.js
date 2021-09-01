@@ -85,7 +85,7 @@ export function shouldDisplayTileView(state: Object = {}) {
     const { tileViewEnabled } = state['features/video-layout'];
     const { isWebinar } = state['features/conference'];
 
-    if(isWebinar) return false;
+    if(!!isWebinar) return false;
     if (tileViewEnabled !== undefined) {
         // If the user explicitly requested a view mode, we
         // do that.
