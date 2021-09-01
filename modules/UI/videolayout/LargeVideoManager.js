@@ -273,22 +273,9 @@ export default class LargeVideoManager {
         }).then(() => {
             // after everything is done check again if there are any pending
             // new streams.
-
-            const state = APP.store.getState();
-            if(!!state['features/conference'].isWebinar&&!!state['features/base/participants']){
-                //host is large video case or not
-                const hostId=state['features/base/participants'].forEach((p)=>{
-                    if(p.role==="moderator"){
-                       return p;    
-                    }
-                })
-                this.updateInProcess = false;
-                this.eventEmitter.emit(UIEvents.LARGE_VIDEO_ID_CHANGED, hostId); 
-                
-            }else{
-                this.updateInProcess = false;
-                this.eventEmitter.emit(UIEvents.LARGE_VIDEO_ID_CHANGED, this.id);    
-            }
+            this.updateInProcess = false;
+            this.eventEmitter.emit(UIEvents.LARGE_VIDEO_ID_CHANGED, this.id);    
+            //
             this.scheduleLargeVideoUpdate();
         });
     }
