@@ -134,7 +134,16 @@ function _electParticipantInLargeVideo(state) {
     const participants = state['features/base/participants'];
     let participant = participants.find(p => p.pinned);
     let id = participant && participant.id;
-
+    let hostId=null;
+    if(!!state['features/conference'].isWebinar){
+        participants.forEach((p)=>{
+            if(p.role!='participant'){
+                hostId=p.id;    
+            }
+        })
+        if(!!hostId)
+            id = hostId;
+    }
     if (!id) {
         // 2. No participant is pinned so get the dominant speaker. But the
         //    local participant won't be displayed in LargeVideo even if she is
