@@ -197,7 +197,7 @@ class Filmstrip extends Component <Props> {
 
         let toolbar = null;
 
-        if (!this.props._hideToolbar) {
+        if (!this.props._hideToolbar&&!!!APP.store.getState()['features/conference'].isWebinar) {
             toolbar = this._renderToggleButton();
         }
 
@@ -245,7 +245,13 @@ class Filmstrip extends Component <Props> {
      * @returns {void}
      */
     _doToggleFilmstrip() {
-        this.props.dispatch(setFilmstripVisible(!this.props._visible));
+        //this.props.dispatch(setFilmstripVisible(!this.props._visible));
+        const state = APP.store.getState();
+        if(state['features/conference'].isWebinar){
+            this.props.dispatch(setFilmstripVisible(false));
+        }else{
+            this.props.dispatch(setFilmstripVisible(!this.props._visible));
+        }
     }
 
     /**
@@ -362,6 +368,7 @@ function _mapStateToProps(state) {
         = state['features/toolbox'].visible && interfaceConfig.TOOLBAR_BUTTONS.length;
     const remoteVideosVisible = shouldRemoteVideosBeVisible(state);
     const { isOpen: shiftRight } = state['features/chat'];
+    
     const className = `${remoteVideosVisible ? '' : 'hide-videos'} ${
         reduceHeight ? 'reduce-height' : ''
     } ${shiftRight ? 'shift-right' : ''}`.trim();
