@@ -818,10 +818,19 @@ export default class SmallVideo {
         switch (layout) {
         case LAYOUTS.VERTICAL_FILMSTRIP_VIEW: {
             this.$container.css('padding-top', `${heightToWidthPercent}%`);
-            this.$avatar().css({
-                height: '50%',
-                width: `${heightToWidthPercent / 2}%`
-            });
+            const state = APP.store.getState();
+            const { isWebinar} = state['features/conference'];
+            if(!!isWebinar){
+                this.$avatar().css({
+                    height: '50%',
+                    width: '0%'
+                });
+            }else{
+                this.$avatar().css({
+                    height: '50%',
+                    width: `${heightToWidthPercent / 2}%`
+                });
+            }
             break;
         }
         case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW: {
