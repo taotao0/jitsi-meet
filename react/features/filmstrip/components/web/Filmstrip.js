@@ -200,7 +200,10 @@ class Filmstrip extends Component <Props> {
         if (!this.props._hideToolbar&&!!!APP.store.getState()['features/conference'].isWebinar) {
             toolbar = this._renderToggleButton();
         }
-
+        
+        if(!!APP.store.getState()['features/conference'].isWebinar){
+            filmstripStyle.width='0%';
+        }
         return (
             <div
                 className = { `filmstrip ${this.props._className}` }
@@ -247,7 +250,7 @@ class Filmstrip extends Component <Props> {
     _doToggleFilmstrip() {
         //this.props.dispatch(setFilmstripVisible(!this.props._visible));
         const state = APP.store.getState();
-        if(state['features/conference'].isWebinar){
+        if(!!state['features/conference'].isWebinar){
             this.props.dispatch(setFilmstripVisible(false));
         }else{
             this.props.dispatch(setFilmstripVisible(!this.props._visible));
