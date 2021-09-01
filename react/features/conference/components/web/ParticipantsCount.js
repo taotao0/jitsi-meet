@@ -69,10 +69,19 @@ class ParticipantsCount extends PureComponent<Props> {
      * @returns {ReactElement}
      */
     render() {
+        const state = APP.store.getState();
+        const isWebinar = state['features/conference'].isWebinar;
+
+        let clickFunction = this._onClick;
+
+        if(isWebinar){
+                clickFunction = null;
+        }
+        //if(loginInfo)
         return (
             <div
                 className = 'participants-count'
-                onClick = { this._onClick }>
+                onClick = { clickFunction }>
                 <span className = 'participants-count-number'>
                     {this.props.count}
                 </span>
