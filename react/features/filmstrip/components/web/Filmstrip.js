@@ -203,6 +203,9 @@ class Filmstrip extends Component <Props> {
         
         if(!!APP.store.getState()['features/conference'].isWebinar){
             filmstripStyle.width='0%';
+            this.props.dispatch(setFilmstripVisible(false));
+        }else{
+            this.props.dispatch(setFilmstripVisible(true));
         }
         return (
             <div
