@@ -177,11 +177,6 @@ class WelcomePage extends AbstractWelcomePage {
      * @returns {ReactElement|null}
      */
     render() {
-<<<<<<< HEAD
-        return (
-            <div style = {{ height: 2000, position: 'relative',top: 75 }}>
-                <h1>Contents</h1> 
-=======
         const { _moderatedRoomServiceUrl, t } = this.props;
         const { DEFAULT_WELCOME_PAGE_LOGO_URL, DISPLAY_WELCOME_FOOTER } = interfaceConfig;
         const showAdditionalCard = this._shouldShowAdditionalCard();
@@ -285,7 +280,6 @@ class WelcomePage extends AbstractWelcomePage {
                         : null }
                 </div>
                 { DISPLAY_WELCOME_FOOTER && this._renderFooter()}
->>>>>>> c727b603af478faff83d98f1d5027ebe9d0d08b0
             </div>
         )
         // const { _user } = this.props;
@@ -640,40 +634,7 @@ class WelcomePage extends AbstractWelcomePage {
             MOBILE_DOWNLOAD_LINK_IOS,
         } = interfaceConfig;
 
-<<<<<<< HEAD
         return null;
-=======
-        return (<footer className = 'welcome-footer'>
-            <div className = 'welcome-footer-centered'>
-                <div className = 'welcome-footer-padded'>
-                    <div className = 'welcome-footer-row-block welcome-footer--row-1'>
-                        <div className = 'welcome-footer-row-1-text'>{t('welcomepage.jitsiOnMobile')}</div>
-                        <a
-                            className = 'welcome-badge'
-                            href = { MOBILE_DOWNLOAD_LINK_IOS }>
-                            <img
-                                alt = { t('welcomepage.mobileDownLoadLinkIos') }
-                                src = './images/app-store-badge.png' />
-                        </a>
-                        <a
-                            className = 'welcome-badge'
-                            href = { MOBILE_DOWNLOAD_LINK_ANDROID }>
-                            <img
-                                alt = { t('welcomepage.mobileDownLoadLinkAndroid') }
-                                src = './images/google-play-badge.png' />
-                        </a>
-                        <a
-                            className = 'welcome-badge'
-                            href = { MOBILE_DOWNLOAD_LINK_F_DROID }>
-                            <img
-                                alt = { t('welcomepage.mobileDownLoadLinkFDroid') }
-                                src = './images/f-droid-badge.png' />
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </footer>);
->>>>>>> c727b603af478faff83d98f1d5027ebe9d0d08b0
     }
 
     /**
