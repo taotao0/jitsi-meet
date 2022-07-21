@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react';
 
+import { type ReactionEmojiProps } from '../../../reactions/constants';
+
 /**
  * The type of the React {@code Component} props of {@link DialogContainer}.
  */
@@ -18,14 +20,14 @@ type Props = {
     _componentProps: Object,
 
     /**
-     * True if the dialog is a raw dialog (doesn't inherit behavior from other common frameworks, such as atlaskit).
-     */
-    _rawDialog: boolean,
-
-    /**
      * True if the UI is in a compact state where we don't show dialogs.
      */
-    _reducedUI: boolean
+    _reducedUI: boolean,
+
+    /**
+     * Array of reactions to be displayed.
+     */
+    _reactionsQueue: Array<ReactionEmojiProps>
 };
 
 /**
@@ -66,7 +68,6 @@ export function abstractMapStateToProps(state: Object): $Shape<Props> {
     return {
         _component: stateFeaturesBaseDialog.component,
         _componentProps: stateFeaturesBaseDialog.componentProps,
-        _rawDialog: stateFeaturesBaseDialog.rawDialog,
         _reducedUI: reducedUI
     };
 }

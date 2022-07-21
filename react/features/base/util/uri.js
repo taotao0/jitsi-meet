@@ -46,17 +46,18 @@ const _URI_PATH_PATTERN = '([^?#]*)';
 export const URI_PROTOCOL_PATTERN = '^([a-z][a-z0-9\\.\\+-]*:)';
 
 /**
- * Excludes/removes certain characters from a specific room (name) which are
- * incompatible with Jitsi Meet on the client and/or server sides.
+ * Excludes/removes certain characters from a specific path part which are
+ * incompatible with Jitsi Meet on the client and/or server sides. The main
+ * use case for this method is to clean up the room name and the tenant.
  *
- * @param {?string} room - The room (name) to fix.
+ * @param {?string} pathPart - The path part to fix.
  * @private
  * @returns {?string}
  */
-function _fixRoom(room: ?string) {
-    return room
-        ? room.replace(new RegExp(_ROOM_EXCLUDE_PATTERN, 'g'), '')
-        : room;
+function _fixPathPart(pathPart: ?string) {
+    return pathPart
+        ? pathPart.replace(new RegExp(_ROOM_EXCLUDE_PATTERN, 'g'), '')
+        : pathPart;
 }
 
 /**
@@ -336,6 +337,11 @@ export function parseURIString(uri: ?string) {
 
     const obj = parseStandardURIString(_fixURIStringScheme(uri));
 
+    // XXX While the components/segments of pathname are URI encoded, Jitsi Meet
+    // on the client and/or server sides still don't support certain characters.
+    obj.pathname = obj.pathname.split('/').map(pathPart => _fixPathPart(pathPart))
+        .join('/');
+
     // Add the properties that are specific to a Jitsi Meet resource (location)
     // such as contextRoot, room:
 
@@ -539,19 +545,29 @@ export function urlObjectToString(o: Object): ?string {
 
     // query/search
 
-    // Web's ExternalAPI jwt
-    const { jwt } = o;
+    // Web's ExternalAPI jwt and lang
+    const { jwt, lang, release } = o;
+
+    const search = new URLSearchParams(url.search);
 
     if (jwt) {
-        let { search } = url;
+        search.set('jwt', jwt);
+    }
 
-        if (search.indexOf('?jwt=') === -1 && search.indexOf('&jwt=') === -1) {
-            search.startsWith('?') || (search = `?${search}`);
-            search.length === 1 || (search += '&');
-            search += `jwt=${jwt}`;
+    const { defaultLanguage } = o.configOverwrite || {};
 
-            url.search = search;
-        }
+    if (lang || defaultLanguage) {
+        search.set('lang', lang || defaultLanguage);
+    }
+
+    if (release) {
+        search.set('release', release);
+    }
+
+    const searchString = search.toString();
+
+    if (searchString) {
+        url.search = `?${searchString}`;
     }
 
     // fragment/hash
@@ -612,4 +628,21 @@ export function addHashParamsToURL(url: URL, hashParamsToAdd: Object = {}) {
  */
 export function getDecodedURI(uri: string) {
     return decodeURI(uri.replace(/^https?:\/\//i, ''));
+}
+
+/**
+ * Adds new param to a url string. Checks whether to use '?' or '&' as a separator (checks for already existing params).
+ *
+ * @param {string} url - The url to modify.
+ * @param {string} name - The param name to add.
+ * @param {string} value - The value for the param.
+ *
+ * @returns {string} - The modified url.
+ */
+export function appendURLParam(url: string, name: string, value: string) {
+    const newUrl = new URL(url);
+
+    newUrl.searchParams.append(name, value);
+
+    return newUrl.toString();
 }

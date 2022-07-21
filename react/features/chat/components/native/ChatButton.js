@@ -1,37 +1,24 @@
 // @flow
 
 import { CHAT_ENABLED, getFeatureFlag } from '../../../base/flags';
+import { translate } from '../../../base/i18n';
 import { IconChat, IconChatUnread } from '../../../base/icons';
-import { setActiveModalId } from '../../../base/modal';
-import { getLocalParticipant } from '../../../base/participants';
 import { connect } from '../../../base/redux';
 import {
     AbstractButton,
     type AbstractButtonProps
 } from '../../../base/toolbox/components';
-import { openDisplayNamePrompt } from '../../../display-name';
-import { CHAT_VIEW_MODAL_ID } from '../../constants';
+import { navigate } from '../../../mobile/navigation/components/conference/ConferenceNavigationContainerRef';
+import { screen } from '../../../mobile/navigation/routes';
 import { getUnreadCount } from '../../functions';
+
 
 type Props = AbstractButtonProps & {
 
     /**
-     * Function to display chat.
-     *
-     * @protected
+     * True if the polls feature is disabled.
      */
-    _displayChat: Function,
-
-    /**
-     * Function to diaply the name prompt before displaying the chat
-     * window, if the user has no display name set.
-     */
-    _displayNameInputDialog: Function,
-
-    /**
-     * Whether or not to block chat access with a nickname input form.
-     */
-    _showNamePrompt: boolean,
+    _isPollsDisabled: boolean,
 
     /**
      * The unread message count.
@@ -55,13 +42,9 @@ class ChatButton extends AbstractButton<Props, *> {
      * @returns {void}
      */
     _handleClick() {
-        if (this.props._showNamePrompt) {
-            this.props._displayNameInputDialog(() => {
-                this.props._displayChat();
-            });
-        } else {
-            this.props._displayChat();
-        }
+        this.props._isPollsDisabled
+            ? navigate(screen.conference.chat)
+            : navigate(screen.conference.chatandpolls.main);
     }
 
     /**
@@ -76,41 +59,6 @@ class ChatButton extends AbstractButton<Props, *> {
 }
 
 /**
- * Maps redux actions to the props of the component.
- *
- * @param {Function} dispatch - The redux action {@code dispatch} function.
- * @returns {{
- *     _displayChat,
- *     _displayNameInputDialog
- * }}
- * @private
- */
-function _mapDispatchToProps(dispatch: Function) {
-    return {
-        /**
-         * Launches native invite dialog.
-         *
-         * @private
-         * @returns {void}
-         */
-        _displayChat() {
-            dispatch(setActiveModalId(CHAT_VIEW_MODAL_ID));
-        },
-
-        /**
-         * Displays a display name prompt.
-         *
-         * @param {Function} onPostSubmit - The function to invoke after a
-         * succesfulsetting of the display name.
-         * @returns {void}
-         */
-        _displayNameInputDialog(onPostSubmit) {
-            dispatch(openDisplayNamePrompt(onPostSubmit));
-        }
-    };
-}
-
-/**
  * Maps part of the redux state to the component's props.
  *
  * @param {Object} state - The Redux state.
@@ -118,15 +66,15 @@ function _mapDispatchToProps(dispatch: Function) {
  * @returns {Props}
  */
 function _mapStateToProps(state, ownProps) {
-    const localParticipant = getLocalParticipant(state);
     const enabled = getFeatureFlag(state, CHAT_ENABLED, true);
+    const { disablePolls } = state['features/base/config'];
     const { visible = enabled } = ownProps;
 
     return {
-        _showNamePrompt: !localParticipant.name,
+        _isPollsDisabled: disablePolls,
         _unreadMessageCount: getUnreadCount(state),
         visible
     };
 }
 
-export default connect(_mapStateToProps, _mapDispatchToProps)(ChatButton);
+export default translate(connect(_mapStateToProps)(ChatButton));

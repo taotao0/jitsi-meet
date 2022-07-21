@@ -7,7 +7,6 @@ import { connect } from '../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox/components';
 import { openURLInBrowser } from '../../base/util';
 
-
 type Props = AbstractButtonProps & {
 
     /**
@@ -23,6 +22,7 @@ class DownloadButton extends AbstractButton<Props, *> {
     accessibilityLabel = 'toolbar.accessibilityLabel.download';
     icon = IconDownload;
     label = 'toolbar.download';
+    tooltip = 'toolbar.download';
 
     /**
      * Handles clicking / pressing the button, and opens a new window with the user documentation.
@@ -31,8 +31,10 @@ class DownloadButton extends AbstractButton<Props, *> {
      * @returns {void}
      */
     _handleClick() {
+        const { _downloadAppsUrl } = this.props;
+
         sendAnalytics(createToolbarEvent('download.pressed'));
-        openURLInBrowser(this.props._downloadAppsUrl);
+        openURLInBrowser(_downloadAppsUrl);
     }
 }
 

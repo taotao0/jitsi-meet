@@ -1,13 +1,19 @@
 // @flow
 
-import { ColorSchemeRegistry, schemeColor } from '../../../base/color-scheme';
-import { ColorPalette } from '../../../base/styles';
-import { FILMSTRIP_SIZE } from '../../constants';
+import BaseTheme from '../../../base/ui/components/BaseTheme.native';
+import { SMALL_THUMBNAIL_SIZE } from '../../constants';
 
 /**
  * Size for the Avatar.
  */
 export const AVATAR_SIZE = 50;
+
+const indicatorContainer = {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    borderRadius: 4,
+    margin: 2,
+    padding: 2
+};
 
 /**
  * The styles of the feature filmstrip.
@@ -15,14 +21,19 @@ export const AVATAR_SIZE = 50;
 export default {
 
     /**
+     * The FlatList content container styles.
+     */
+    contentContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 0
+    },
+
+    /**
      * The display name container.
      */
     displayNameContainer: {
-        alignSelf: 'center',
-        bottom: 0,
-        flex: 1,
-        margin: 4,
-        position: 'absolute'
+        padding: 2
     },
 
     /**
@@ -33,7 +44,7 @@ export default {
         flexDirection: 'row',
         flexGrow: 0,
         justifyContent: 'flex-end',
-        height: FILMSTRIP_SIZE
+        margin: 6
     },
 
     /**
@@ -53,6 +64,29 @@ export default {
     },
 
     /**
+     * The styles for the FlatList container.
+     */
+    flatListContainer: {
+        flexGrow: 1,
+        flexShrink: 1,
+        flex: 0
+    },
+
+    /**
+     * The styles for the FlatList component in stage view.
+     */
+    flatListStageView: {
+        flexGrow: 0
+    },
+
+    /**
+     * The styles for the FlatList component in tile view.
+     */
+    flatListTileView: {
+        flex: 0
+    },
+
+    /**
      * Container of the {@link LocalThumbnail}.
      */
     localThumbnail: {
@@ -63,108 +97,83 @@ export default {
         flexDirection: 'row'
     },
 
-    moderatorIndicatorContainer: {
-        bottom: 4,
-        position: 'absolute',
-        right: 4
-    },
-
-    /**
-     * The style of the scrollview containing the remote thumbnails.
-     */
-    scrollView: {
-        flexGrow: 0
-    },
-
     /**
      * The style of a participant's Thumbnail which renders either the video or
      * the avatar of the associated participant.
      */
     thumbnail: {
         alignItems: 'stretch',
-        backgroundColor: ColorPalette.appBackground,
+        backgroundColor: BaseTheme.palette.ui02,
         borderColor: '#424242',
-        borderRadius: 3,
+        borderRadius: 4,
         borderStyle: 'solid',
         borderWidth: 1,
         flex: 1,
-        height: 80,
+        height: SMALL_THUMBNAIL_SIZE,
         justifyContent: 'center',
         margin: 2,
+        maxHeight: SMALL_THUMBNAIL_SIZE,
+        maxWidth: SMALL_THUMBNAIL_SIZE,
         overflow: 'hidden',
         position: 'relative',
-        width: 80
+        width: SMALL_THUMBNAIL_SIZE
     },
+
+    indicatorContainer,
 
     /**
      * The thumbnails indicator container.
      */
     thumbnailIndicatorContainer: {
-        alignSelf: 'stretch',
+        alignSelf: 'center',
         bottom: 4,
         flex: 1,
         flexDirection: 'row',
         left: 4,
-        position: 'absolute'
+        position: 'absolute',
+        maxWidth: '95%',
+        overflow: 'hidden',
+        ...indicatorContainer,
+        padding: 0
+    },
+
+    bottomIndicatorsContainer: {
+        padding: 2,
+        flexDirection: 'row'
     },
 
     thumbnailTopIndicatorContainer: {
         padding: 4,
         position: 'absolute',
-        top: 0
+        top: 0,
+        flexDirection: 'row'
     },
 
     thumbnailTopLeftIndicatorContainer: {
         left: 0
     },
 
-    thumbnailTopRightIndicatorContainer: {
-        right: 0
+    raisedHandIndicator: {
+        ...indicatorContainer,
+        backgroundColor: BaseTheme.palette.warning02
     },
 
-    tileView: {
-        alignSelf: 'center'
+    raisedHandIcon: {
+        color: BaseTheme.palette.uiBackground
     },
 
-    tileViewRows: {
-        justifyContent: 'center'
+    thumbnailRaisedHand: {
+        borderWidth: 2,
+        borderColor: BaseTheme.palette.warning02
     },
 
-    tileViewRow: {
-        flexDirection: 'row',
-        justifyContent: 'center'
+    thumbnailDominantSpeaker: {
+        borderWidth: 4,
+        borderColor: BaseTheme.palette.action01Hover
+    },
+
+    thumbnailGif: {
+        flexGrow: 1,
+        resizeMode: 'contain'
     }
 };
-
-/**
- * Color schemed styles for the @{code Thumbnail} component.
- */
-ColorSchemeRegistry.register('Thumbnail', {
-
-    /**
-     * Tinting style of the on-stage participant thumbnail.
-     */
-    activeThumbnailTint: {
-        backgroundColor: schemeColor('activeParticipantTint')
-    },
-
-    /**
-     * Coloring if the thumbnail background.
-     */
-    participantViewStyle: {
-        backgroundColor: schemeColor('background')
-    },
-
-    /**
-     * Pinned video thumbnail style.
-     */
-    thumbnailPinned: {
-        borderColor: schemeColor('activeParticipantHighlight'),
-        shadowColor: schemeColor('activeParticipantHighlight'),
-        shadowOffset: {
-            height: 5,
-            width: 5
-        },
-        shadowRadius: 5
-    }
-});

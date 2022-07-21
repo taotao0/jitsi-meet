@@ -4,12 +4,10 @@ import { jitsiLocalStorage } from '@jitsi/js-utils';
 import _ from 'lodash';
 
 import { APP_WILL_MOUNT } from '../app/actionTypes';
-import { browser } from '../lib-jitsi-meet';
 import { PersistenceRegistry, ReducerRegistry } from '../redux';
 import { assignIfDefined } from '../util';
 
 import { SETTINGS_UPDATED } from './actionTypes';
-import logger from './logger';
 
 /**
  * The default/initial redux state of the feature {@code base/settings}.
@@ -23,11 +21,19 @@ const DEFAULT_STATE = {
     disableCallIntegration: undefined,
     disableCrashReporting: undefined,
     disableP2P: undefined,
+    disableSelfView: false,
     displayName: undefined,
     email: undefined,
     localFlipX: true,
     micDeviceId: undefined,
     serverURL: undefined,
+    hideShareAudioHelper: false,
+    soundsIncomingMessage: true,
+    soundsParticipantJoined: true,
+    soundsParticipantKnocking: true,
+    soundsParticipantLeft: true,
+    soundsTalkWhileMuted: true,
+    soundsReactions: true,
     startAudioOnly: false,
     startWithAudioMuted: false,
     startWithVideoMuted: false,
@@ -36,6 +42,9 @@ const DEFAULT_STATE = {
     userSelectedMicDeviceId: undefined,
     userSelectedAudioOutputDeviceLabel: undefined,
     userSelectedCameraDeviceLabel: undefined,
+    userSelectedNotifications: {
+        'notify.chatMessages': true
+    },
     userSelectedMicDeviceLabel: undefined,
     userSelectedSkipPrejoin: undefined
 };
@@ -58,7 +67,7 @@ filterSubtree.audioOutputDeviceId = false;
 filterSubtree.cameraDeviceId = false;
 filterSubtree.micDeviceId = false;
 
-PersistenceRegistry.register(STORE_NAME, filterSubtree);
+PersistenceRegistry.register(STORE_NAME, filterSubtree, DEFAULT_STATE);
 
 ReducerRegistry.register(STORE_NAME, (state = DEFAULT_STATE, action) => {
     switch (action.type) {
@@ -76,40 +85,9 @@ ReducerRegistry.register(STORE_NAME, (state = DEFAULT_STATE, action) => {
 });
 
 /**
- * Retrieves the legacy profile values regardless of it's being in pre or
- * post-flattening format.
- *
- * FIXME: Let's remove this after a predefined time (e.g. By July 2018) to avoid
- * garbage in the source.
- *
- * @private
- * @returns {Object}
- */
-function _getLegacyProfile() {
-    let persistedProfile = jitsiLocalStorage.getItem('features/base/profile');
-
-    if (persistedProfile) {
-        try {
-            persistedProfile = JSON.parse(persistedProfile);
-
-            if (persistedProfile && typeof persistedProfile === 'object') {
-                const preFlattenedProfile = persistedProfile.profile;
-
-                return preFlattenedProfile || persistedProfile;
-            }
-        } catch (e) {
-            logger.warn('Error parsing persisted legacy profile', e);
-        }
-    }
-
-    return {};
-}
-
-/**
  * Inits the settings object based on what information we have available.
  * Info taken into consideration:
- *   - Old Settings.js style data
- *   - Things that we stored in profile earlier but belong here.
+ *   - Old Settings.js style data.
  *
  * @private
  * @param {Object} featureState - The current state of the feature.
@@ -137,29 +115,6 @@ function _initSettings(featureState) {
         displayName,
         email
     }, settings);
-
-    if (!browser.isReactNative()) {
-        // Browser only
-        const localFlipX = JSON.parse(jitsiLocalStorage.getItem('localFlipX') || 'true');
-        const cameraDeviceId = jitsiLocalStorage.getItem('cameraDeviceId') || '';
-        const micDeviceId = jitsiLocalStorage.getItem('micDeviceId') || '';
-
-        // Currently audio output device change is supported only in Chrome and
-        // default output always has 'default' device ID
-        const audioOutputDeviceId = jitsiLocalStorage.getItem('audioOutputDeviceId') || 'default';
-
-        settings = assignIfDefined({
-            audioOutputDeviceId,
-            cameraDeviceId,
-            localFlipX,
-            micDeviceId
-        }, settings);
-    }
-
-    // Things we stored in profile earlier
-    const legacyProfile = _getLegacyProfile();
-
-    settings = assignIfDefined(legacyProfile, settings);
 
     return settings;
 }

@@ -1,35 +1,40 @@
 // @flow
 
 declare var JitsiMeetJS: Object;
+declare var APP: Object;
 
-import uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
-import { getRoomName } from '../base/conference';
-import { getDialOutStatusUrl, getDialOutUrl } from '../base/config/functions';
-import { createLocalTrack } from '../base/lib-jitsi-meet';
+import { getDialOutStatusUrl, getDialOutUrl, updateConfig } from '../base/config';
+import { browser } from '../base/lib-jitsi-meet';
+import { createLocalTrack } from '../base/lib-jitsi-meet/functions';
+import { isVideoMutedByUser, MEDIA_TYPE } from '../base/media';
+import { updateSettings } from '../base/settings';
 import {
+    createLocalTracksF,
     getLocalAudioTrack,
+    getLocalTracks,
     getLocalVideoTrack,
     trackAdded,
     replaceLocalTrack
 } from '../base/tracks';
 import { openURLInBrowser } from '../base/util';
 import { executeDialOutRequest, executeDialOutStatusRequest, getDialInfoPageURL } from '../invite/functions';
-import { showErrorNotification } from '../notifications';
+import { NOTIFICATION_TIMEOUT_TYPE, showErrorNotification } from '../notifications';
 
 import {
+    PREJOIN_JOINING_IN_PROGRESS,
     PREJOIN_INITIALIZED,
-    PREJOIN_START_CONFERENCE,
-    SET_DEVICE_STATUS,
     SET_DIALOUT_COUNTRY,
     SET_DIALOUT_NUMBER,
     SET_DIALOUT_STATUS,
     SET_PREJOIN_DISPLAY_NAME_REQUIRED,
-    SET_SKIP_PREJOIN,
+    SET_SKIP_PREJOIN_RELOAD,
     SET_JOIN_BY_PHONE_DIALOG_VISIBLITY,
     SET_PRECALL_TEST_RESULTS,
     SET_PREJOIN_DEVICE_ERRORS,
-    SET_PREJOIN_PAGE_VISIBILITY
+    SET_PREJOIN_PAGE_VISIBILITY,
+    SET_DEVICE_STATUS
 } from './actionTypes';
 import {
     getFullDialOutNumber,
@@ -109,7 +114,7 @@ function pollForStatus(
             case DIAL_OUT_STATUS.DISCONNECTED: {
                 dispatch(showErrorNotification({
                     titleKey: 'prejoin.errorDialOutDisconnected'
-                }));
+                }, NOTIFICATION_TIMEOUT_TYPE.LONG));
 
                 return onFail();
             }
@@ -117,7 +122,7 @@ function pollForStatus(
             case DIAL_OUT_STATUS.FAILED: {
                 dispatch(showErrorNotification({
                     titleKey: 'prejoin.errorDialOutFailed'
-                }));
+                }, NOTIFICATION_TIMEOUT_TYPE.LONG));
 
                 return onFail();
             }
@@ -125,7 +130,7 @@ function pollForStatus(
         } catch (err) {
             dispatch(showErrorNotification({
                 titleKey: 'prejoin.errorDialOutStatus'
-            }));
+            }, NOTIFICATION_TIMEOUT_TYPE.LONG));
             logger.error('Error getting dial out status', err);
             onFail();
         }
@@ -146,7 +151,7 @@ function pollForStatus(
 export function dialOut(onSuccess: Function, onFail: Function) {
     return async function(dispatch: Function, getState: Function) {
         const state = getState();
-        const reqId = uuid.v4();
+        const reqId = uuidv4();
         const url = getDialOutUrl(state);
         const conferenceUrl = getDialOutConferenceUrl(state);
         const phoneNumber = getFullDialOutNumber(state);
@@ -178,7 +183,7 @@ export function dialOut(onSuccess: Function, onFail: Function) {
                 }
             }
 
-            dispatch(showErrorNotification(notification));
+            dispatch(showErrorNotification(notification, NOTIFICATION_TIMEOUT_TYPE.LONG));
             logger.error('Error dialing out', err);
             onFail();
         }
@@ -206,14 +211,66 @@ export function initPrejoin(tracks: Object[], errors: Object) {
  * Action used to start the conference.
  *
  * @param {Object} options - The config options that override the default ones (if any).
+ * @param {boolean} ignoreJoiningInProgress - If true we won't check the joiningInProgress flag.
  * @returns {Function}
  */
-export function joinConference(options?: Object) {
-    return {
-        type: PREJOIN_START_CONFERENCE,
-        options
+export function joinConference(options?: Object, ignoreJoiningInProgress: boolean = false) {
+    return async function(dispatch: Function, getState: Function) {
+        if (!ignoreJoiningInProgress) {
+            const state = getState();
+            const { joiningInProgress } = state['features/prejoin'];
+
+            if (joiningInProgress) {
+                return;
+            }
+
+            dispatch(setJoiningInProgress(true));
+        }
+
+        const state = getState();
+        let localTracks = getLocalTracks(state['features/base/tracks']);
+
+        options && dispatch(updateConfig(options));
+
+        // Do not signal audio/video tracks if the user joins muted.
+        for (const track of localTracks) {
+            // Always add the audio track on Safari because of a known issue where audio playout doesn't happen
+            // if the user joins audio and video muted.
+            if (track.muted
+                && !(browser.isWebKitBased() && track.jitsiTrack && track.jitsiTrack.getType() === MEDIA_TYPE.AUDIO)) {
+                try {
+                    await dispatch(replaceLocalTrack(track.jitsiTrack, null));
+                } catch (error) {
+                    logger.error(`Failed to replace local track (${track.jitsiTrack}) with null: ${error}`);
+                }
+            }
+        }
+
+        // Re-fetch the local tracks after muted tracks have been removed above.
+        // This is needed, because the tracks are effectively disposed by the replaceLocalTrack and should not be used
+        // anymore.
+        localTracks = getLocalTracks(getState()['features/base/tracks']);
+
+        const jitsiTracks = localTracks.map(t => t.jitsiTrack);
+
+        APP.conference.prejoinStart(jitsiTracks);
     };
 }
+
+
+/**
+ * Action used to set the flag for joining operation in progress.
+ *
+ * @param {boolean} value - The config options that override the default ones (if any).
+ * @returns {Function}
+ */
+export function setJoiningInProgress(value: boolean) {
+    return {
+        type: PREJOIN_JOINING_IN_PROGRESS,
+        value
+    };
+}
+
 
 /**
  * Joins the conference without audio.
@@ -222,16 +279,28 @@ export function joinConference(options?: Object) {
  */
 export function joinConferenceWithoutAudio() {
     return async function(dispatch: Function, getState: Function) {
-        const tracks = getState()['features/base/tracks'];
+        const state = getState();
+        const { joiningInProgress } = state['features/prejoin'];
+
+        if (joiningInProgress) {
+            return;
+        }
+
+        dispatch(setJoiningInProgress(true));
+        const tracks = state['features/base/tracks'];
         const audioTrack = getLocalAudioTrack(tracks)?.jitsiTrack;
 
         if (audioTrack) {
-            await dispatch(replaceLocalTrack(audioTrack, null));
+            try {
+                await dispatch(replaceLocalTrack(audioTrack, null));
+            } catch (error) {
+                logger.error(`Failed to replace local audio with null: ${error}`);
+            }
         }
 
         dispatch(joinConference({
             startSilent: true
-        }));
+        }, true));
     };
 }
 
@@ -261,10 +330,7 @@ export function makePrecallTest(conferenceOptions: Object) {
  */
 export function openDialInPage() {
     return function(dispatch: Function, getState: Function) {
-        const state = getState();
-        const locationURL = state['features/base/connection'].locationURL;
-        const roomName = getRoomName(state);
-        const dialInPage = getDialInfoPageURL(roomName, locationURL);
+        const dialInPage = getDialInfoPageURL(getState());
 
         openURLInBrowser(dialInPage, true);
     };
@@ -294,7 +360,11 @@ export function replaceAudioTrackById(deviceId: string) {
             const newTrack = await createLocalTrack('audio', deviceId);
             const oldTrack = getLocalAudioTrack(tracks)?.jitsiTrack;
 
-            dispatch(replaceLocalTrack(oldTrack, newTrack));
+            dispatch(replaceLocalTrack(oldTrack, newTrack)).then(() => {
+                dispatch(updateSettings({
+                    micDeviceId: newTrack.getDeviceId()
+                }));
+            });
         } catch (err) {
             dispatch(setDeviceStatusWarning('prejoin.audioTrackError'));
             logger.log('Error replacing audio track', err);
@@ -312,10 +382,21 @@ export function replaceVideoTrackById(deviceId: Object) {
     return async (dispatch: Function, getState: Function) => {
         try {
             const tracks = getState()['features/base/tracks'];
-            const newTrack = await createLocalTrack('video', deviceId);
+            const wasVideoMuted = isVideoMutedByUser(getState());
+            const [ newTrack ] = await createLocalTracksF(
+                { cameraDeviceId: deviceId,
+                    devices: [ 'video' ] },
+                { dispatch,
+                    getState }
+            );
             const oldTrack = getLocalVideoTrack(tracks)?.jitsiTrack;
 
-            dispatch(replaceLocalTrack(oldTrack, newTrack));
+            dispatch(replaceLocalTrack(oldTrack, newTrack)).then(() => {
+                dispatch(updateSettings({
+                    cameraDeviceId: newTrack.getDeviceId()
+                }));
+            });
+            wasVideoMuted && newTrack.mute();
         } catch (err) {
             dispatch(setDeviceStatusWarning('prejoin.videoTrackError'));
             logger.log('Error replacing video track', err);
@@ -406,14 +487,15 @@ export function setDialOutNumber(value: string) {
 }
 
 /**
- * Sets the visibility of the prejoin page for future uses.
+ * Sets the visibility of the prejoin page when a client reload
+ * is triggered as a result of call migration initiated by Jicofo.
  *
  * @param {boolean} value - The visibility value.
  * @returns {Object}
  */
-export function setSkipPrejoin(value: boolean) {
+export function setSkipPrejoinOnReload(value: boolean) {
     return {
-        type: SET_SKIP_PREJOIN,
+        type: SET_SKIP_PREJOIN_RELOAD,
         value
     };
 }
@@ -458,7 +540,7 @@ export function setPrejoinDeviceErrors(value: Object) {
 }
 
 /**
- * Action used to set the visiblity of the prejoin page.
+ * Action used to set the visibility of the prejoin page.
  *
  * @param {boolean} value - The value.
  * @returns {Object}

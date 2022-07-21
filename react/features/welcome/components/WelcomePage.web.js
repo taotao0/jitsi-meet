@@ -16,6 +16,7 @@ import Tabs from './Tabs';
 
 /**
  * The pattern used to validate room name.
+ *
  * @type {string}
  */
 export const ROOM_NAME_VALIDATE_PATTERN_STR = '^[^?&:\u0022\u0027%#]+$';
@@ -23,7 +24,7 @@ export const ROOM_NAME_VALIDATE_PATTERN_STR = '^[^?&:\u0022\u0027%#]+$';
 /**
  * The Web container rendering the welcome page.
  *
- * @extends AbstractWelcomePage
+ * @augments AbstractWelcomePage
  */
 class WelcomePage extends AbstractWelcomePage {
     /**
@@ -176,9 +177,115 @@ class WelcomePage extends AbstractWelcomePage {
      * @returns {ReactElement|null}
      */
     render() {
+<<<<<<< HEAD
         return (
             <div style = {{ height: 2000, position: 'relative',top: 75 }}>
                 <h1>Contents</h1> 
+=======
+        const { _moderatedRoomServiceUrl, t } = this.props;
+        const { DEFAULT_WELCOME_PAGE_LOGO_URL, DISPLAY_WELCOME_FOOTER } = interfaceConfig;
+        const showAdditionalCard = this._shouldShowAdditionalCard();
+        const showAdditionalContent = this._shouldShowAdditionalContent();
+        const showAdditionalToolbarContent = this._shouldShowAdditionalToolbarContent();
+        const contentClassName = showAdditionalContent ? 'with-content' : 'without-content';
+        const footerClassName = DISPLAY_WELCOME_FOOTER ? 'with-footer' : 'without-footer';
+
+        return (
+            <div
+                className = { `welcome ${contentClassName} ${footerClassName}` }
+                id = 'welcome_page'>
+                <div className = 'welcome-watermark'>
+                    <Watermarks defaultJitsiLogoURL = { DEFAULT_WELCOME_PAGE_LOGO_URL } />
+                </div>
+
+                <div className = 'header'>
+                    <div className = 'welcome-page-settings'>
+                        <SettingsButton
+                            defaultTab = { SETTINGS_TABS.CALENDAR }
+                            isDisplayedOnWelcomePage = { true } />
+                        { showAdditionalToolbarContent
+                            ? <div
+                                className = 'settings-toolbar-content'
+                                ref = { this._setAdditionalToolbarContentRef } />
+                            : null
+                        }
+                    </div>
+                    <div className = 'header-image' />
+                    <div className = 'header-container'>
+                        <h1 className = 'header-text-title'>
+                            { t('welcomepage.headerTitle') }
+                        </h1>
+                        <span className = 'header-text-subtitle'>
+                            { t('welcomepage.headerSubtitle')}
+                        </span>
+                        <div id = 'enter_room'>
+                            <div className = 'enter-room-input-container'>
+                                <form onSubmit = { this._onFormSubmit }>
+                                    <input
+                                        aria-disabled = 'false'
+                                        aria-label = 'Meeting name input'
+                                        autoFocus = { true }
+                                        className = 'enter-room-input'
+                                        id = 'enter_room_field'
+                                        onChange = { this._onRoomChange }
+                                        pattern = { ROOM_NAME_VALIDATE_PATTERN_STR }
+                                        placeholder = { this.state.roomPlaceholder }
+                                        ref = { this._setRoomInputRef }
+                                        title = { t('welcomepage.roomNameAllowedChars') }
+                                        type = 'text'
+                                        value = { this.state.room } />
+                                    <div
+                                        className = { _moderatedRoomServiceUrl
+                                            ? 'warning-with-link'
+                                            : 'warning-without-link' }>
+                                        { this._renderInsecureRoomNameWarning() }
+                                    </div>
+                                </form>
+                            </div>
+                            <button
+                                aria-disabled = 'false'
+                                aria-label = 'Start meeting'
+                                className = 'welcome-page-button'
+                                id = 'enter_room_button'
+                                onClick = { this._onFormSubmit }
+                                tabIndex = '0'
+                                type = 'button'>
+                                { t('welcomepage.startMeeting') }
+                            </button>
+                        </div>
+
+                        { _moderatedRoomServiceUrl && (
+                            <div id = 'moderated-meetings'>
+                                <p>
+                                    {
+                                        translateToHTML(
+                                        t, 'welcomepage.moderatedMessage', { url: _moderatedRoomServiceUrl })
+                                    }
+                                </p>
+                            </div>)}
+                    </div>
+                </div>
+
+                <div className = 'welcome-cards-container'>
+                    <div className = 'welcome-card-row'>
+                        <div className = 'welcome-tabs welcome-card welcome-card--blue'>
+                            { this._renderTabs() }
+                        </div>
+                        { showAdditionalCard
+                            ? <div
+                                className = 'welcome-card welcome-card--dark'
+                                ref = { this._setAdditionalCardRef } />
+                            : null }
+                    </div>
+
+                    { showAdditionalContent
+                        ? <div
+                            className = 'welcome-page-content'
+                            ref = { this._setAdditionalContentRef } />
+                        : null }
+                </div>
+                { DISPLAY_WELCOME_FOOTER && this._renderFooter()}
+>>>>>>> c727b603af478faff83d98f1d5027ebe9d0d08b0
             </div>
         )
         // const { _user } = this.props;
@@ -533,7 +640,40 @@ class WelcomePage extends AbstractWelcomePage {
             MOBILE_DOWNLOAD_LINK_IOS,
         } = interfaceConfig;
 
+<<<<<<< HEAD
         return null;
+=======
+        return (<footer className = 'welcome-footer'>
+            <div className = 'welcome-footer-centered'>
+                <div className = 'welcome-footer-padded'>
+                    <div className = 'welcome-footer-row-block welcome-footer--row-1'>
+                        <div className = 'welcome-footer-row-1-text'>{t('welcomepage.jitsiOnMobile')}</div>
+                        <a
+                            className = 'welcome-badge'
+                            href = { MOBILE_DOWNLOAD_LINK_IOS }>
+                            <img
+                                alt = { t('welcomepage.mobileDownLoadLinkIos') }
+                                src = './images/app-store-badge.png' />
+                        </a>
+                        <a
+                            className = 'welcome-badge'
+                            href = { MOBILE_DOWNLOAD_LINK_ANDROID }>
+                            <img
+                                alt = { t('welcomepage.mobileDownLoadLinkAndroid') }
+                                src = './images/google-play-badge.png' />
+                        </a>
+                        <a
+                            className = 'welcome-badge'
+                            href = { MOBILE_DOWNLOAD_LINK_F_DROID }>
+                            <img
+                                alt = { t('welcomepage.mobileDownLoadLinkFDroid') }
+                                src = './images/f-droid-badge.png' />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>);
+>>>>>>> c727b603af478faff83d98f1d5027ebe9d0d08b0
     }
 
     /**

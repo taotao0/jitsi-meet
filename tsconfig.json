@@ -1,0 +1,18 @@
+{
+    "include": ["react/features/**/*.ts", "react/features/**/*.tsx", "./custom.d.ts"],
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "module": "es6",
+        "target": "es6",
+        "jsx": "react",
+        "lib": [ "webworker", "ES2020", "DOM" ],
+        "noEmit": false,
+        "moduleResolution": "Node",
+        "strict": true,
+        "noImplicitAny": true,
+        "strictPropertyInitialization": false
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}

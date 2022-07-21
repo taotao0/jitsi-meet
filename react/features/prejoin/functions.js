@@ -32,18 +32,18 @@ export function isDeviceStatusVisible(state: Object): boolean {
  * @returns {boolean}
  */
 export function isDisplayNameRequired(state: Object): boolean {
-    return state['features/prejoin'].isDisplayNameRequired
-        || state['features/base/config'].requireDisplayName;
+    return state['features/prejoin']?.isDisplayNameRequired
+        || state['features/base/config']?.requireDisplayName;
 }
 
 /**
- * Selector for determining if the user has chosen to skip prejoin page.
+ * Selector for determining if the prejoin display name field is visible.
  *
  * @param {Object} state - The state of the app.
  * @returns {boolean}
  */
-export function isPrejoinSkipped(state: Object) {
-    return state['features/prejoin'].userSelectedSkipPrejoin;
+export function isPrejoinDisplayNameVisible(state: Object): boolean {
+    return !state['features/base/config'].prejoinConfig?.hideDisplayName;
 }
 
 /**
@@ -130,7 +130,7 @@ export function getRawError(state: Object): string {
 }
 
 /**
- * Selector for getting the visiblity state for the 'JoinByPhoneDialog'.
+ * Selector for getting the visibility state for the 'JoinByPhoneDialog'.
  *
  * @param {Object} state - The state of the app.
  * @returns {boolean}
@@ -146,18 +146,25 @@ export function isJoinByPhoneDialogVisible(state: Object): boolean {
  * @param {Object} state - The state of the app.
  * @returns {boolean}
  */
-export function isPrejoinPageEnabled(state: Object): boolean {
+export function isPrejoinPageVisible(state: Object): boolean {
     return navigator.product !== 'ReactNative'
-        && state['features/base/config'].prejoinPageEnabled
-        && !state['features/base/settings'].userSelectedSkipPrejoin;
+        && state['features/base/config'].prejoinConfig?.enabled
+        && state['features/prejoin']?.showPrejoin
+        && !(state['features/base/config'].enableForcedReload && state['features/prejoin'].skipPrejoinOnReload);
 }
 
 /**
- * Returns true if the prejoin page is visible & active.
+ * Returns true if we should auto-knock in case lobby is enabled for the room.
  *
  * @param {Object} state - The state of the app.
  * @returns {boolean}
  */
-export function isPrejoinPageVisible(state: Object): boolean {
-    return isPrejoinPageEnabled(state) && state['features/prejoin']?.showPrejoin;
+export function shouldAutoKnock(state: Object): boolean {
+    const { iAmRecorder, iAmSipGateway, autoKnockLobby, prejoinConfig } = state['features/base/config'];
+    const { userSelectedSkipPrejoin } = state['features/base/settings'];
+    const isPrejoinEnabled = prejoinConfig?.enabled;
+
+    return ((isPrejoinEnabled && !userSelectedSkipPrejoin)
+            || autoKnockLobby || (iAmRecorder && iAmSipGateway))
+        && !state['features/lobby'].knocking;
 }

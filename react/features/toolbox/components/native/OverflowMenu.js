@@ -5,30 +5,32 @@ import { TouchableOpacity, View } from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto'
 
 import Collapsible from 'react-native-collapsible';
+import { Divider } from 'react-native-paper';
 
-import { ColorSchemeRegistry } from '../../../base/color-scheme';
-import { BottomSheet, hideDialog, isDialogOpen } from '../../../base/dialog';
-import { IconDragHandle } from '../../../base/icons';
+import { BottomSheet, hideSheet } from '../../../base/dialog';
+import { bottomSheetStyles } from '../../../base/dialog/components/native/styles';
 import { connect } from '../../../base/redux';
-import { StyleType } from '../../../base/styles';
 import { SharedDocumentButton } from '../../../etherpad';
-import { InviteButton } from '../../../invite';
-import { LobbyModeButton } from '../../../lobby/components/native';
-import { AudioRouteButton } from '../../../mobile/audio-mode';
+import { ParticipantsPaneButton } from '../../../participants-pane/components/native';
+import { ReactionMenu } from '../../../reactions/components';
+import { isReactionsEnabled } from '../../../reactions/functions.any';
 import { LiveStreamButton, RecordButton } from '../../../recording';
-import { RoomLockButton } from '../../../room-lock';
+import SecurityDialogButton
+    from '../../../security/components/security-dialog/native/SecurityDialogButton';
+import { SharedVideoButton } from '../../../shared-video/components';
+import SpeakerStatsButton from '../../../speaker-stats/components/native/SpeakerStatsButton';
 import { ClosedCaptionButton } from '../../../subtitles';
 import { TileViewButton } from '../../../video-layout';
-import { VideoShareButton } from '../../../youtube-player/components';
+import styles from '../../../video-menu/components/native/styles';
+import { getMovableButtons } from '../../functions.native';
 import HelpButton from '../HelpButton';
-import MuteEveryoneButton from '../MuteEveryoneButton';
 
 import AudioOnlyButton from './AudioOnlyButton';
-import MoreOptionsButton from './MoreOptionsButton';
+import LinkToSalesforceButton from './LinkToSalesforceButton';
+import OpenCarmodeButton from './OpenCarmodeButton';
 import RaiseHandButton from './RaiseHandButton';
-import ScreenSharingButton from './ScreenSharingButton.js';
-import ToggleCameraButton from './ToggleCameraButton';
-import styles from './styles';
+import ScreenSharingButton from './ScreenSharingButton';
+import ToggleSelfViewButton from './ToggleSelfViewButton';
 
 /**
  * release-v1.0
@@ -41,11 +43,6 @@ import { isLocalParticipantModerator } from '../../../base/participants/function
 type Props = {
 
     /**
-     * The color-schemed stylesheet of the dialog feature.
-     */
-    _bottomSheetStyles: StyleType,
-
-    /**
      * True if the overflow menu is currently visible, false otherwise.
      */
     _isOpen: boolean,
@@ -54,6 +51,21 @@ type Props = {
      * Whether the recoding button should be enabled or not.
      */
     _recordingEnabled: boolean,
+
+    /**
+     * Whether or not the self view is hidden.
+     */
+    _selfViewHidden: boolean,
+
+    /**
+     * The width of the screen.
+     */
+    _width: number,
+
+    /**
+     * Whether or not the reactions feature is enabled.
+     */
+    _reactionsEnabled: boolean,
 
     /**
      * Used for hiding the dialog when the selection was completed.
@@ -68,22 +80,8 @@ type State = {
     /**
      * True if the bottom scheet is scrolled to the top.
      */
-    scrolledToTop: boolean,
-
-    /**
-     * True if the 'more' button set needas to be rendered.
-     */
-    showMore: boolean
+    scrolledToTop: boolean
 }
-
-/**
- * The exported React {@code Component}. We need it to execute
- * {@link hideDialog}.
- *
- * XXX It does not break our coding style rule to not utilize globals for state,
- * because it is merely another name for {@code export}'s {@code default}.
- */
-let OverflowMenu_; // eslint-disable-line prefer-const
 
 /**
  * Implements a React {@code Component} with some extra actions in addition to
@@ -99,15 +97,12 @@ class OverflowMenu extends PureComponent<Props, State> {
         super(props);
 
         this.state = {
-            scrolledToTop: true,
-            showMore: false
+            scrolledToTop: true
         };
 
         // Bind event handlers so they are only bound once per instance.
         this._onCancel = this._onCancel.bind(this);
-        this._onSwipe = this._onSwipe.bind(this);
-        this._onToggleMenu = this._onToggleMenu.bind(this);
-        this._renderMenuExpandToggle = this._renderMenuExpandToggle.bind(this);
+        this._renderReactionMenu = this._renderReactionMenu.bind(this);
     }
 
     /**
@@ -117,55 +112,59 @@ class OverflowMenu extends PureComponent<Props, State> {
      * @returns {ReactElement}
      */
     render() {
-        const { _bottomSheetStyles } = this.props;
-        const { showMore } = this.state;
+        const {
+            _reactionsEnabled,
+            _selfViewHidden,
+            _width
+        } = this.props;
+        const toolbarButtons = getMovableButtons(_width);
 
         const buttonProps = {
             afterClick: this._onCancel,
             showLabel: true,
-            styles: _bottomSheetStyles.buttons,
-            showIcon: false,
+            styles: bottomSheetStyles.buttons
         };
 
-        const moreOptionsButtonProps = {
-            ...buttonProps,
-            afterClick: this._onToggleMenu,
-            visible: !showMore,
-            showLabel: false,
-            showIcon: true,
+        const topButtonProps = {
+            afterClick: this._onCancel,
+            showLabel: true,
+            styles: {
+                ...bottomSheetStyles.buttons,
+                style: {
+                    ...bottomSheetStyles.buttons.style,
+                    borderTopLeftRadius: 16,
+                    borderTopRightRadius: 16
+                }
+            }
         };
 
-        const { _participants } = this.props
+        const firstMenuButtonProps
+            = toolbarButtons.has('participantspane') ? topButtonProps : buttonProps;
 
         return (
             <BottomSheet
-                onCancel = { this._onCancel }
-                onSwipe = { this._onSwipe }
-                renderHeader = { this._renderMenuExpandToggle }>
-                {/* <AudioRouteButton { ...buttonProps } /> */}
-                <InviteButton { ...buttonProps } />
-                <ToggleCameraButton { ...buttonProps } />
+                renderFooter = { _reactionsEnabled && !toolbarButtons.has('raisehand')
+                    ? this._renderReactionMenu
+                    : null }>
+                {!toolbarButtons.has('participantspane') && <ParticipantsPaneButton { ...topButtonProps } />}
+                <OpenCarmodeButton { ...firstMenuButtonProps } />
                 <AudioOnlyButton { ...buttonProps } />
-                <RaiseHandButton { ...buttonProps } />
-                <LobbyModeButton { ...buttonProps } />
-                {/* // FIXME: release v1.0을 위한 주석 처리
-                <ScreenSharingButton { ...buttonProps } /> */}
-                <MoreOptionsButton { ...moreOptionsButtonProps } />
-                <Collapsible collapsed = { !showMore }>
-                    <TileViewButton { ...buttonProps } />
-                    <RecordButton { ...buttonProps } />
-                    {/* // FIXME: release v1.0을 위한 주석 처리
-                    <LiveStreamButton { ...buttonProps } /> */}
-                    <VideoShareButton { ...buttonProps } />
-                    <RoomLockButton { ...buttonProps } />
-                    {/* <ClosedCaptionButton { ...buttonProps } /> */}
-                    {/* <SharedDocumentButton { ...buttonProps } /> */}
-                    {
-                        isLocalParticipantModerator(_participants) && <MuteEveryoneButton { ...buttonProps } />
-                    }
-                    {/* <MuteEveryoneButton { ...buttonProps } /> */}
-                    {/* <HelpButton { ...buttonProps } /> */}
-                </Collapsible>
+                {_selfViewHidden && <ToggleSelfViewButton { ...buttonProps } />}
+                {!_reactionsEnabled && !toolbarButtons.has('raisehand') && <RaiseHandButton { ...buttonProps } />}
+                <Divider style = { styles.divider } />
+                <SecurityDialogButton { ...buttonProps } />
+                <RecordButton { ...buttonProps } />
+                <LiveStreamButton { ...buttonProps } />
+                <LinkToSalesforceButton { ...buttonProps } />
+                <Divider style = { styles.divider } />
+                <SharedVideoButton { ...buttonProps } />
+                <ScreenSharingButton { ...buttonProps } />
+                <SpeakerStatsButton { ...buttonProps } />
+                {!toolbarButtons.has('tileview') && <TileViewButton { ...buttonProps } />}
+                <Divider style = { styles.divider } />
+                <ClosedCaptionButton { ...buttonProps } />
+                <SharedDocumentButton { ...buttonProps } />
+                <HelpButton { ...buttonProps } />
             </BottomSheet>
         );
     }
@@ -203,57 +202,21 @@ class OverflowMenu extends PureComponent<Props, State> {
      * Hides this {@code OverflowMenu}.
      *
      * @private
-     * @returns {boolean}
-     */
-    _onCancel() {
-        if (this.props._isOpen) {
-            this.props.dispatch(hideDialog(OverflowMenu_));
-
-            return true;
-        }
-
-        return false;
-    }
-
-    _onSwipe: string => void;
-
-    /**
-     * Callback to be invoked when swipe gesture is detected on the menu. Returns true
-     * if the swipe gesture is handled by the menu, false otherwise.
-     *
-     * @param {string} direction - Direction of 'up' or 'down'.
-     * @returns {boolean}
-     */
-    _onSwipe(direction) {
-        const { showMore } = this.state;
-
-        switch (direction) {
-        case 'up':
-            !showMore && this.setState({
-                showMore: true
-            });
-
-            return !showMore;
-        case 'down':
-            showMore && this.setState({
-                showMore: false
-            });
-
-            return showMore;
-        }
-    }
-
-    _onToggleMenu: () => void;
-
-    /**
-     * Callback to be invoked when the expand menu button is pressed.
-     *
      * @returns {void}
      */
-    _onToggleMenu() {
-        this.setState({
-            showMore: !this.state.showMore
-        });
+    _onCancel() {
+        this.props.dispatch(hideSheet());
+    }
+
+    /**
+     * Functoin to render the reaction menu as the footer of the bottom sheet.
+     *
+     * @returns {React$Element}
+     */
+    _renderReactionMenu() {
+        return (<ReactionMenu
+            onCancel = { this._onCancel }
+            overflowMenu = { true } />);
     }
 }
 
@@ -265,13 +228,16 @@ class OverflowMenu extends PureComponent<Props, State> {
  * @returns {Props}
  */
 function _mapStateToProps(state) {
+    const { disableSelfView } = state['features/base/settings'];
+
     return {
         _bottomSheetStyles: ColorSchemeRegistry.get(state, 'BottomSheet'),
         _isOpen: isDialogOpen(state, OverflowMenu_),
-        _participants: state['features/base/participants']
+        _participants: state['features/base/participants'],
+        _reactionsEnabled: isReactionsEnabled(state),
+        _selfViewHidden: Boolean(disableSelfView),
+        _width: state['features/base/responsive-ui'].clientWidth
     };
 }
 
-OverflowMenu_ = connect(_mapStateToProps)(OverflowMenu);
-
-export default OverflowMenu_;
+export default connect(_mapStateToProps)(OverflowMenu);

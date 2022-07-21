@@ -6,6 +6,8 @@ import statsEmitter from '../statsEmitter';
 
 declare var interfaceConfig: Object;
 
+const defaultAutoHideTimeout = 5000;
+
 /**
  * The connection quality percentage that must be reached to be considered of
  * good quality and can result in the connection indicator being hidden.
@@ -20,10 +22,30 @@ export const INDICATOR_DISPLAY_THRESHOLD = 30;
 export type Props = {
 
     /**
+     * How long the connection indicator should remain displayed before hiding.
+     */
+    _autoHideTimeout: number,
+
+    /**
      * The ID of the participant associated with the displayed connection indication and
      * stats.
      */
-    participantId: string
+    participantId: string,
+
+    /**
+     * Custom icon style.
+     */
+    iconStyle?: Object,
+
+    /**
+     * The source name of the track.
+     */
+    _sourceName: string,
+
+    /**
+     * The flag whether source name signaling is enabled.
+     */
+    _sourceNameSignalingEnabled: string
 };
 
 /**
@@ -50,13 +72,13 @@ export type State = {
  * Implements a React {@link Component} which displays the current connection
  * quality.
  *
- * @extends {Component}
+ * @augments {Component}
  */
-export default class AbstractConnectionIndicator<P: Props, S: State> extends Component<P, S> {
+class AbstractConnectionIndicator<P: Props, S: State> extends Component<P, S> {
     /**
      * The timeout for automatically hiding the indicator.
      */
-    autoHideTimeout: ?TimeoutID
+    autoHideTimeout: ?TimeoutID;
 
     /**
      * Initializes a new {@code ConnectionIndicator} instance.
@@ -80,6 +102,11 @@ export default class AbstractConnectionIndicator<P: Props, S: State> extends Com
     componentDidMount() {
         statsEmitter.subscribeToClientStats(
             this.props.participantId, this._onStatsUpdated);
+
+        if (this.props._sourceNameSignalingEnabled) {
+            statsEmitter.subscribeToClientStats(
+                this.props._sourceName, this._onStatsUpdated);
+        }
     }
 
     /**
@@ -95,6 +122,15 @@ export default class AbstractConnectionIndicator<P: Props, S: State> extends Com
             statsEmitter.subscribeToClientStats(
                 this.props.participantId, this._onStatsUpdated);
         }
+
+        if (this.props._sourceNameSignalingEnabled) {
+            if (prevProps._sourceName !== this.props._sourceName) {
+                statsEmitter.unsubscribeToClientStats(
+                    prevProps._sourceName, this._onStatsUpdated);
+                statsEmitter.subscribeToClientStats(
+                    this.props._sourceName, this._onStatsUpdated);
+            }
+        }
     }
 
     /**
@@ -107,6 +143,11 @@ export default class AbstractConnectionIndicator<P: Props, S: State> extends Com
     componentWillUnmount() {
         statsEmitter.unsubscribeToClientStats(
             this.props.participantId, this._onStatsUpdated);
+
+        if (this.props._sourceNameSignalingEnabled) {
+            statsEmitter.unsubscribeToClientStats(
+                this.props._sourceName, this._onStatsUpdated);
+        }
 
         clearTimeout(this.autoHideTimeout);
     }
@@ -165,9 +206,23 @@ export default class AbstractConnectionIndicator<P: Props, S: State> extends Com
                 this.setState({
                     showIndicator: false
                 });
-            }, typeof interfaceConfig === 'undefined'
-                ? 5000
-                : interfaceConfig.CONNECTION_INDICATOR_AUTO_HIDE_TIMEOUT);
+            }, this.props._autoHideTimeout);
         }
     }
 }
+
+/**
+ * Maps (parts of) the Redux state to the associated props for the
+ * {@code ConnectorIndicator} component.
+ *
+ * @param {Object} state - The Redux state.
+ * @private
+ * @returns {Props}
+ */
+export function mapStateToProps(state: Object) {
+    return {
+        _autoHideTimeout: state['features/base/config'].connectionIndicators.autoHideTimeout ?? defaultAutoHideTimeout
+    };
+}
+
+export default AbstractConnectionIndicator;

@@ -1,12 +1,23 @@
 // @flow
 
 import { getCurrentConference } from '../base/conference';
-import { PIN_PARTICIPANT, pinParticipant, getPinnedParticipant } from '../base/participants';
+import { VIDEO_TYPE } from '../base/media';
+import {
+    PARTICIPANT_LEFT,
+    PIN_PARTICIPANT,
+    pinParticipant,
+    getParticipantById,
+    getPinnedParticipant
+} from '../base/participants';
 import { MiddlewareRegistry, StateListenerRegistry } from '../base/redux';
+import { TRACK_REMOVED } from '../base/tracks';
 import { SET_DOCUMENT_EDITING_STATUS } from '../etherpad';
+import { isStageFilmstripEnabled } from '../filmstrip/functions';
+import { isFollowMeActive } from '../follow-me';
 
 import { SET_TILE_VIEW } from './actionTypes';
-import { setTileView } from './actions';
+import { setRemoteParticipantsWithScreenShare, setTileView } from './actions';
+import { getAutoPinSetting, updateAutoPinnedParticipant } from './functions';
 
 import './subscriber';
 
@@ -19,6 +30,20 @@ let previousTileViewEnabled;
  * @returns {Function}
  */
 MiddlewareRegistry.register(store => next => action => {
+
+    // we want to extract the leaving participant and check its type before actually the participant being removed.
+    let shouldUpdateAutoPin = false;
+
+    switch (action.type) {
+    case PARTICIPANT_LEFT: {
+        if (!getAutoPinSetting() || isFollowMeActive(store)) {
+            break;
+        }
+        shouldUpdateAutoPin = getParticipantById(store.getState(), action.participant.id)?.isFakeParticipant;
+        break;
+    }
+    }
+
     const result = next(action);
 
     switch (action.type) {
@@ -44,12 +69,47 @@ MiddlewareRegistry.register(store => next => action => {
         break;
 
     // Things to update when tile view state changes
-    case SET_TILE_VIEW:
-        if (action.enabled && getPinnedParticipant(store)) {
+    case SET_TILE_VIEW: {
+        const state = store.getState();
+        const stageFilmstrip = isStageFilmstripEnabled(state);
+
+        if (action.enabled && !stageFilmstrip && getPinnedParticipant(state)) {
             store.dispatch(pinParticipant(null));
         }
+        break;
     }
 
+    // Update the remoteScreenShares.
+    // Because of the debounce in the subscriber which updates the remoteScreenShares we need to handle
+    // removal of screen shares separately here. Otherwise it is possible to have screen sharing
+    // participant that has already left in the remoteScreenShares array. This can lead to rendering
+    // a thumbnails for already left participants since the remoteScreenShares array is used for
+    // building the ordered list of remote participants.
+    case TRACK_REMOVED: {
+        const { jitsiTrack } = action.track;
+
+        if (jitsiTrack && jitsiTrack.isVideoTrack() && jitsiTrack.getVideoType() === VIDEO_TYPE.DESKTOP) {
+            const participantId = jitsiTrack.getParticipantId();
+            const oldScreenShares = store.getState()['features/video-layout'].remoteScreenShares || [];
+            const newScreenShares = oldScreenShares.filter(id => id !== participantId);
+
+            if (oldScreenShares.length !== newScreenShares.length) { // the participant was removed
+                store.dispatch(setRemoteParticipantsWithScreenShare(newScreenShares));
+
+                updateAutoPinnedParticipant(oldScreenShares, store);
+            }
+
+        }
+
+        break;
+    }
+    }
+
+    if (shouldUpdateAutoPin) {
+        const screenShares = store.getState()['features/video-layout'].remoteScreenShares || [];
+
+        updateAutoPinnedParticipant(screenShares, store);
+    }
 
     return result;
 });
@@ -69,7 +129,7 @@ StateListenerRegistry.register(
     });
 
 /**
- * Respores tile view state, if it wasn't updated since then.
+ * Restores tile view state, if it wasn't updated since then.
  *
  * @param {Object} store - The Redux Store.
  * @returns {void}

@@ -1,8 +1,7 @@
-// @flow
-
-import { openDialog } from '../../../base/dialog';
+import { openSheet } from '../../../base/dialog';
+import { getFeatureFlag, OVERFLOW_MENU_ENABLED } from '../../../base/flags';
 import { translate } from '../../../base/i18n';
-import { IconMenuThumb } from '../../../base/icons';
+import { IconHorizontalPoints } from '../../../base/icons';
 import { connect } from '../../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/components';
 
@@ -24,7 +23,7 @@ type Props = AbstractButtonProps & {
  */
 class OverflowMenuButton extends AbstractButton<Props, *> {
     accessibilityLabel = 'toolbar.accessibilityLabel.moreActions';
-    icon = IconMenuThumb;
+    icon = IconHorizontalPoints;
     label = 'toolbar.moreActions';
 
     /**
@@ -34,8 +33,24 @@ class OverflowMenuButton extends AbstractButton<Props, *> {
      * @returns {void}
      */
     _handleClick() {
-        this.props.dispatch(openDialog(OverflowMenu));
+        this.props.dispatch(openSheet(OverflowMenu));
     }
 }
 
-export default translate(connect()(OverflowMenuButton));
+/**
+ * Maps (parts of) the redux state to the associated props for the
+ * {@code OverflowMenuButton} component.
+ *
+ * @param {Object} state - The Redux state.
+ * @private
+ * @returns {Props}
+ */
+function _mapStateToProps(state): Object {
+    const enabledFlag = getFeatureFlag(state, OVERFLOW_MENU_ENABLED, true);
+
+    return {
+        visible: enabledFlag
+    };
+}
+
+export default translate(connect(_mapStateToProps)(OverflowMenuButton));

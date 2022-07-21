@@ -1,5 +1,7 @@
 // @flow
 
+import { getToolbarButtons } from '../../../../base/config';
+import { openDialog } from '../../../../base/dialog';
 import { translate } from '../../../../base/i18n';
 import { connect } from '../../../../base/redux';
 import AbstractRecordButton, {
@@ -7,7 +9,29 @@ import AbstractRecordButton, {
     type Props
 } from '../AbstractRecordButton';
 
-declare var interfaceConfig: Object;
+import { StartRecordingDialog, StopRecordingDialog } from './index';
+
+
+/**
+ * Button for opening a dialog where a recording session can be started.
+ */
+class RecordingButton extends AbstractRecordButton<Props> {
+
+    /**
+     * Handles clicking / pressing the button.
+     *
+     * @override
+     * @protected
+     * @returns {void}
+     */
+    _onHandleClick() {
+        const { _isRecordingRunning, dispatch } = this.props;
+
+        dispatch(openDialog(
+            _isRecordingRunning ? StopRecordingDialog : StartRecordingDialog
+        ));
+    }
+}
 
 /**
  * Maps (parts of) the redux state to the associated props for the
@@ -25,11 +49,8 @@ declare var interfaceConfig: Object;
  */
 export function _mapStateToProps(state: Object, ownProps: Props): Object {
     const abstractProps = _abstractMapStateToProps(state, ownProps);
-    let { visible } = ownProps;
-
-    if (typeof visible === 'undefined') {
-        visible = interfaceConfig.TOOLBAR_BUTTONS.includes('recording') && abstractProps.visible;
-    }
+    const toolbarButtons = getToolbarButtons(state);
+    const visible = toolbarButtons.includes('recording') && abstractProps.visible;
 
     return {
         ...abstractProps,
@@ -37,4 +58,4 @@ export function _mapStateToProps(state: Object, ownProps: Props): Object {
     };
 }
 
-export default translate(connect(_mapStateToProps)(AbstractRecordButton));
+export default translate(connect(_mapStateToProps)(RecordingButton));

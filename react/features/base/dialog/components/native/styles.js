@@ -1,7 +1,6 @@
-// @flow
-
 import { StyleSheet } from 'react-native';
 
+import BaseTheme from '../../../../base/ui/components/BaseTheme.native';
 import { ColorSchemeRegistry, schemeColor } from '../../../color-scheme';
 import { BoxModel, ColorPalette } from '../../../styles';
 import { PREFERRED_DIALOG_SIZE } from '../../constants';
@@ -19,7 +18,41 @@ export const MD_FONT_SIZE = 16;
 export const MD_ITEM_HEIGHT = 48;
 export const MD_ITEM_MARGIN_PADDING = 16;
 
-export const PLACEHOLDER_COLOR = ColorPalette.lightGrey;
+/**
+ * Reusable (colored) style for text in any branded dialogs.
+ */
+const brandedDialogText = {
+    color: schemeColor('text'),
+    fontSize: MD_FONT_SIZE,
+    textAlign: 'center'
+};
+
+const brandedDialogLabelStyle = {
+    color: ColorPalette.white,
+    flexShrink: 1,
+    fontSize: MD_FONT_SIZE,
+    opacity: 0.90
+};
+
+const brandedDialogItemContainerStyle = {
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: MD_ITEM_HEIGHT
+};
+
+const brandedDialogIconStyle = {
+    color: ColorPalette.white,
+    fontSize: 24
+};
+
+export const inputDialog = {
+    formMessage: {
+        alignSelf: 'flex-start',
+        fontStyle: 'italic',
+        fontWeight: 'bold',
+        marginTop: BaseTheme.spacing[3]
+    }
+};
 
 /**
  * The React {@code Component} styles of {@code BottomSheet}. These have
@@ -33,7 +66,7 @@ export const bottomSheetStyles = {
     },
 
     scrollView: {
-        paddingHorizontal: MD_ITEM_MARGIN_PADDING
+        paddingHorizontal: 0
     },
 
     /**
@@ -44,10 +77,79 @@ export const bottomSheetStyles = {
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-end',
+        maxWidth: 500,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        width: '100%'
     },
 
     sheetItemContainer: {
-        flex: -1
+        flex: -1,
+        maxHeight: '75%'
+    },
+
+    buttons: {
+        /**
+         * Style for the {@code Icon} element in a generic item of the menu.
+         */
+        iconStyle: {
+            ...brandedDialogIconStyle
+        },
+
+        /**
+         * Style for the label in a generic item rendered in the menu.
+         */
+        labelStyle: {
+            ...brandedDialogLabelStyle,
+            marginLeft: 16
+        },
+
+        /**
+         * Container style for a generic item rendered in the menu.
+         */
+        style: {
+            ...brandedDialogItemContainerStyle,
+            paddingHorizontal: MD_ITEM_MARGIN_PADDING
+        },
+
+        /**
+         * Additional style that is not directly used as a style object.
+         */
+        underlayColor: ColorPalette.toggled
+    },
+
+    /**
+     * Bottom sheet's base style.
+     */
+    sheet: {
+        backgroundColor: BaseTheme.palette.ui02,
+        borderTopLeftRadius: 16,
+        borderTopRightRadius: 16
+    },
+
+    /**
+     * Bottom sheet's base style with header.
+     */
+    sheetHeader: {
+        backgroundColor: BaseTheme.palette.ui02
+    },
+
+    /**
+     * Bottom sheet's background color with footer.
+     */
+    sheetFooter: {
+        backgroundColor: BaseTheme.palette.bottomSheet
+    }
+};
+
+export default {
+    dialogButton: {
+        ...BaseTheme.typography.labelButton
+    },
+
+    destructiveDialogButton: {
+        ...BaseTheme.typography.labelButton,
+        color: BaseTheme.palette.actionDanger
     }
 };
 
@@ -61,10 +163,6 @@ export const brandedDialog = {
         fontWeight: 'bold'
     },
 
-    buttonFarLeft: {
-        borderBottomLeftRadius: BORDER_RADIUS
-    },
-
     buttonFarRight: {
         borderBottomRightRadius: BORDER_RADIUS
     },
@@ -75,11 +173,6 @@ export const brandedDialog = {
         flexDirection: 'row'
     },
 
-    closeWrapper: {
-        alignSelf: 'flex-end',
-        padding: BoxModel.padding
-    },
-
     mainWrapper: {
         alignSelf: 'stretch',
         padding: BoxModel.padding * 2,
@@ -87,15 +180,6 @@ export const brandedDialog = {
         // The added bottom padding is to compensate the empty space around the
         // close icon.
         // paddingBottom: BoxModel.padding * 3
-    },
-
-    overlay: {
-        ...StyleSheet.absoluteFillObject,
-        alignItems: 'center',
-        backgroundColor: 'rgba(127, 127, 127, 0.6)',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        padding: 30
     },
 
     overlayTouchable: {
@@ -250,11 +334,12 @@ ColorSchemeRegistry.register('Dialog', {
     },
 
     text: {
-        ...brandedDialogText
+        ...brandedDialogText,
+        color: BaseTheme.palette.text01
     },
 
     topBorderContainer: {
-        borderTopColor: schemeColor('border'),
+        borderTopColor: BaseTheme.palette.dividerColor,
         borderTopWidth: 1
     }
 });

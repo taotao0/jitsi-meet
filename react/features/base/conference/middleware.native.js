@@ -1,6 +1,6 @@
 // @flow
 
-import { setPictureInPictureDisabled } from '../../mobile/picture-in-picture/functions';
+import { setPictureInPictureEnabled } from '../../mobile/picture-in-picture/functions';
 import { setAudioOnly } from '../audio-only';
 import JitsiMeetJS from '../lib-jitsi-meet';
 import { MiddlewareRegistry } from '../redux';
@@ -13,7 +13,7 @@ import './middleware.any';
 MiddlewareRegistry.register(store => next => action => {
     switch (action.type) {
     case TOGGLE_SCREENSHARING: {
-        _toggleScreenSharing(store);
+        _toggleScreenSharing(action.enabled, store);
         break;
     }
     }
@@ -25,19 +25,23 @@ MiddlewareRegistry.register(store => next => action => {
  * Toggles screen sharing.
  *
  * @private
+ * @param {boolean} enabled - The state to toggle screen sharing to.
  * @param {Store} store - The redux.
  * @returns {void}
  */
-function _toggleScreenSharing(store) {
+function _toggleScreenSharing(enabled, store) {
     const { dispatch, getState } = store;
     const state = getState();
 
-    const isSharing = isLocalVideoTrackDesktop(state);
+    if (enabled) {
+        const isSharing = isLocalVideoTrackDesktop(state);
 
-    if (isSharing) {
-        dispatch(destroyLocalDesktopTrackIfExists());
+        if (!isSharing) {
+            _startScreenSharing(dispatch, state);
+        }
     } else {
-        _startScreenSharing(dispatch, state);
+        dispatch(destroyLocalDesktopTrackIfExists());
+        setPictureInPictureEnabled(true);
     }
 }
 
@@ -50,7 +54,7 @@ function _toggleScreenSharing(store) {
  * @returns {void}
  */
 function _startScreenSharing(dispatch, state) {
-    setPictureInPictureDisabled(true);
+    setPictureInPictureEnabled(false);
 
     JitsiMeetJS.createLocalTracks({ devices: [ 'desktop' ] })
     .then(tracks => {
@@ -69,6 +73,6 @@ function _startScreenSharing(dispatch, state) {
     .catch(error => {
         console.log('ERROR creating ScreeSharing stream ', error);
 
-        setPictureInPictureDisabled(false);
+        setPictureInPictureEnabled(true);
     });
 }

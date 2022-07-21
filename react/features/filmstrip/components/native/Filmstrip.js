@@ -1,17 +1,29 @@
 // @flow
 
-import React, { Component } from 'react';
-import { ScrollView, View, Button, FlatList } from 'react-native';
-import ChatMessage from '../../../chat/components/native/ChatMessage';
+import React, { PureComponent } from 'react';
+import { FlatList } from 'react-native';
+import { SafeAreaView, withSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Container, Platform } from '../../../base/react';
+import { getLocalParticipant } from '../../../base/participants';
+import { Platform } from '../../../base/react';
 import { connect } from '../../../base/redux';
 import { ASPECT_RATIO_NARROW } from '../../../base/responsive-ui/constants';
-import { isFilmstripVisible } from '../../functions';
+import { shouldHideSelfView } from '../../../base/settings/functions.any';
+import { isToolboxVisible } from '../../../toolbox/functions';
+import { setVisibleRemoteParticipants } from '../../actions';
+import {
+    getFilmstripDimensions,
+    isFilmstripVisible,
+    shouldDisplayLocalThumbnailSeparately,
+    shouldRemoteVideosBeVisible
+} from '../../functions';
 
 import LocalThumbnail from './LocalThumbnail';
 import Thumbnail from './Thumbnail';
 import styles from './styles';
+
+// Immutable reference to avoid re-renders.
+const NO_REMOTE_VIDEOS = [];
 
 /**
  * Filmstrip component's property types.
@@ -23,10 +35,21 @@ type Props = {
      */
     _aspectRatio: Symbol,
 
+    _clientWidth: number,
+
+    _clientHeight: number,
+
     /**
-     * The indicator which determines whether the filmstrip is enabled.
+     * Whether or not to hide the self view.
      */
-    _enabled: boolean,
+    _disableSelfView: boolean,
+
+    /**
+     * Whether or not the toolbox is displayed.
+     */
+    _toolboxVisible: Boolean,
+
+    _localParticipantId: string,
 
     /**
      * The participants in the conference.
@@ -39,33 +62,33 @@ type Props = {
     _visible: boolean,
 
     /**
-     * The indicator which determines whether the filmstrip is visible.
+     * Invoked to trigger state changes in Redux.
      */
-    _messages: Array<Object>
-};
+    dispatch: Function,
 
-/**
- * The type of the React {@link Component} state of {@link Filmstrip}.
- */
-type State = {
     /**
-     * Chatting view status.
+     * Object containing the safe area insets.
      */
-    chatEnabled: boolean
+    insets: Object,
 };
 
 /**
  * Implements a React {@link Component} which represents the filmstrip on
  * mobile/React Native.
  *
- * @extends Component
+ * @augments Component
  */
-class Filmstrip extends Component<Props> {
+class Filmstrip extends PureComponent<Props> {
     /**
      * Whether the local participant should be rendered separately from the
-     * remote participants i.e. outside of their {@link ScrollView}.
+     * remote participants ie outside of their {@link ScrollView}.
      */
     _separateLocalThumbnail: boolean;
+
+    /**
+     * The FlatList's viewabilityConfig.
+     */
+    _viewabilityConfig: Object;
 
     /**
      * Constructor of the component.
@@ -84,7 +107,7 @@ class Filmstrip extends Component<Props> {
         // layer #0 sits behind the window, creates a hole in the window, and
         // there we render the LargeVideo; layer #1 is known as media overlay in
         // EGL terms, renders on top of layer #0, and, consequently, is for the
-        // Filmstrip. With the separate LocalThumnail, we should have left the
+        // Filmstrip. With the separate LocalThumbnail, we should have left the
         // remote participants' Thumbnails in layer #1 and utilized layer #2 for
         // LocalThumbnail. Unfortunately, layer #2 is not practical (that's why
         // I said we had two practical layers only) because it renders on top of
@@ -92,15 +115,125 @@ class Filmstrip extends Component<Props> {
         // indicators such as moderator, audio and video muted, etc. For now we
         // do not have much of a choice but to continue rendering LocalThumbnail
         // as any other remote Thumbnail on Android.
-        this._separateLocalThumbnail = Platform.OS !== 'android';
+        this._separateLocalThumbnail = shouldDisplayLocalThumbnailSeparately();
 
-        this.state = {
-            chatEnabled: false,
+        this._viewabilityConfig = {
+            itemVisiblePercentThreshold: 30,
+            minimumViewTime: 500
         };
 
-        this._onChatButtonClick = this._onChatButtonClick.bind(this);
         this._keyExtractor = this._keyExtractor.bind(this);
-        this._renderMessage = this._renderMessage.bind(this);
+        this._getItemLayout = this._getItemLayout.bind(this);
+        this._onViewableItemsChanged = this._onViewableItemsChanged.bind(this);
+        this._renderThumbnail = this._renderThumbnail.bind(this);
+    }
+
+    _keyExtractor: string => string;
+
+    /**
+     * Returns a key for a passed item of the list.
+     *
+     * @param {string} item - The user ID.
+     * @returns {string} - The user ID.
+     */
+    _keyExtractor(item) {
+        return item;
+    }
+
+    /**
+     * Calculates the width and height of the filmstrip based on the screen size and aspect ratio.
+     *
+     * @returns {Object} - The width and the height.
+     */
+    _getDimensions() {
+        const {
+            _aspectRatio,
+            _clientWidth,
+            _clientHeight,
+            _disableSelfView,
+            _localParticipantId,
+            insets
+        } = this.props;
+        const localParticipantVisible = Boolean(_localParticipantId) && !_disableSelfView;
+
+        return getFilmstripDimensions({
+            aspectRatio: _aspectRatio,
+            clientHeight: _clientHeight,
+            clientWidth: _clientWidth,
+            insets,
+            localParticipantVisible
+        });
+    }
+
+    _getItemLayout: (?Array<string>, number) => {length: number, offset: number, index: number};
+
+    /**
+     * Optimization for FlatList. Returns the length, offset and index for an item.
+     *
+     * @param {Array<string>} data - The data array with user IDs.
+     * @param {number} index - The index number of the item.
+     * @returns {Object}
+     */
+    _getItemLayout(data, index) {
+        const { _aspectRatio } = this.props;
+        const isNarrowAspectRatio = _aspectRatio === ASPECT_RATIO_NARROW;
+        const length = isNarrowAspectRatio ? styles.thumbnail.width : styles.thumbnail.height;
+
+        return {
+            length,
+            offset: length * index,
+            index
+        };
+    }
+
+    _onViewableItemsChanged: Object => void;
+
+    /**
+     * A handler for visible items changes.
+     *
+     * @param {Object} data - The visible items data.
+     * @param {Array<Object>} data.viewableItems - The visible items array.
+     * @returns {void}
+     */
+    _onViewableItemsChanged({ viewableItems = [] }) {
+        const { _disableSelfView } = this.props;
+
+        if (!this._separateLocalThumbnail && !_disableSelfView && viewableItems[0]?.index === 0) {
+            // Skip the local thumbnail.
+            viewableItems.shift();
+        }
+
+        if (viewableItems.length === 0) {
+            // User might be fast-scrolling, it will stabilize.
+            return;
+        }
+
+        let startIndex = viewableItems[0].index;
+        let endIndex = viewableItems[viewableItems.length - 1].index;
+
+        if (!this._separateLocalThumbnail && !_disableSelfView) {
+            // We are off by one in the remote participants array.
+            startIndex -= 1;
+            endIndex -= 1;
+        }
+
+        this.props.dispatch(setVisibleRemoteParticipants(startIndex, endIndex));
+    }
+
+    _renderThumbnail: Object => Object;
+
+    /**
+     * Creates React Element to display each participant in a thumbnail.
+     *
+     * @private
+     * @returns {ReactElement}
+     */
+    _renderThumbnail({ item /* , index , separators */ }) {
+        return (
+            <Thumbnail
+                key = { item }
+                participantID = { item } />)
+        ;
     }
 
     /**
@@ -110,159 +243,71 @@ class Filmstrip extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const { _aspectRatio, _enabled, _participants, _visible, _messages } = this.props;
-        const { chatEnabled } = this.state;
+        const {
+            _aspectRatio,
+            _disableSelfView,
+            _toolboxVisible,
+            _localParticipantId,
+            _participants,
+            _visible
+        } = this.props;
 
-        // console.log(chatEnabled);
-
-        if (!_enabled) {
+        if (!_visible) {
             return null;
         }
 
+        const bottomEdge = Platform.OS === 'ios' && !_toolboxVisible;
         const isNarrowAspectRatio = _aspectRatio === ASPECT_RATIO_NARROW;
         const filmstripStyle = isNarrowAspectRatio ? styles.filmstripNarrow : styles.filmstripWide;
+        const { height, width } = this._getDimensions();
+        const { height: thumbnailHeight, width: thumbnailWidth, margin } = styles.thumbnail;
+        const initialNumToRender = Math.ceil(isNarrowAspectRatio
+            ? width / (thumbnailWidth + (2 * margin))
+            : height / (thumbnailHeight + (2 * margin))
+        );
+        let participants;
 
-        // console.log(`isNarrowAspectRatio=${isNarrowAspectRatio}`);
-        // console.log(`filmstripStyle`);
-        // console.log(filmstripStyle);
-        // console.log(_messages);
+        if (this._separateLocalThumbnail || _disableSelfView) {
+            participants = _participants;
+        } else if (isNarrowAspectRatio) {
+            participants = [ ..._participants, _localParticipantId ];
+        } else {
+            participants = [ _localParticipantId, ..._participants ];
+        }
 
         return (
-            <Container
-                style = { filmstripStyle }
-                visible = { _visible }>
+            <SafeAreaView
+                edges = { [ bottomEdge && 'bottom', 'left', 'right' ].filter(Boolean) }
+                style = { filmstripStyle }>
                 {
                     this._separateLocalThumbnail
                         && !isNarrowAspectRatio
+                        && !_disableSelfView
                         && <LocalThumbnail />
                 }
-                {
-                    !isNarrowAspectRatio &&
-                    <>
-                    <Button
-                        onPress={ this._onChatButtonClick }
-                        title="Chat"
-                        color="#4169E1"
-                    />
-                    { chatEnabled &&
-                    <View style={{width:150, height:200, backgroundColor:"#FFF8DC"}}>
-                        <FlatList
-                            data={ _messages }
-                            inverted = { true }
-                            inverted = { Boolean(_messages.length) }
-                            keyExtractor = { this._keyExtractor }
-                            renderItem = { this._renderMessage }
-                        />
-                    </View>
-                    }
-                    </>
-                }
-                <ScrollView
+                <FlatList
+                    bounces = { false }
+                    data = { participants }
+                    getItemLayout = { this._getItemLayout }
                     horizontal = { isNarrowAspectRatio }
+                    initialNumToRender = { initialNumToRender }
+                    key = { isNarrowAspectRatio ? 'narrow' : 'wide' }
+                    keyExtractor = { this._keyExtractor }
+                    onViewableItemsChanged = { this._onViewableItemsChanged }
+                    renderItem = { this._renderThumbnail }
                     showsHorizontalScrollIndicator = { false }
                     showsVerticalScrollIndicator = { false }
-                    style = { styles.scrollView } >
-                    {
-                        !this._separateLocalThumbnail && !isNarrowAspectRatio
-                            && <LocalThumbnail />
-                    }
-                    {
-
-                        this._sort(_participants, isNarrowAspectRatio)
-                            .map(p => (
-                                <Thumbnail
-                                    key = { p.id }
-                                    participant = { p } />))
-
-                    }
-                    {
-                        !this._separateLocalThumbnail && isNarrowAspectRatio
-                            && <LocalThumbnail />
-                    }
-                </ScrollView>
+                    style = { styles.flatListStageView }
+                    viewabilityConfig = { this._viewabilityConfig }
+                    windowSize = { 2 } />
                 {
-                    this._separateLocalThumbnail && isNarrowAspectRatio
+                    this._separateLocalThumbnail
+                        && isNarrowAspectRatio
+                        && !_disableSelfView
                         && <LocalThumbnail />
                 }
-            </Container>
+            </SafeAreaView>
         );
-    }
-
-    _onChatButtonClick: () => void;
-
-    /**
-     * Change chat status.
-     *
-     * @private
-     * @returns {void}
-     */
-    _onChatButtonClick() {
-        const newValue = this.state.chatEnabled;
-        // console.log(newValue);
-        this.setState({
-            chatEnabled: !newValue
-        });
-    }
-
-    _renderMessage: Object => React$Element<*>;
-
-    /**
-     * Renders a single chat message.
-     *
-     * @param {Object} message - The chat message to render.
-     * @returns {React$Element<*>}
-     */
-    _renderMessage({ index, item: message }) {
-        return (
-            <ChatMessage
-                message = { message }
-                showAvatar = { false }
-                showDisplayName = { true }
-                showTimestamp = { true } />
-        );
-    }
-
-    _keyExtractor: Object => string
-
-    /**
-     * Key extractor for the flatlist.
-     *
-     * @param {Object} item - The flatlist item that we need the key to be
-     * generated for.
-     * @param {number} index - The index of the element.
-     * @returns {string}
-     */
-    _keyExtractor(item, index) {
-        return `key_${index}`;
-    }
-
-    /**
-     * Sorts a specific array of {@code Participant}s in display order.
-     *
-     * @param {Participant[]} participants - The array of {@code Participant}s
-     * to sort in display order.
-     * @param {boolean} isNarrowAspectRatio - Indicates if the aspect ratio is
-     * wide or narrow.
-     * @private
-     * @returns {Participant[]} A new array containing the elements of the
-     * specified {@code participants} array sorted in display order.
-     */
-    _sort(participants, isNarrowAspectRatio) {
-        // XXX Array.prototype.sort() is not appropriate because (1) it operates
-        // in place and (2) it is not necessarily stable.
-
-        const sortedParticipants = [
-            ...participants
-        ];
-
-        if (isNarrowAspectRatio) {
-            // When the narrow aspect ratio is used, we want to have the remote
-            // participants from right to left with the newest added/joined to
-            // the leftmost side. The local participant is the leftmost item.
-            sortedParticipants.reverse();
-        }
-
-        return sortedParticipants;
     }
 }
 
@@ -274,19 +319,21 @@ class Filmstrip extends Component<Props> {
  * @returns {Props}
  */
 function _mapStateToProps(state) {
-    const participants = state['features/base/participants'];
-    const { enabled } = state['features/filmstrip'];
-    const { messages } = state['features/chat'];
-
-    // console.log(messages);
+    const { enabled, remoteParticipants } = state['features/filmstrip'];
+    const disableSelfView = shouldHideSelfView(state);
+    const showRemoteVideos = shouldRemoteVideosBeVisible(state);
+    const responsiveUI = state['features/base/responsive-ui'];
 
     return {
-        _aspectRatio: state['features/base/responsive-ui'].aspectRatio,
-        _enabled: enabled,
-        _participants: participants.filter(p => !p.local),
-        _visible: isFilmstripVisible(state),
-        _messages: messages,
+        _aspectRatio: responsiveUI.aspectRatio,
+        _clientHeight: responsiveUI.clientHeight,
+        _clientWidth: responsiveUI.clientWidth,
+        _disableSelfView: disableSelfView,
+        _localParticipantId: getLocalParticipant(state)?.id,
+        _participants: showRemoteVideos ? remoteParticipants : NO_REMOTE_VIDEOS,
+        _toolboxVisible: isToolboxVisible(state),
+        _visible: enabled && isFilmstripVisible(state)
     };
 }
 
-export default connect(_mapStateToProps)(Filmstrip);
+export default withSafeAreaInsets(connect(_mapStateToProps)(Filmstrip));

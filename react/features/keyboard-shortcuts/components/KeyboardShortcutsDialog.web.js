@@ -1,6 +1,8 @@
 /* @flow */
 
 import Lozenge from '@atlaskit/lozenge';
+import { withStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import React, { Component } from 'react';
 
 import { Dialog } from '../../base/dialog';
@@ -11,6 +13,11 @@ import { translate } from '../../base/i18n';
  * {@link KeyboardShortcutsDialog}.
  */
 type Props = {
+
+    /**
+     * An object containing the CSS classes.
+     */
+    classes: Object,
 
     /**
      * A Map with keyboard keys as keys and translation keys as values.
@@ -24,10 +31,32 @@ type Props = {
 };
 
 /**
+ * Creates the styles for the component.
+ *
+ * @param {Object} theme - The current UI theme.
+ *
+ * @returns {Object}
+ */
+const styles = theme => {
+    return {
+        list: {
+            listStyleType: 'none',
+            padding: 0,
+
+            '& .shortcuts-list__item': {
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginBottom: theme.spacing(2)
+            }
+        }
+    };
+};
+
+/**
  * Implements a React {@link Component} which displays a dialog describing
  * registered keyboard shortcuts.
  *
- * @extends Component
+ * @augments Component
  */
 class KeyboardShortcutsDialog extends Component<Props> {
     /**
@@ -49,7 +78,7 @@ class KeyboardShortcutsDialog extends Component<Props> {
                 <div
                     id = 'keyboard-shortcuts'>
                     <ul
-                        className = 'shortcuts-list'
+                        className = { clsx('shortcuts-list', this.props.classes.list) }
                         id = 'keyboard-shortcuts-list'>
                         { shortcuts }
                     </ul>
@@ -67,16 +96,28 @@ class KeyboardShortcutsDialog extends Component<Props> {
      * @returns {ReactElement}
      */
     _renderShortcutsListItem(keyboardKey, translationKey) {
+        let modifierKey = 'Alt';
+
+        if (window.navigator?.platform) {
+            if (window.navigator.platform.indexOf('Mac') !== -1) {
+                modifierKey = '⌥';
+            }
+        }
+
         return (
             <li
                 className = 'shortcuts-list__item'
                 key = { keyboardKey }>
-                <span className = 'shortcuts-list__description'>
+                <span
+                    aria-label = { this.props.t(translationKey) }
+                    className = 'shortcuts-list__description'>
                     { this.props.t(translationKey) }
                 </span>
                 <span className = 'item-action'>
                     <Lozenge isBold = { true }>
-                        { keyboardKey }
+                        { keyboardKey.startsWith(':')
+                            ? `${modifierKey} + ${keyboardKey.slice(1)}`
+                            : keyboardKey }
                     </Lozenge>
                 </span>
             </li>
@@ -84,4 +125,4 @@ class KeyboardShortcutsDialog extends Component<Props> {
     }
 }
 
-export default translate(KeyboardShortcutsDialog);
+export default translate(withStyles(styles)(KeyboardShortcutsDialog));

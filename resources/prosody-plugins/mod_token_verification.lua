@@ -4,8 +4,12 @@
 local log = module._log;
 local host = module.host;
 local st = require "util.stanza";
-local is_admin = require "core.usermanager".is_admin;
+local um_is_admin = require "core.usermanager".is_admin;
 
+
+local function is_admin(jid)
+    return um_is_admin(jid, host);
+end
 
 local parentHostName = string.gmatch(tostring(host), "%w+.(%w.+)")();
 if parentHostName == nil then
@@ -74,7 +78,7 @@ module:hook("muc-room-pre-create", function(event)
     if not verify_user(origin, stanza) then
         return true; -- Returning any value other than nil will halt processing of the event
     end
-end);
+end, 99);
 
 module:hook("muc-occupant-pre-join", function(event)
 	local origin, room, stanza = event.origin, event.room, event.stanza;
@@ -82,7 +86,7 @@ module:hook("muc-occupant-pre-join", function(event)
     if not verify_user(origin, stanza) then
         return true; -- Returning any value other than nil will halt processing of the event
     end
-end);
+end, 99);
 
 for event_name, method in pairs {
     -- Normal room interactions

@@ -37,14 +37,21 @@ type Props = {
     placeHolder: string,
 
     /**
-     * The field type (e.g. text, password...etc).
+     * Whether the input is read only or not.
+     */
+    readOnly?: boolean,
+
+    /**
+     * The field type (e.g. Text, password...etc).
      */
     type: string,
 
     /**
      * Externally provided value.
      */
-    value?: string
+    value?: string,
+    id?: string,
+    autoComplete?: string
 };
 
 type State = {
@@ -114,14 +121,25 @@ export default class InputField extends PureComponent<Props, State> {
     render() {
         return (
             <input
+                autoComplete = { this.props.autoComplete }
                 autoFocus = { this.props.autoFocus }
                 className = { `field ${this.state.focused ? 'focused' : ''} ${this.props.className || ''}` }
                 data-testid = { this.props.testId ? this.props.testId : undefined }
+                id = { this.props.id }
                 onBlur = { this._onBlur }
                 onChange = { this._onChange }
                 onFocus = { this._onFocus }
                 onKeyDown = { this._onKeyDown }
+                onKeyPress = { this._onKeyPress }
                 placeholder = { this.props.placeHolder }
+                readOnly = { this.props.readOnly }
+                // eslint-disable-next-line react/jsx-no-bind
+                ref = { inputElement => {
+                    if (this.props.autoFocus) {
+                        inputElement && inputElement.focus();
+                        setTimeout(() => inputElement && inputElement.focus(), 200);
+                    }
+                } }
                 type = { this.props.type }
                 value = { this.state.value } />
         );
@@ -185,5 +203,15 @@ export default class InputField extends PureComponent<Props, State> {
         const { onSubmit } = this.props;
 
         onSubmit && event.key === 'Enter' && onSubmit();
+    }
+
+    /**
+     * Stop event propagation on key press.
+     *
+     * @param {Event} event - Key press event object.
+     * @returns {void}
+     */
+    _onKeyPress(event) {
+        event.stopPropagation();
     }
 }

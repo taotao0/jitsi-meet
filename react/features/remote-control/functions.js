@@ -9,7 +9,7 @@ import { keyboardEventToKey } from './keycodes';
 import logger from './logger';
 
 /**
- * Checks if the remote contrrol is enabled.
+ * Checks if the remote control is enabled.
  *
  * @param {*} state - The redux state.
  * @returns {boolean} - True if the remote control is enabled and false otherwise.
@@ -19,7 +19,7 @@ export function isRemoteControlEnabled(state: Object) {
 }
 
 /**
- * Sends remote control message to other participant trough data channel.
+ * Sends remote control message to other participant through data channel.
  *
  * @param {JitsiConference} conference - The JitsiConference object.
  * @param {string} to - The participant who will receive the event.

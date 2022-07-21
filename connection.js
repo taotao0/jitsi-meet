@@ -1,20 +1,28 @@
 /* global APP, JitsiMeetJS, config */
 
 import { jitsiLocalStorage } from '@jitsi/js-utils';
-import Logger from 'jitsi-meet-logger';
+import Logger from '@jitsi/logger';
 
-import AuthHandler from './modules/UI/authentication/AuthHandler';
+import { redirectToTokenAuthService } from './modules/UI/authentication/AuthHandler';
+import { LoginDialog } from './react/features/authentication/components';
+import { isTokenAuthEnabled } from './react/features/authentication/functions';
 import {
     connectionEstablished,
-    connectionFailed
+    connectionFailed,
+    constructOptions
 } from './react/features/base/connection/actions';
+import { openDialog } from './react/features/base/dialog/actions';
+import { setJWT } from './react/features/base/jwt';
 import {
-    isFatalJitsiConnectionError,
     JitsiConnectionErrors,
     JitsiConnectionEvents
 } from './react/features/base/lib-jitsi-meet';
-import { setPrejoinDisplayNameRequired } from './react/features/prejoin/actions';
-
+import { isFatalJitsiConnectionError } from './react/features/base/lib-jitsi-meet/functions';
+import { getCustomerDetails } from './react/features/jaas/actions.any';
+import { isVpaasMeeting, getJaasJWT } from './react/features/jaas/functions';
+import {
+    setPrejoinDisplayNameRequired
+} from './react/features/prejoin/actions';
 const logger = Logger.getLogger(__filename);
 
 /**
@@ -76,25 +84,24 @@ function checkForAttachParametersAndConnect(id, password, connection) {
  * Try to open connection using provided credentials.
  * @param {string} [id]
  * @param {string} [password]
- * @param {string} [roomName]
  * @returns {Promise<JitsiConnection>} connection if
  * everything is ok, else error.
  */
-function connect(id, password, roomName) {
-    const connectionConfig = Object.assign({}, config);
-    const { jwt } = APP.store.getState()['features/base/jwt'];
+export async function connect(id, password) {
+    const state = APP.store.getState();
+    let { jwt } = state['features/base/jwt'];
+    const { iAmRecorder, iAmSipGateway } = state['features/base/config'];
 
-    // Use Websocket URL for the web app if configured. Note that there is no 'isWeb' check, because there's assumption
-    // that this code executes only on web browsers/electron. This needs to be changed when mobile and web are unified.
-    let serviceUrl = connectionConfig.websocket || connectionConfig.bosh;
+    if (!iAmRecorder && !iAmSipGateway && isVpaasMeeting(state)) {
+        await APP.store.dispatch(getCustomerDetails());
 
-    serviceUrl += `?room=${roomName}`;
+        if (!jwt) {
+            jwt = await getJaasJWT(state);
+            APP.store.dispatch(setJWT(jwt));
+        }
+    }
 
-    // FIXME Remove deprecated 'bosh' option assignment at some point(LJM will be accepting only 'serviceUrl' option
-    //  in future). It's included for the time being for Jitsi Meet and lib-jitsi-meet versions interoperability.
-    connectionConfig.serviceUrl = connectionConfig.bosh = serviceUrl;
-
-    const connection = new JitsiMeetJS.JitsiConnection(null, jwt, connectionConfig);
+    const connection = new JitsiMeetJS.JitsiConnection(null, jwt, constructOptions(state));
 
     if (config.iAmRecorder) {
         connection.addFeature(DISCO_JIBRI_FEATURE);
@@ -210,10 +217,38 @@ export function openConnection({ id, password, retry, roomName }) {
             const { jwt } = APP.store.getState()['features/base/jwt'];
 
             if (err === JitsiConnectionErrors.PASSWORD_REQUIRED && !jwt) {
-                return AuthHandler.requestAuth(roomName, connect);
+                return requestAuth(roomName);
             }
         }
 
         throw err;
+    });
+}
+
+/**
+ * Show Authentication Dialog and try to connect with new credentials.
+ * If failed to connect because of PASSWORD_REQUIRED error
+ * then ask for password again.
+ * @param {string} [roomName] name of the conference room
+ *
+ * @returns {Promise<JitsiConnection>}
+ */
+function requestAuth(roomName) {
+    const config = APP.store.getState()['features/base/config'];
+
+    if (isTokenAuthEnabled(config)) {
+        // This Promise never resolves as user gets redirected to another URL
+        return new Promise(() => redirectToTokenAuthService(roomName));
+    }
+
+    return new Promise(resolve => {
+        const onSuccess = connection => {
+            resolve(connection);
+        };
+
+        APP.store.dispatch(
+            openDialog(LoginDialog, { onSuccess,
+                roomName })
+        );
     });
 }

@@ -1,6 +1,15 @@
 /* @flow */
 
+import Bourne from '@hapi/bourne';
+
 import { reportError } from './helpers';
+
+/**
+ * A list if keys to ignore when parsing.
+ *
+ * @type {string[]}
+ */
+const blacklist = [ '__proto__', 'constructor', 'prototype' ];
 
 /**
  * Parses the query/search or fragment/hash parameters out of a specific URL and
@@ -14,9 +23,13 @@ import { reportError } from './helpers';
  * @returns {Object}
  */
 export function parseURLParams(
-        url: URL,
+        url: URL | string,
         dontParse: boolean = false,
         source: string = 'hash'): Object {
+    if (typeof url === 'string') {
+        // eslint-disable-next-line no-param-reassign
+        url = new URL(url);
+    }
     const paramStr = source === 'search' ? url.search : url.hash;
     const params = {};
     const paramParts = (paramStr && paramStr.substr(1).split('&')) || [];
@@ -34,7 +47,7 @@ export function parseURLParams(
         const param = part.split('=');
         const key = param[0];
 
-        if (!key) {
+        if (!key || key.split('.').some(k => blacklist.includes(k))) {
             return;
         }
 
@@ -46,7 +59,7 @@ export function parseURLParams(
             if (!dontParse) {
                 const decoded = decodeURIComponent(value).replace(/\\&/, '&');
 
-                value = decoded === 'undefined' ? undefined : JSON.parse(decoded);
+                value = decoded === 'undefined' ? undefined : Bourne.parse(decoded);
             }
         } catch (e) {
             reportError(

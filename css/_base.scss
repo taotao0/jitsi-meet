@@ -6,6 +6,10 @@
 * {
     -webkit-user-select: none;
     user-select: none;
+
+    // Firefox only
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, .5) transparent;
 }
 
 input,
@@ -18,6 +22,7 @@ html {
     height: 100%;
     width: 100%;
     margin: 0;
+    overflow: hidden;
 }
 
 body {
@@ -44,28 +49,14 @@ body {
   outline: none;
 }
 
-/**
- * AtlasKit sets a default margin on the rendered modals, so
- * when the shift-right class is set when the chat opens, we
- * pad the modal container in order for the modals to be centered
- * while also taking the chat size into consideration.
-*/
-@media (min-width: 480px + $sidebarWidth) {
-    .shift-right [class^="Modal__FillScreen"] {
-        padding-left: $sidebarWidth;
+.jitsi-icon {
+    &-default svg {
+        fill: white;
     }
 }
 
-/**
- * Similarly, we offset the notifications when the chat is open by
- * padding the container.
-*/
-.shift-right [class^="styledFlagGroup-"] {
-    padding-left: $sidebarWidth;
-}
-
-.jitsi-icon svg {
-    fill: white;
+.disabled .jitsi-icon svg {
+    fill: #929292;
 }
 
 .jitsi-icon.gray svg {
@@ -165,16 +156,6 @@ input[type='text'], input[type='password'], textarea {
 .lastN, .disconnected {
     color: #a3a3a3;
     font-size: 12px;
-}
-
-/**
-* Dialogs fade
-*/
-.aui-blanket {
-    background: #000;
-    transition: opacity 0.2s, visibility 0.2s;
-    transition-delay: 0.1s;
-    visibility: visible;
 }
 
 #inviteLinkRef {

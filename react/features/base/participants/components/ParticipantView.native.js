@@ -3,19 +3,15 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 
-import { YoutubeLargeVideo } from '../../../youtube-player/components';
+import { SharedVideo } from '../../../shared-video/components/native';
 import { Avatar } from '../../avatar';
 import { translate } from '../../i18n';
 import { JitsiParticipantConnectionStatus } from '../../lib-jitsi-meet';
-import {
-    MEDIA_TYPE,
-    VideoTrack
-} from '../../media';
+import { VideoTrack } from '../../media';
 import { Container, TintedView } from '../../react';
 import { connect } from '../../redux';
-import type { StyleType } from '../../styles';
 import { TestHint } from '../../testing/components';
-import { getTrackByMediaTypeAndParticipant } from '../../tracks';
+import { getVideoTrackByParticipant } from '../../tracks';
 import { shouldRenderParticipantVideo, getParticipantById } from '../functions';
 
 import styles from './styles';
@@ -92,17 +88,6 @@ type Props = {
     t: Function,
 
     /**
-     * If true, a tinting will be applied to the view, regardless of video or
-     * avatar is rendered.
-     */
-    tintEnabled: boolean,
-
-    /**
-     * The style of the tinting when applied.
-     */
-    tintStyle: StyleType,
-
-    /**
      * The test hint id which can be used to locate the {@code ParticipantView}
      * on the jitsi-meet-torture side. If not provided, the
      * {@code participantId} with the following format will be used:
@@ -133,7 +118,7 @@ type Props = {
  * Implements a React Component which depicts a specific participant's avatar
  * and video.
  *
- * @extends Component
+ * @augments Component
  */
 class ParticipantView extends Component<Props> {
 
@@ -193,26 +178,23 @@ class ParticipantView extends Component<Props> {
             _renderVideo: renderVideo,
             _videoTrack: videoTrack,
             disableVideo,
-            onPress,
-            tintStyle
+            onPress
         } = this.props;
 
         // If the connection has problems, we will "tint" the video / avatar.
         const connectionProblem
             = connectionStatus !== JitsiParticipantConnectionStatus.ACTIVE;
-        const useTint
-            = connectionProblem || this.props.tintEnabled;
 
         const testHintId
             = this.props.testHintId
                 ? this.props.testHintId
                 : `org.usee.Participant#${this.props.participantId}`;
 
-        const renderYoutubeLargeVideo = _isFakeParticipant && !disableVideo;
+        const renderSharedVideo = _isFakeParticipant && !disableVideo;
 
         return (
             <Container
-                onClick = { renderVideo || renderYoutubeLargeVideo ? undefined : onPress }
+                onClick = { renderVideo || renderSharedVideo ? undefined : onPress }
                 style = {{
                     ...styles.participantView,
                     ...this.props.style
@@ -221,10 +203,10 @@ class ParticipantView extends Component<Props> {
 
                 <TestHint
                     id = { testHintId }
-                    onPress = { renderYoutubeLargeVideo ? undefined : onPress }
+                    onPress = { renderSharedVideo ? undefined : onPress }
                     value = '' />
 
-                { renderYoutubeLargeVideo && <YoutubeLargeVideo youtubeId = { this.props.participantId } /> }
+                { renderSharedVideo && <SharedVideo /> }
 
                 { !_isFakeParticipant && renderVideo
                     && <VideoTrack
@@ -234,19 +216,17 @@ class ParticipantView extends Component<Props> {
                         zOrder = { this.props.zOrder }
                         zoomEnabled = { this.props.zoomEnabled } /> }
 
-                { !renderYoutubeLargeVideo && !renderVideo
+                { !renderSharedVideo && !renderVideo
                     && <View style = { styles.avatarContainer }>
                         <Avatar
                             participantId = { this.props.participantId }
                             size = { this.props.avatarSize } />
                     </View> }
 
-                { useTint
+                { connectionProblem
 
                     // If the connection has problems, tint the video / avatar.
-                    && <TintedView
-                        style = {
-                            connectionProblem ? undefined : tintStyle } /> }
+                    && <TintedView /> }
 
                 { this.props.useConnectivityInfoLabel
                     && this._renderConnectionInfo(connectionStatus) }
@@ -268,6 +248,8 @@ class ParticipantView extends Component<Props> {
 function _mapStateToProps(state, ownProps) {
     const { disableVideo, participantId } = ownProps;
     const participant = getParticipantById(state, participantId);
+    const tracks = state['features/base/tracks'];
+    const videoTrack = getVideoTrackByParticipant(tracks, participant);
     let connectionStatus;
     let participantName;
 
@@ -278,11 +260,7 @@ function _mapStateToProps(state, ownProps) {
         _isFakeParticipant: participant && participant.isFakeParticipant,
         _participantName: participantName,
         _renderVideo: shouldRenderParticipantVideo(state, participantId) && !disableVideo,
-        _videoTrack:
-            getTrackByMediaTypeAndParticipant(
-                state['features/base/tracks'],
-                MEDIA_TYPE.VIDEO,
-                participantId)
+        _videoTrack: videoTrack
     };
 }
 

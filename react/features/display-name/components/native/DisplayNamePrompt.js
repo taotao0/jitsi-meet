@@ -23,7 +23,9 @@ class DisplayNamePrompt extends AbstractDisplayNamePrompt<*> {
                     placeholder: '닉네임 입력'
                 }}
                 // contentKey = 'dialog.enterDisplayName'
-                onSubmit = { this._onSetDisplayName } />
+                onSubmit = { this._onSetDisplayName }
+                descriptionKey = 'dialog.enterDisplayName'
+                titleKey = 'dialog.displayNameRequired' />
         );
     }
 

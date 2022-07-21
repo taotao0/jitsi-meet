@@ -1,5 +1,5 @@
 /*
- * Copyright @ 2017-present Atlassian Pty Ltd
+ * Copyright @ 2017-present 8x8, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,69 @@
  * limitations under the License.
  */
 
-#import <React/RCTBridgeModule.h>
+#import "ExternalAPI.h"
 
-#import "JitsiMeetView+Private.h"
-
-@interface ExternalAPI : NSObject<RCTBridgeModule>
-@end
+// Events
+static NSString * const hangUpAction = @"org.jitsi.meet.HANG_UP";
+static NSString * const setAudioMutedAction = @"org.jitsi.meet.SET_AUDIO_MUTED";
+static NSString * const sendEndpointTextMessageAction = @"org.jitsi.meet.SEND_ENDPOINT_TEXT_MESSAGE";
+static NSString * const toggleScreenShareAction = @"org.jitsi.meet.TOGGLE_SCREEN_SHARE";
+static NSString * const retrieveParticipantsInfoAction = @"org.jitsi.meet.RETRIEVE_PARTICIPANTS_INFO";
+static NSString * const openChatAction = @"org.jitsi.meet.OPEN_CHAT";
+static NSString * const closeChatAction = @"org.jitsi.meet.CLOSE_CHAT";
+static NSString * const sendChatMessageAction = @"org.jitsi.meet.SEND_CHAT_MESSAGE";
+static NSString * const setVideoMutedAction = @"org.jitsi.meet.SET_VIDEO_MUTED";
+static NSString * const setClosedCaptionsEnabledAction = @"org.jitsi.meet.SET_CLOSED_CAPTIONS_ENABLED";
 
 @implementation ExternalAPI
 
+static NSMapTable<NSString*, void (^)(NSArray* participantsInfo)> *participantInfoCompletionHandlers;
+
+__attribute__((constructor))
+static void initializeViewsMap() {
+    participantInfoCompletionHandlers = [NSMapTable strongToStrongObjectsMapTable];
+}
+
 RCT_EXPORT_MODULE();
+
+- (NSDictionary *)constantsToExport {
+    return @{
+        @"HANG_UP": hangUpAction,
+        @"SET_AUDIO_MUTED" : setAudioMutedAction,
+        @"SEND_ENDPOINT_TEXT_MESSAGE": sendEndpointTextMessageAction,
+        @"TOGGLE_SCREEN_SHARE": toggleScreenShareAction,
+        @"RETRIEVE_PARTICIPANTS_INFO": retrieveParticipantsInfoAction,
+        @"OPEN_CHAT": openChatAction,
+        @"CLOSE_CHAT": closeChatAction,
+        @"SEND_CHAT_MESSAGE": sendChatMessageAction,
+        @"SET_VIDEO_MUTED" : setVideoMutedAction,
+        @"SET_CLOSED_CAPTIONS_ENABLED": setClosedCaptionsEnabledAction
+    };
+};
 
 /**
  * Make sure all methods in this module are invoked on the main/UI thread.
  */
 - (dispatch_queue_t)methodQueue {
     return dispatch_get_main_queue();
+}
+
++ (BOOL)requiresMainQueueSetup {
+    return NO;
+}
+
+- (NSArray<NSString *> *)supportedEvents {
+    return @[ hangUpAction,
+              setAudioMutedAction,
+              sendEndpointTextMessageAction,
+              toggleScreenShareAction,
+              retrieveParticipantsInfoAction,
+              openChatAction,
+              closeChatAction,
+              sendChatMessageAction,
+              setVideoMutedAction,
+              setClosedCaptionsEnabledAction
+    ];
 }
 
 /**
@@ -41,50 +88,89 @@ RCT_EXPORT_MODULE();
  * @param scope
  */
 RCT_EXPORT_METHOD(sendEvent:(NSString *)name
-                       data:(NSDictionary *)data
-                      scope:(NSString *)scope) {
-    // The JavaScript App needs to provide uniquely identifying information to
-    // the native ExternalAPI module so that the latter may match the former
-    // to the native JitsiMeetView which hosts it.
-    JitsiMeetView *view = [JitsiMeetView viewForExternalAPIScope:scope];
-
-    if (!view) {
+                       data:(NSDictionary *)data) {
+    if ([name isEqual: @"PARTICIPANTS_INFO_RETRIEVED"]) {
+        [self onParticipantsInfoRetrieved: data];
         return;
     }
-
-    id delegate = view.delegate;
-
-    if (!delegate) {
-        return;
-    }
-
-    SEL sel = NSSelectorFromString([self methodNameFromEventName:name]);
-
-    if (sel && [delegate respondsToSelector:sel]) {
-        [delegate performSelector:sel withObject:data];
-    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:sendEventNotificationName
+                                                        object:nil
+                                                      userInfo:@{@"name": name, @"data": data}];
 }
 
-/**
- * Converts a specific event name i.e. redux action type description to a
- * method name.
- *
- * @param eventName The event name to convert to a method name.
- * @return A method name constructed from the specified `eventName`.
- */
-- (NSString *)methodNameFromEventName:(NSString *)eventName {
-   NSMutableString *methodName
-       = [NSMutableString stringWithCapacity:eventName.length];
+- (void) onParticipantsInfoRetrieved:(NSDictionary *)data {
+    NSArray *participantsInfoArray = [data objectForKey:@"participantsInfo"];
+    NSString *completionHandlerId = [data objectForKey:@"requestId"];
+    
+    void (^completionHandler)(NSArray*) = [participantInfoCompletionHandlers objectForKey:completionHandlerId];
+    completionHandler(participantsInfoArray);
+    [participantInfoCompletionHandlers removeObjectForKey:completionHandlerId];
+}
 
-   for (NSString *c in [eventName componentsSeparatedByString:@"_"]) {
-       if (c.length) {
-           [methodName appendString:
-               methodName.length ? c.capitalizedString : c.lowercaseString];
-       }
-   }
-   [methodName appendString:@":"];
+- (void)sendHangUp {
+    [self sendEventWithName:hangUpAction body:nil];
+}
 
-   return methodName;
+- (void)sendSetAudioMuted:(BOOL)muted {
+    NSDictionary *data = @{ @"muted": [NSNumber numberWithBool:muted]};
+
+    [self sendEventWithName:setAudioMutedAction body:data];
+}
+
+- (void)sendEndpointTextMessage:(NSString*)message :(NSString*)to {
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
+    data[@"to"] = to;
+    data[@"message"] = message;
+    
+    [self sendEventWithName:sendEndpointTextMessageAction body:data];
+}
+
+- (void)toggleScreenShare:(BOOL)enabled {
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
+    data[@"enabled"] = [NSNumber numberWithBool:enabled];
+    
+    [self sendEventWithName:toggleScreenShareAction body:data];
+}
+
+- (void)retrieveParticipantsInfo:(void (^)(NSArray*))completionHandler {
+    NSString *completionHandlerId = [[NSUUID UUID] UUIDString];
+    NSDictionary *data = @{ @"requestId": completionHandlerId};
+    
+    [participantInfoCompletionHandlers setObject:[completionHandler copy] forKey:completionHandlerId];
+    
+    [self sendEventWithName:retrieveParticipantsInfoAction body:data];
+}
+
+- (void)openChat:(NSString*)to {
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
+    data[@"to"] = to;
+    
+    [self sendEventWithName:openChatAction body:data];
+}
+
+- (void)closeChat {
+    [self sendEventWithName:closeChatAction body:nil];
+}
+
+- (void)sendChatMessage:(NSString*)message :(NSString*)to {
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
+    data[@"to"] = to;
+    data[@"message"] = message;
+    
+    [self sendEventWithName:sendChatMessageAction body:data];
+}
+
+- (void)sendSetVideoMuted:(BOOL)muted {
+    NSDictionary *data = @{ @"muted": [NSNumber numberWithBool:muted]};
+
+    [self sendEventWithName:setVideoMutedAction body:data];
+}
+
+- (void)sendSetClosedCaptionsEnabled:(BOOL)enabled {
+    NSDictionary *data = @{ @"enabled": [NSNumber numberWithBool:enabled]};
+
+    [self sendEventWithName:setClosedCaptionsEnabledAction body:data];
 }
 
 @end

@@ -23,32 +23,30 @@ echo "by providing an email address for important account notifications"
 echo -n "Enter your email and press [ENTER]: "
 read EMAIL
 
-if [ ! -x "$(command -v certbot)" ] ; then
+CERTBOT="$(command -v certbot || true)"
+if [ ! -x "$CERTBOT" ] ; then
     DISTRO=$(lsb_release -is)
     DISTRO_VERSION=$(lsb_release -rs)
-    if [ "$DISTRO" = "Debian" ]; then
-        apt-get update
-        apt-get -y install certbot
-    elif [ "$DISTRO" = "Ubuntu" ]; then
-        if [ "$DISTRO_VERSION" = "20.04" ] || [ "$DISTRO_VERSION" = "19.10" ]; then
-                apt-get update
-                apt-get -y install software-properties-common
-                add-apt-repository -y universe
-                apt-get update
-                apt-get -y install certbot
-        elif [ "$DISTRO_VERSION" = "18.04" ]; then
-                apt-get update
-                apt-get -y install software-properties-common
-                add-apt-repository -y universe
-                add-apt-repository -y ppa:certbot/certbot
-                apt-get update
-                apt-get -y install certbot
-        fi
-    else
+
+    if [ "$DISTRO" != "Debian" ] && [ "$DISTRO" != "Ubuntu" ]; then
         echo "$DISTRO $DISTRO_VERSION is not supported"
-        echo "Only Debian 9,10 and Ubuntu 18.04,19.10,20.04 are supported"
+        echo "Only Debian and Ubuntu 18.04+ are supported"
         exit 1
     fi
+
+    if [ "$DISTRO" = "Ubuntu" ]; then
+        apt-get update
+        apt-get -y install software-properties-common
+        add-apt-repository -y universe
+        if [ "$DISTRO_VERSION" = "18.04" ]; then
+            add-apt-repository -y ppa:certbot/certbot
+        fi
+    fi
+
+    apt-get update
+    apt-get -y install certbot
+
+    CERTBOT="$(command -v certbot)"
 fi
 
 CRON_FILE="/etc/cron.weekly/letsencrypt-renew"
@@ -56,7 +54,7 @@ if [ ! -d "/etc/cron.weekly" ] ; then
     mkdir "/etc/cron.weekly"
 fi
 echo "#!/bin/bash" > $CRON_FILE
-echo "/usr/bin/certbot renew >> /var/log/le-renew.log" >> $CRON_FILE
+echo "$CERTBOT renew >> /var/log/le-renew.log" >> $CRON_FILE
 
 CERT_KEY="/etc/letsencrypt/live/$DOMAIN/privkey.pem"
 CERT_CRT="/etc/letsencrypt/live/$DOMAIN/fullchain.pem"
@@ -72,13 +70,13 @@ if [ -f /etc/nginx/sites-enabled/$DOMAIN.conf ] ; then
         chmod u+x $TURN_HOOK
         sed -i "s/jitsi-meet.example.com/$DOMAIN/g" $TURN_HOOK
 
-        /usr/bin/certbot certonly --noninteractive \
+        $CERTBOT certonly --noninteractive \
         --webroot --webroot-path /usr/share/jitsi-meet \
         -d $DOMAIN \
         --agree-tos --email $EMAIL \
         --deploy-hook $TURN_HOOK
     else
-        /usr/bin/certbot certonly --noninteractive \
+        $CERTBOT certonly --noninteractive \
         --webroot --webroot-path /usr/share/jitsi-meet \
         -d $DOMAIN \
         --agree-tos --email $EMAIL
@@ -95,12 +93,19 @@ if [ -f /etc/nginx/sites-enabled/$DOMAIN.conf ] ; then
     CERT_CRT_ESC=$(echo $CERT_CRT_ESC | sed 's/\//\\\//g')
     sed -i "s/ssl_certificate\ \/etc\/jitsi\/meet\/.*crt/ssl_certificate\ $CERT_CRT_ESC/g" \
         $CONF_FILE
-
-    echo "service nginx reload" >> $CRON_FILE
-    service nginx reload
+    
+    if type service >/dev/null 2>&1
+    then 
+        service nginx reload
+        echo "service nginx reload" >> $CRON_FILE
+    else 
+        systemctl reload nginx.service 
+        echo "systemctl reload nginx.service" >> $CRON_FILE
+    fi
+    
 elif [ -f /etc/apache2/sites-enabled/$DOMAIN.conf ] ; then
 
-    /usr/bin/certbot certonly --noninteractive \
+    $CERTBOT certonly --noninteractive \
     --webroot --webroot-path /usr/share/jitsi-meet \
     -d $DOMAIN \
     --agree-tos --email $EMAIL
@@ -116,9 +121,15 @@ elif [ -f /etc/apache2/sites-enabled/$DOMAIN.conf ] ; then
     CERT_CRT_ESC=$(echo $CERT_CRT_ESC | sed 's/\//\\\//g')
     sed -i "s/SSLCertificateFile\ \/etc\/jitsi\/meet\/.*crt/SSLCertificateFile\ $CERT_CRT_ESC/g" \
         $CONF_FILE
-
-    echo "service apache2 reload" >> $CRON_FILE
-    service apache2 reload
+    
+    if type service >/dev/null 2>&1
+    then 
+        service apache2 reload
+        echo "service apache2 reload" >> $CRON_FILE
+    else 
+        systemctl reload apache2.service 
+        echo "systemctl reload apache2.service" >> $CRON_FILE
+    fi
 fi
 
 # the cron file that will renew certificates

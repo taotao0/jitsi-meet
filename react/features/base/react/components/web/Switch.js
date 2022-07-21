@@ -1,9 +1,14 @@
 /* @flow */
 
-import { ToggleStateless } from '@atlaskit/toggle';
+import Toggle from '@atlaskit/toggle';
 import React, { Component } from 'react';
 
-type Props = {
+type Props = {|
+
+    /**
+     * ID of the toggle.
+     */
+    id: string,
 
     /**
      * CSS class name.
@@ -24,7 +29,7 @@ type Props = {
      * The current value.
      */
     value: boolean
-};
+|};
 
 /**
  * Renders a boolean input.
@@ -42,6 +47,7 @@ export default class Switch extends Component<Props> {
             disabled,
             onValueChange,
             value,
+            id,
             ...props
         } = this.props;
 
@@ -51,7 +57,8 @@ export default class Switch extends Component<Props> {
 
         return (
             <div className = { className }>
-                <ToggleStateless
+                <Toggle
+                    id = { id }
                     isChecked = { value }
                     isDisabled = { disabled }
                     onChange = { onValueChange }

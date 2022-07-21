@@ -1,4 +1,4 @@
-import { NOTIFICATION_TIMEOUT, showNotification } from '../../notifications';
+import { NOTIFICATION_TIMEOUT_TYPE, showNotification } from '../../notifications';
 import { set } from '../redux';
 
 import {
@@ -7,18 +7,28 @@ import {
     HIDDEN_PARTICIPANT_LEFT,
     GRANT_MODERATOR,
     KICK_PARTICIPANT,
+    LOCAL_PARTICIPANT_AUDIO_LEVEL_CHANGED,
+    LOCAL_PARTICIPANT_RAISE_HAND,
     MUTE_REMOTE_PARTICIPANT,
+    OVERWRITE_PARTICIPANT_NAME,
+    OVERWRITE_PARTICIPANTS_NAMES,
     PARTICIPANT_ID_CHANGED,
     PARTICIPANT_JOINED,
     PARTICIPANT_KICKED,
     PARTICIPANT_LEFT,
     PARTICIPANT_UPDATED,
     PIN_PARTICIPANT,
-    SET_LOADABLE_AVATAR_URL
+    RAISE_HAND_UPDATED,
+    SCREENSHARE_PARTICIPANT_NAME_CHANGED,
+    SET_LOADABLE_AVATAR_URL,
+    SET_LOCAL_PARTICIPANT_RECORDING_STATUS
 } from './actionTypes';
-import { DISCO_REMOTE_CONTROL_FEATURE } from './constants';
+import {
+    DISCO_REMOTE_CONTROL_FEATURE
+} from './constants';
 import {
     getLocalParticipant,
+    getVirtualScreenshareParticipantOwnerId,
     getNormalizedDisplayName,
     getParticipantDisplayName,
     getParticipantById
@@ -28,7 +38,8 @@ import logger from './logger';
 /**
  * Create an action for when dominant speaker changes.
  *
- * @param {string} id - Participant's ID.
+ * @param {string} dominantSpeaker - Participant ID of the dominant speaker.
+ * @param {Array<string>} previousSpeakers - Participant IDs of the previous speakers.
  * @param {JitsiConference} conference - The {@code JitsiConference} associated
  * with the participant identified by the specified {@code id}. Only the local
  * participant is allowed to not specify an associated {@code JitsiConference}
@@ -37,16 +48,18 @@ import logger from './logger';
  *     type: DOMINANT_SPEAKER_CHANGED,
  *     participant: {
  *         conference: JitsiConference,
- *         id: string
+ *         id: string,
+ *         previousSpeakers: Array<string>
  *     }
  * }}
  */
-export function dominantSpeakerChanged(id, conference) {
+export function dominantSpeakerChanged(dominantSpeaker, previousSpeakers, conference) {
     return {
         type: DOMINANT_SPEAKER_CHANGED,
         participant: {
             conference,
-            id
+            id: dominantSpeaker,
+            previousSpeakers
         }
     };
 }
@@ -192,15 +205,18 @@ export function localParticipantRoleChanged(role) {
  * Create an action for muting another participant in the conference.
  *
  * @param {string} id - Participant's ID.
+ * @param {MEDIA_TYPE} mediaType - The media to mute.
  * @returns {{
  *     type: MUTE_REMOTE_PARTICIPANT,
- *     id: string
+ *     id: string,
+ *     mediaType: MEDIA_TYPE
  * }}
  */
-export function muteRemoteParticipant(id) {
+export function muteRemoteParticipant(id, mediaType) {
     return {
         type: MUTE_REMOTE_PARTICIPANT,
-        id
+        id,
+        mediaType
     };
 }
 
@@ -361,6 +377,8 @@ export function hiddenParticipantLeft(id) {
  * with the participant identified by the specified {@code id}. Only the local
  * participant is allowed to not specify an associated {@code JitsiConference}
  * instance.
+ * @param {boolean} isReplaced - Whether the participant is to be replaced in the meeting.
+ * @param {boolean} isVirtualScreenshareParticipant - Whether the participant is a virtual screen share participant.
  * @returns {{
  *     type: PARTICIPANT_LEFT,
  *     participant: {
@@ -369,12 +387,14 @@ export function hiddenParticipantLeft(id) {
  *     }
  * }}
  */
-export function participantLeft(id, conference) {
+export function participantLeft(id, conference, isReplaced, isVirtualScreenshareParticipant) {
     return {
         type: PARTICIPANT_LEFT,
         participant: {
             conference,
-            id
+            id,
+            isReplaced,
+            isVirtualScreenshareParticipant
         }
     };
 }
@@ -420,6 +440,25 @@ export function participantRoleChanged(id, role) {
 }
 
 /**
+ * Action to signal that a participant's display name has changed.
+ *
+ * @param {string} id - Screenshare participant's ID.
+ * @param {name} name - The new display name of the screenshare participant's owner.
+ * @returns {{
+ *     type: SCREENSHARE_PARTICIPANT_NAME_CHANGED,
+ *     id: string,
+ *     name: string
+ * }}
+ */
+export function screenshareParticipantDisplayNameChanged(id, name) {
+    return {
+        type: SCREENSHARE_PARTICIPANT_NAME_CHANGED,
+        id,
+        name
+    };
+}
+
+/**
  * Action to signal that some of participant properties has been changed.
  *
  * @param {Participant} participant={} - Information about participant. To
@@ -450,21 +489,45 @@ export function participantUpdated(participant = {}) {
  * Action to signal that a participant has muted us.
  *
  * @param {JitsiParticipant} participant - Information about participant.
+ * @param {JitsiLocalTrack} track - Information about the track that has been muted.
  * @returns {Promise}
  */
-export function participantMutedUs(participant) {
+export function participantMutedUs(participant, track) {
     return (dispatch, getState) => {
         if (!participant) {
             return;
         }
 
+        const isAudio = track.isAudioTrack();
+
         dispatch(showNotification({
-            descriptionKey: 'notify.mutedRemotelyDescription',
-            titleKey: 'notify.mutedRemotelyTitle',
+            titleKey: isAudio ? 'notify.mutedRemotelyTitle' : 'notify.videoMutedRemotelyTitle',
             titleArguments: {
-                participantDisplayName:
-                    getParticipantDisplayName(getState, participant.getId())
+                participantDisplayName: getParticipantDisplayName(getState, participant.getId())
             }
+        }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));
+    };
+}
+
+/**
+ * Action to create a virtual screenshare participant.
+ *
+ * @param {(string)} sourceName - JitsiTrack instance.
+ * @param {(boolean)} local - JitsiTrack instance.
+ * @returns {Function}
+ */
+export function createVirtualScreenshareParticipant(sourceName, local) {
+    return (dispatch, getState) => {
+        const state = getState();
+        const ownerId = getVirtualScreenshareParticipantOwnerId(sourceName);
+        const ownerName = getParticipantDisplayName(state, ownerId);
+
+        dispatch(participantJoined({
+            conference: state['features/base/conference'].conference,
+            id: sourceName,
+            isVirtualScreenshareParticipant: true,
+            isLocalScreenShare: local,
+            name: ownerName
         }));
     };
 }
@@ -482,8 +545,12 @@ export function participantKicked(kicker, kicked) {
         dispatch({
             type: PARTICIPANT_KICKED,
             kicked: kicked.getId(),
-            kicker: kicker.getId()
+            kicker: kicker?.getId()
         });
+
+        if (kicked.isReplaced && kicked.isReplaced()) {
+            return;
+        }
 
         dispatch(showNotification({
             titleArguments: {
@@ -493,7 +560,7 @@ export function participantKicked(kicker, kicked) {
                     getParticipantDisplayName(getState, kicker.getId())
             },
             titleKey: 'notify.kickParticipant'
-        }, NOTIFICATION_TIMEOUT * 2)); // leave more time for this
+        }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));
     };
 }
 
@@ -523,21 +590,117 @@ export function pinParticipant(id) {
  *
  * @param {string} participantId - The ID of the participant.
  * @param {string} url - The new URL.
+ * @param {boolean} useCORS - Indicates whether we need to use CORS for this URL.
  * @returns {{
  *     type: SET_LOADABLE_AVATAR_URL,
  *     participant: {
  *         id: string,
- *         loadableAvatarUrl: string
+ *         loadableAvatarUrl: string,
+ *         loadableAvatarUrlUseCORS: boolean
  *     }
  * }}
 */
-export function setLoadableAvatarUrl(participantId, url) {
+export function setLoadableAvatarUrl(participantId, url, useCORS) {
     return {
         type: SET_LOADABLE_AVATAR_URL,
         participant: {
             id: participantId,
-            loadableAvatarUrl: url
+            loadableAvatarUrl: url,
+            loadableAvatarUrlUseCORS: useCORS
         }
     };
 }
 
+/**
+ * Raise hand for the local participant.
+ *
+ * @param {boolean} enabled - Raise or lower hand.
+ * @returns {{
+ *     type: LOCAL_PARTICIPANT_RAISE_HAND,
+ *     raisedHandTimestamp: number
+ * }}
+ */
+export function raiseHand(enabled) {
+    return {
+        type: LOCAL_PARTICIPANT_RAISE_HAND,
+        raisedHandTimestamp: enabled ? Date.now() : 0
+    };
+}
+
+/**
+ * Update raise hand queue of participants.
+ *
+ * @param {Object} participant - Participant that updated raised hand.
+ * @returns {{
+ *      type: RAISE_HAND_UPDATED,
+ *      participant: Object
+ * }}
+ */
+export function raiseHandUpdateQueue(participant) {
+    return {
+        type: RAISE_HAND_UPDATED,
+        participant
+    };
+}
+
+/**
+ * Notifies if the local participant audio level has changed.
+ *
+ * @param {number} level - The audio level.
+ * @returns {{
+ *      type: LOCAL_PARTICIPANT_AUDIO_LEVEL_CHANGED,
+ *      level: number
+ * }}
+ */
+export function localParticipantAudioLevelChanged(level) {
+    return {
+        type: LOCAL_PARTICIPANT_AUDIO_LEVEL_CHANGED,
+        level
+    };
+}
+
+/**
+ * Overwrites the name of the participant with the given id.
+ *
+ * @param {string} id - Participant id;.
+ * @param {string} name - New participant name.
+ * @returns {Object}
+ */
+export function overwriteParticipantName(id, name) {
+    return {
+        type: OVERWRITE_PARTICIPANT_NAME,
+        id,
+        name
+    };
+}
+
+/**
+ * Overwrites the names of the given participants.
+ *
+ * @param {Array<Object>} participantList - The list of participants to overwrite.
+ * @returns {Object}
+ */
+export function overwriteParticipantsNames(participantList) {
+    return {
+        type: OVERWRITE_PARTICIPANTS_NAMES,
+        participantList
+    };
+}
+
+/**
+ * Local video recording status for the local participant.
+ *
+ * @param {boolean} recording - If local recording is ongoing.
+ * @param {boolean} onlySelf - If recording only local streams.
+ * @returns {{
+ *     type: SET_LOCAL_PARTICIPANT_RECORDING_STATUS,
+ *     recording: boolean
+ * }}
+ */
+export function updateLocalRecordingStatus(recording, onlySelf) {
+    return {
+        type: SET_LOCAL_PARTICIPANT_RECORDING_STATUS,
+        recording,
+        onlySelf
+    };
+}

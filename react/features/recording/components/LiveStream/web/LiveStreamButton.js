@@ -1,5 +1,7 @@
 // @flow
 
+import { getToolbarButtons } from '../../../../base/config';
+import { openDialog } from '../../../../base/dialog';
 import { translate } from '../../../../base/i18n';
 import { connect } from '../../../../base/redux';
 import AbstractLiveStreamButton, {
@@ -7,7 +9,32 @@ import AbstractLiveStreamButton, {
     type Props
 } from '../AbstractLiveStreamButton';
 
-declare var interfaceConfig: Object;
+import {
+    StartLiveStreamDialog,
+    StopLiveStreamDialog
+} from './index';
+
+
+/**
+ * Button for opening the live stream settings dialog.
+ */
+class LiveStreamButton extends AbstractLiveStreamButton<Props> {
+
+    /**
+     * Handles clicking / pressing the button.
+     *
+     * @override
+     * @protected
+     * @returns {void}
+     */
+    _onHandleClick() {
+        const { _isLiveStreamRunning, dispatch } = this.props;
+
+        dispatch(openDialog(
+            _isLiveStreamRunning ? StopLiveStreamDialog : StartLiveStreamDialog
+        ));
+    }
+}
 
 /**
  * Maps (parts of) the redux state to the associated props for the
@@ -25,10 +52,11 @@ declare var interfaceConfig: Object;
  */
 function _mapStateToProps(state: Object, ownProps: Props) {
     const abstractProps = _abstractMapStateToProps(state, ownProps);
+    const toolbarButtons = getToolbarButtons(state);
     let { visible } = ownProps;
 
     if (typeof visible === 'undefined') {
-        visible = interfaceConfig.TOOLBAR_BUTTONS.includes('livestreaming') && abstractProps.visible;
+        visible = toolbarButtons.includes('livestreaming') && abstractProps.visible;
     }
 
     return {
@@ -37,4 +65,4 @@ function _mapStateToProps(state: Object, ownProps: Props) {
     };
 }
 
-export default translate(connect(_mapStateToProps)(AbstractLiveStreamButton));
+export default translate(connect(_mapStateToProps)(LiveStreamButton));

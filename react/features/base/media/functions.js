@@ -79,13 +79,23 @@ export function getStartWithAudioMuted(stateful: Object | Function) {
 }
 
 /**
- * Computes the startWithAudioMuted by retrieving its values from config, URL and settings.
+ * Computes the startWithVideoMuted by retrieving its values from config, URL and settings.
  *
  * @param {Object|Function} stateful - The redux state object or {@code getState} function.
- * @returns {boolean} - The computed startWithAudioMuted value that will be used.
+ * @returns {boolean} - The computed startWithVideoMuted value that will be used.
  */
 export function getStartWithVideoMuted(stateful: Object | Function) {
     return Boolean(getPropertyValue(stateful, 'startWithVideoMuted', START_WITH_AUDIO_VIDEO_MUTED_SOURCES));
+}
+
+/**
+ * Determines whether video is currently muted.
+ *
+ * @param {Function|Object} stateful - The redux store, state, or {@code getState} function.
+ * @returns {boolean}
+ */
+export function isVideoMuted(stateful: Function | Object) {
+    return Boolean(toState(stateful)['features/base/media'].video.muted);
 }
 
 /**
@@ -106,7 +116,7 @@ export function isVideoMutedByUser(stateful: Function | Object) {
  * @param {boolean} waitForVideoStarted - True if the specified videoTrack
  * should be rendered only after its associated video has started;
  * otherwise, false.
- * @returns {boolean} True if the specified videoTrack should be renderd;
+ * @returns {boolean} True if the specified videoTrack should be rendered;
  * otherwise, false.
  */
 export function shouldRenderVideoTrack(

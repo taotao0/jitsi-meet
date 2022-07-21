@@ -1,6 +1,6 @@
 // @flow
 
-import { CONFERENCE_WILL_JOIN } from '../conference';
+import { CONFERENCE_JOIN_IN_PROGRESS } from '../conference/actionTypes';
 import { SET_CONFIG } from '../config';
 import { JitsiConferenceEvents } from '../lib-jitsi-meet';
 import { MiddlewareRegistry } from '../redux';
@@ -24,7 +24,7 @@ import logger from './logger';
  */
 MiddlewareRegistry.register(store => next => action => {
     switch (action.type) {
-    case CONFERENCE_WILL_JOIN:
+    case CONFERENCE_JOIN_IN_PROGRESS:
         _bindConferenceConnectionListener(action.conference, store);
         break;
     case SET_CONFIG: {
@@ -91,7 +91,7 @@ function _bindTortureHelpers(store) {
 }
 
 /**
- * The handler function for conference connection events which wil store the
+ * The handler function for conference connection events which will store the
  * latest even name in the Redux store of feature testing.
  *
  * @param {string} event - One of the lib-jitsi-meet JitsiConferenceEvents.

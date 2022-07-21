@@ -71,7 +71,7 @@ class PasswordRequiredPrompt extends Component<Props, State> {
         const { _password } = this.props;
 
         // The previous password in Redux gets cleared after the dialog appears and it ends up breaking the dialog
-        // logic. We move the prop into state and only update it if it has an actual value, avoiding loosing the
+        // logic. We move the prop into state and only update it if it has an actual value, avoiding losing the
         // previously received value when Redux updates.
         if (_password && _password !== this.state.password) {
             // eslint-disable-next-line react/no-did-update-set-state
@@ -94,14 +94,17 @@ class PasswordRequiredPrompt extends Component<Props, State> {
             <InputDialog
                 title = '추가 잠금 해제'
                 contentKey = 'dialog.passwordLabel'
+                descriptionKey = 'dialog.passwordLabel'
                 initialValue = { password }
                 messageKey = { password ? 'dialog.incorrectRoomLockPassword' : undefined }
                 onCancel = { this._onCancel }
                 onSubmit = { this._onSubmit }
                 textInputProps = {{
                     secureTextEntry: true,
-                    placeholder: '추가 잠금번호 입력'
-                }} />
+                    placeholder: '추가 잠금번호 입력',
+                    secureTextEntry: true
+                }}
+                titleKey = 'dialog.password' />
         );
     }
 
