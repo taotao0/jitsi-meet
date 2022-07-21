@@ -16,6 +16,13 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const devServerProxyTarget = 'https://usee.co.kr'
 
+const analyzeBundle = process.argv.indexOf('--analyze-bundle') !== -1;
+const detectCircularDeps = process.argv.indexOf('--detect-circular-deps') !== -1;
+
+const minimize
+    = process.argv.indexOf('-p') !== -1
+        || process.argv.indexOf('--optimize-minimize') !== -1;
+
 /**
  * Build a Performance configuration object for the given size.
  * See: https://webpack.js.org/configuration/performance/
