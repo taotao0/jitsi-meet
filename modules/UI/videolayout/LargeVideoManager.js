@@ -392,7 +392,7 @@ export default class LargeVideoManager {
             // after everything is done check again if there are any pending
             // new streams.
             this.updateInProcess = false;
-            this.eventEmitter.emit(UIEvents.LARGE_VIDEO_ID_CHANGED, this.id);    
+            //this.eventEmitter.emit(UIEvents.LARGE_VIDEO_ID_CHANGED, this.id);    
             //
             this.scheduleLargeVideoUpdate();
         });
