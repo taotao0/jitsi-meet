@@ -15,6 +15,7 @@ export const APP_LINK_SCHEME = 'org.usee:';
  * of a conference/meeting URI/URL. The list is based on RFC 3986 and the jxmpp
  * library utilized by jicofo.
  */
+
 const _ROOM_EXCLUDE_PATTERN = '[\\:\\?#\\[\\]@!$&\'()*+,;=></"]';
 
 /**
@@ -58,6 +59,20 @@ function _fixPathPart(pathPart: ?string) {
     return pathPart
         ? pathPart.replace(new RegExp(_ROOM_EXCLUDE_PATTERN, 'g'), '')
         : pathPart;
+}
+
+/**
+ * Excludes/removes certain characters from a specific room (name) which are
+ * incompatible with Jitsi Meet on the client and/or server sides.
+ *
+ * @param {?string} room - The room (name) to fix.
+ * @private
+ * @returns {?string}
+ */
+ function _fixRoom(room: ?string) {
+    return room
+        ? room.replace(new RegExp(_ROOM_EXCLUDE_PATTERN, 'g'), '')
+        : room;
 }
 
 /**
