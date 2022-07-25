@@ -666,7 +666,7 @@ var config = {
     // - it's impossible to control the placement of buttons
     // - 'desktop' controls the "Share your screen" button
     // - if `toolbarButtons` is undefined, we fallback to enabling all buttons on the UI
-    // toolbarButtons: [
+     toolbarButtons: [],
     //    'camera',
     //    'chat',
     //    'closedcaptions',

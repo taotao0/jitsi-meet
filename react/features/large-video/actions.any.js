@@ -110,6 +110,17 @@ function _electParticipantInLargeVideo(state) {
     const stageFilmstrip = isStageFilmstripAvailable(state);
     let participant;
 
+    if(!!state['features/conference'].isWebinar){
+        participants.forEach((p)=>{
+            if(p.role!='participant'){
+                hostId=p.id;    
+            }
+        })
+        if(!!hostId){
+            return hostId;
+        }
+    }
+
     if (!stageFilmstrip) {
         // If a participant is pinned, they will be shown in the LargeVideo (regardless of whether they are local or
         // remote) when the filmstrip on stage is disabled.
