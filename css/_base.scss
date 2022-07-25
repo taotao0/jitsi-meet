@@ -3,7 +3,7 @@
  * none is applied. Other browsers already support selecting within inputs while
  * user-select is none. As such, disallow user-select except on inputs.
  */
-* {
+ * {
     -webkit-user-select: none;
     user-select: none;
 
@@ -21,7 +21,6 @@ textarea {
 html {
     height: 100%;
     width: 100%;
-    margin: 0;
 }
 
 body {
@@ -30,14 +29,9 @@ body {
     height: 100%;
     font-size: 12px;
     font-weight: 400;
-    display: flex;
-    // overflow: hidden;
-    // color: $defaultColor;
-    background: initial;
-}
-
-#react {
-    background: #fff;
+    overflow: hidden;
+    color: $defaultColor;
+    background: $defaultBackground;
 }
 
 /**
@@ -97,20 +91,20 @@ input[type='text'], input[type='password'], textarea {
     resize: none; /* prevents the user-resizing, adjust to taste */
 }
 
-// button {
-//     color: #FFF;
-//     background-color: $buttonBackground;
-//     border-radius: $borderRadius;
+button {
+    color: #FFF;
+    background-color: $buttonBackground;
+    border-radius: $borderRadius;
 
-//     &.no-icon {
-//         padding: 0 1em;
-//     }
-// }
+    &.no-icon {
+        padding: 0 1em;
+    }
+}
 
-// button,
-// form {
-//     display: block;
-// }
+button,
+form {
+    display: block;
+}
 
 .watermark {
     display: block;
@@ -186,75 +180,4 @@ input[type='text'], input[type='password'], textarea {
 ::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, .5);
     border-radius: 4px;
-}
-
-.desktop-browser {
-    @media only screen and (max-width: $smallScreen) {
-        .watermark {
-            width: 20%;
-            height: 20%;
-        }
-
-        .new-toolbox {
-            .toolbox-content {
-                .button-group-center, .button-group-left, .button-group-right {
-                    .toolbox-button {
-                        .toolbox-icon {
-                            width: 28px;
-                            height: 28px;
-                            svg {
-                                width: 18px;
-                                height: 18px;
-                            }
-                        }
-
-                        &:nth-child(2) {
-                            .toolbox-icon {
-                                width: 30px;
-                                height: 30px;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @media only screen and (max-width: $verySmallScreen) {
-        #videoResolutionLabel {
-            display: none;
-        }
-        .vertical-filmstrip .filmstrip {
-            display: none;
-        }
-        .new-toolbox {
-            .toolbox-content {
-                .button-group-center, .button-group-left, .button-group-right {
-                    .settings-button-small-icon {
-                        display: none;
-                    }
-                    .toolbox-button {
-                        .toolbox-icon {
-                            width: 18px;
-                            height: 18px;
-                            svg {
-                                width: 12px;
-                                height: 12px;
-                            }
-                        }
-
-                        &:nth-child(2) {
-                            .toolbox-icon {
-                                width: 20px;
-                                height: 20px;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        .chrome-extension-banner {
-            display: none;
-        }
-    }
 }
