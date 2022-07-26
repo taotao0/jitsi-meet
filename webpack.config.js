@@ -270,8 +270,8 @@ function getDevServerConfig() {
     hot: true,
     proxy: {
       '/': {
-        //bypass: devServerProxyBypass,
-        //secure: false,
+        bypass: devServerProxyBypass,
+        secure: false,
         changeOrigin: true,
         target: devServerProxyTarget,
         //headers: {
@@ -289,7 +289,7 @@ function getDevServerConfig() {
 module.exports = (_env, argv) => {
   const analyzeBundle = Boolean(process.env.ANALYZE_BUNDLE);
   const mode = typeof argv.mode === 'undefined' ? 'production' : argv.mode;
-  const isProduction = false; //mode === 'production';
+  const isProduction = mode === 'production';
   const configOptions = {
     detectCircularDeps: Boolean(process.env.DETECT_CIRCULAR_DEPS),
     minimize: isProduction,
@@ -346,7 +346,7 @@ module.exports = (_env, argv) => {
           contextRegExp: /moment$/,
         }),
       ],
-      performance: getPerformanceHints(perfHintOptions, 500 * 1024),
+      performance: getPerformanceHints(perfHintOptions, 764 * 1024),
     }),
     Object.assign({}, config, {
       entry: {
@@ -356,7 +356,7 @@ module.exports = (_env, argv) => {
         ...config.plugins,
         ...getBundleAnalyzerPlugin(analyzeBundle, 'do_external_connect'),
       ],
-      performance: getPerformanceHints(perfHintOptions, 20 * 1024),
+      performance: getPerformanceHints(perfHintOptions, 128 * 1024),
     }),
     Object.assign({}, config, {
       entry: {
@@ -367,7 +367,7 @@ module.exports = (_env, argv) => {
         ...config.plugins,
         ...getBundleAnalyzerPlugin(analyzeBundle, 'analytics-ga'),
       ],
-      performance: getPerformanceHints(perfHintOptions, 20 * 1024),
+      performance: getPerformanceHints(perfHintOptions, 128 * 1024),
     }),
     Object.assign({}, config, {
       entry: {
@@ -392,7 +392,7 @@ module.exports = (_env, argv) => {
         ...config.plugins,
         ...getBundleAnalyzerPlugin(analyzeBundle, 'external_api'),
       ],
-      performance: getPerformanceHints(perfHintOptions, 50 * 1024),
+      performance: getPerformanceHints(perfHintOptions, 155 * 1024),
     }),
     Object.assign({}, config, {
       entry: {
@@ -403,7 +403,7 @@ module.exports = (_env, argv) => {
         ...config.plugins,
         ...getBundleAnalyzerPlugin(analyzeBundle, 'face-landmarks-worker'),
       ],
-      performance: getPerformanceHints(perfHintOptions, 1024 * 1024 * 2),
+      performance: getPerformanceHints(perfHintOptions, 1024 * 1024 * 3),
     }),
   ];
 };
