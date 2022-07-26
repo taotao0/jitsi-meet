@@ -5,10 +5,6 @@
     width: 100%;
 }
 
-#react {
-    width:100%;
-}
-
 #layout_wrapper {
     @include ltr;
     display: flex;
@@ -81,8 +77,8 @@
 }
 
 #largeVideoContainer {
-    height: 1920;
-    width: 1080;
+    height: 100%;
+    width: 100%;
 }
 
 #largeVideoWrapper {
