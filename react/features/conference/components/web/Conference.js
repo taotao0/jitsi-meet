@@ -373,19 +373,19 @@ class Conference extends AbstractConference<Props, *> {
      * Change conference mode ui
      * 
      */
-    _changeConferenceUI(){
+    _changeConferenceUI(isWebinar){
         const CONFERENCE_BUTTONS = [
             'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
             'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',  
             'etherpad', 'sharedvideo', 'settings', 'raisehand',
             'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
-            'tileview', 'videobackgroundblur', 'download', 'help', 'mute-everyone', 'security'
+            'tileview', 'videobackgroundblur', 'download', 'help', 'mute-everyone', 'security','toggle-camera'
         ];       
         const WEBINAR_HOST_BUTTONS = [
             'microphone', 'camera', 'fullscreen','desktop','fodeviceselection', 
             'hangup', 'profile', 'chat', 'recording',
             'settings', 'videoquality', 'invite', 'feedback',
-            'videobackgroundblur', 'help', 'security'
+            'videobackgroundblur', 'help', 'security','toggle-camera'
         ]  
         const WEBINAR_GUEST_BUTTONS = [
             'hangup', 'profile', 'chat', 'recording',  
@@ -401,11 +401,11 @@ class Conference extends AbstractConference<Props, *> {
          *  
          */
         console.log("loginInfo",loginInfo);
-        if(this.props._isWebinar&&loginInfo.userStatus==='VISITOR'){//GUEST WEBINAR
+        if(isWebinar&&loginInfo.userStatus==='VISITOR'){//GUEST WEBINAR
             interfaceConfig.TOOLBAR_BUTTONS=WEBINAR_GUEST_BUTTONS;
             config.toolbarButtons=WEBINAR_GUEST_BUTTONS;
             console.log("NOT HOST&WEBINAR&VISITOR");
-        }else if(this.props._isWebinar&&loginInfo.userStatus==='MEMBER'){//HOST WEBINAR
+        }else if(isWebinar&&loginInfo.userStatus==='MEMBER'){//HOST WEBINAR
             if(loginInfo.loginUserInfo.personal_room_name===this.props._roomName.replaceAll(' ','-')){
                 interfaceConfig.TOOLBAR_BUTTONS=WEBINAR_HOST_BUTTONS;
                 config.toolbarButtons=WEBINAR_HOST_BUTTONS;
@@ -457,7 +457,7 @@ class Conference extends AbstractConference<Props, *> {
         */
         dispatch(changeConferenceMode(ret));
         dispatch(connect());
-        this._changeConferenceUI();
+        this._changeConferenceUI(ret);
         maybeShowSuboptimalExperienceNotification(dispatch, t);
     }
     
