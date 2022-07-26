@@ -3,7 +3,10 @@
 import _ from 'lodash';
 
 import { getCurrentConference } from '../base/conference';
-import { getParticipantCount, isLocalParticipantModerator } from '../base/participants';
+import {
+  getParticipantCount,
+  isLocalParticipantModerator,
+} from '../base/participants';
 import { toState } from '../base/redux';
 
 import { FEATURE_KEY } from './constants';
@@ -15,7 +18,8 @@ import { FEATURE_KEY } from './constants';
  * {@code getState} function, or the redux state itself.
  * @returns {Object} Object of rooms.
  */
-export const getBreakoutRooms = (stateful: Function | Object) => toState(stateful)[FEATURE_KEY].rooms;
+export const getBreakoutRooms = (stateful: Function | Object) =>
+  toState(stateful)[FEATURE_KEY].rooms;
 
 /**
  * Returns the main room.
@@ -25,9 +29,9 @@ export const getBreakoutRooms = (stateful: Function | Object) => toState(statefu
  * @returns {Object|undefined} The main room object, or undefined.
  */
 export const getMainRoom = (stateful: Function | Object) => {
-    const rooms = getBreakoutRooms(stateful);
+  const rooms = getBreakoutRooms(stateful);
 
-    return _.find(rooms, (room: Object) => room.isMainRoom);
+  return _.find(rooms, (room: Object) => room.isMainRoom);
 };
 
 /**
@@ -38,10 +42,13 @@ export const getMainRoom = (stateful: Function | Object) => {
  * @param {string} roomJid - The jid of the room.
  * @returns {Object|undefined} The main room object, or undefined.
  */
-export const getRoomByJid = (stateful: Function | Object, roomJid: string): Object => {
-    const rooms = getBreakoutRooms(stateful);
+export const getRoomByJid = (
+  stateful: Function | Object,
+  roomJid: string
+): Object => {
+  const rooms = getBreakoutRooms(stateful);
 
-    return _.find(rooms, (room: Object) => room.jid === roomJid);
+  return _.find(rooms, (room: Object) => room.jid === roomJid);
 };
 
 /**
@@ -52,10 +59,10 @@ export const getRoomByJid = (stateful: Function | Object, roomJid: string): Obje
  * @returns {string} Room id or undefined.
  */
 export const getCurrentRoomId = (stateful: Function | Object) => {
-    const conference = getCurrentConference(stateful);
+  const conference = getCurrentConference(stateful);
 
-    // $FlowExpectedError
-    return conference?.getName();
+  // $FlowExpectedError
+  return conference?.getName();
 };
 
 /**
@@ -66,11 +73,10 @@ export const getCurrentRoomId = (stateful: Function | Object) => {
  * @returns {boolean}
  */
 export const isInBreakoutRoom = (stateful: Function | Object) => {
-    const conference = getCurrentConference(stateful);
+  const conference = getCurrentConference(stateful);
 
-    // $FlowExpectedError
-    return conference?.getBreakoutRooms()
-        ?.isBreakoutRoom();
+  // $FlowExpectedError
+  return conference?.getBreakoutRooms()?.isBreakoutRoom();
 };
 
 /**
@@ -81,10 +87,10 @@ export const isInBreakoutRoom = (stateful: Function | Object) => {
  * @returns {Object}
  */
 export const getBreakoutRoomsConfig = (stateful: Function | Object) => {
-    const state = toState(stateful);
-    const { breakoutRooms = {} } = state['features/base/config'];
+  const state = toState(stateful);
+  const { breakoutRooms = {} } = state['features/base/config'];
 
-    return breakoutRooms;
+  return breakoutRooms;
 };
 
 /**
@@ -94,13 +100,15 @@ export const getBreakoutRoomsConfig = (stateful: Function | Object) => {
  * @returns {boolean}
  */
 export const isAddBreakoutRoomButtonVisible = (stateful: Function | Object) => {
-    const state = toState(stateful);
-    const isLocalModerator = isLocalParticipantModerator(state);
-    const { conference } = state['features/base/conference'];
-    const isBreakoutRoomsSupported = conference?.getBreakoutRooms()?.isSupported();
-    const { hideAddRoomButton } = getBreakoutRoomsConfig(state);
+  const state = toState(stateful);
+  const isLocalModerator = isLocalParticipantModerator(state);
+  const { conference } = state['features/base/conference'];
+  const isBreakoutRoomsSupported = conference
+    ?.getBreakoutRooms()
+    ?.isSupported();
+  const { hideAddRoomButton } = getBreakoutRoomsConfig(state);
 
-    return isLocalModerator && isBreakoutRoomsSupported && !hideAddRoomButton;
+  return isLocalModerator && isBreakoutRoomsSupported && !hideAddRoomButton;
 };
 
 /**
@@ -109,17 +117,21 @@ export const isAddBreakoutRoomButtonVisible = (stateful: Function | Object) => {
  * @param {Function | Object} stateful - Global state.
  * @returns {boolean}
  */
-export const isAutoAssignParticipantsVisible = (stateful: Function | Object) => {
-    const state = toState(stateful);
-    const rooms = getBreakoutRooms(state);
-    const inBreakoutRoom = isInBreakoutRoom(state);
-    const isLocalModerator = isLocalParticipantModerator(state);
-    const participantsCount = getParticipantCount(state);
-    const { hideAutoAssignButton } = getBreakoutRoomsConfig(state);
+export const isAutoAssignParticipantsVisible = (
+  stateful: Function | Object
+) => {
+  const state = toState(stateful);
+  const rooms = getBreakoutRooms(state);
+  const inBreakoutRoom = isInBreakoutRoom(state);
+  const isLocalModerator = isLocalParticipantModerator(state);
+  const participantsCount = getParticipantCount(state);
+  const { hideAutoAssignButton } = getBreakoutRoomsConfig(state);
 
-    return !inBreakoutRoom
-        && isLocalModerator
-        && participantsCount > 2
-        && Object.keys(rooms).length > 1
-        && !hideAutoAssignButton;
+  return (
+    !inBreakoutRoom &&
+    isLocalModerator &&
+    participantsCount > 2 &&
+    Object.keys(rooms).length > 1 &&
+    !hideAutoAssignButton
+  );
 };

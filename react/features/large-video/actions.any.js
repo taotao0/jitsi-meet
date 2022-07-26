@@ -116,17 +116,12 @@ function _electParticipantInLargeVideo(state) {
   let participant;
   let hostId = null;
   const participants = [...getRemoteParticipants(state).values()];
-  console.log('CHECK 1', state['features/conference'].isWebinar);
   if (!!state['features/conference'].isWebinar) {
     participants.forEach((p) => {
       if (p.role != 'participant') {
         hostId = p.id;
       }
-
-      console.log('CHECK 3', p.id);
     });
-
-    console.log('CHECK 2', hostId);
     if (!!hostId) {
       return hostId;
     }

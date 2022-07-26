@@ -3,9 +3,9 @@
 import type { Dispatch } from 'redux';
 
 import {
-    SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED,
-    SET_TILE_VIEW,
-    VIRTUAL_SCREENSHARE_REMOTE_PARTICIPANTS_UPDATED
+  SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED,
+  SET_TILE_VIEW,
+  VIRTUAL_SCREENSHARE_REMOTE_PARTICIPANTS_UPDATED,
 } from './actionTypes';
 import { shouldDisplayTileView } from './functions';
 
@@ -20,11 +20,13 @@ import { shouldDisplayTileView } from './functions';
  *     participantId: string
  * }}
  */
-export function setRemoteParticipantsWithScreenShare(participantIds: Array<string>) {
-    return {
-        type: SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED,
-        participantIds
-    };
+export function setRemoteParticipantsWithScreenShare(
+  participantIds: Array<string>
+) {
+  return {
+    type: SCREEN_SHARE_REMOTE_PARTICIPANTS_UPDATED,
+    participantIds,
+  };
 }
 
 /**
@@ -37,11 +39,13 @@ export function setRemoteParticipantsWithScreenShare(participantIds: Array<strin
  *     participantIds: Array<string>
  * }}
  */
-export function virtualScreenshareParticipantsUpdated(participantIds: Array<string>) {
-    return {
-        type: VIRTUAL_SCREENSHARE_REMOTE_PARTICIPANTS_UPDATED,
-        participantIds
-    };
+export function virtualScreenshareParticipantsUpdated(
+  participantIds: Array<string>
+) {
+  return {
+    type: VIRTUAL_SCREENSHARE_REMOTE_PARTICIPANTS_UPDATED,
+    participantIds,
+  };
 }
 
 /**
@@ -55,10 +59,10 @@ export function virtualScreenshareParticipantsUpdated(participantIds: Array<stri
  * }}
  */
 export function setTileView(enabled: ?boolean) {
-    return {
-        type: SET_TILE_VIEW,
-        enabled
-    };
+  return {
+    type: SET_TILE_VIEW,
+    enabled,
+  };
 }
 
 /**
@@ -68,9 +72,9 @@ export function setTileView(enabled: ?boolean) {
  * @returns {Function}
  */
 export function toggleTileView() {
-    return (dispatch: Dispatch<any>, getState: Function) => {
-        const tileViewActive = shouldDisplayTileView(getState());
+  return (dispatch: Dispatch<any>, getState: Function) => {
+    const tileViewActive = shouldDisplayTileView(getState());
 
-        dispatch(setTileView(!tileViewActive));
-    };
+    dispatch(setTileView(!tileViewActive));
+  };
 }
