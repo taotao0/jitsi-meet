@@ -14,7 +14,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 // const devServerProxyTarget
 //     = process.env.WEBPACK_DEV_SERVER_PROXY_TARGET || 'https://usee.co.kr';
 
-const devServerProxyTarget = 'https://usee.co.kr';
+const devServerProxyTarget = 'https://mvb1.cookmung.com';
     /**
  * Build a Performance configuration object for the given size.
  * See: https://webpack.js.org/configuration/performance/
