@@ -289,7 +289,7 @@ function getDevServerConfig() {
 module.exports = (_env, argv) => {
   const analyzeBundle = Boolean(process.env.ANALYZE_BUNDLE);
   const mode = typeof argv.mode === 'undefined' ? 'production' : argv.mode;
-  const isProduction = mode === 'production';
+  const isProduction = false; //mode === 'production';
   const configOptions = {
     detectCircularDeps: Boolean(process.env.DETECT_CIRCULAR_DEPS),
     minimize: isProduction,
@@ -305,7 +305,7 @@ module.exports = (_env, argv) => {
       entry: {
         'app.bundle': './app.js',
       },
-      devServer: getDevServerConfig(),
+      devServer: isProduction ? {} : getDevServerConfig(),
       plugins: [
         ...config.plugins,
         ...getBundleAnalyzerPlugin(analyzeBundle, 'app'),
