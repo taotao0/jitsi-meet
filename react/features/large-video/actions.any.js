@@ -4,16 +4,16 @@ import type { Dispatch } from 'redux';
 
 import { MEDIA_TYPE } from '../base/media';
 import {
-    getDominantSpeakerParticipant,
-    getLocalParticipant,
-    getPinnedParticipant,
-    getRemoteParticipants
+  getDominantSpeakerParticipant,
+  getLocalParticipant,
+  getPinnedParticipant,
+  getRemoteParticipants,
 } from '../base/participants';
 import { isStageFilmstripAvailable } from '../filmstrip/functions';
 
 import {
-    SELECT_LARGE_VIDEO_PARTICIPANT,
-    UPDATE_KNOWN_LARGE_VIDEO_RESOLUTION
+  SELECT_LARGE_VIDEO_PARTICIPANT,
+  UPDATE_KNOWN_LARGE_VIDEO_RESOLUTION,
 } from './actionTypes';
 
 /**
@@ -27,40 +27,45 @@ import {
  * @returns {Function}
  */
 export function selectParticipantInLargeVideo(participant: ?string) {
-    return (dispatch: Dispatch<any>, getState: Function) => {
-        const state = getState();
+  return (dispatch: Dispatch<any>, getState: Function) => {
+    const state = getState();
 
-        if (isStageFilmstripAvailable(state, 2)) {
-            return;
-        }
+    if (isStageFilmstripAvailable(state, 2)) {
+      return;
+    }
 
-        // Keep Etherpad open.
-        if (state['features/etherpad'].editing) {
-            return;
-        }
+    // Keep Etherpad open.
+    if (state['features/etherpad'].editing) {
+      return;
+    }
 
-        const participantId = participant ?? _electParticipantInLargeVideo(state);
-        const largeVideo = state['features/large-video'];
-        const remoteScreenShares = state['features/video-layout'].remoteScreenShares;
-        let latestScreenshareParticipantId;
+    const participantId = participant ?? _electParticipantInLargeVideo(state);
+    const largeVideo = state['features/large-video'];
+    const remoteScreenShares =
+      state['features/video-layout'].remoteScreenShares;
+    let latestScreenshareParticipantId;
 
-        if (remoteScreenShares && remoteScreenShares.length) {
-            latestScreenshareParticipantId = remoteScreenShares[remoteScreenShares.length - 1];
-        }
+    if (remoteScreenShares && remoteScreenShares.length) {
+      latestScreenshareParticipantId =
+        remoteScreenShares[remoteScreenShares.length - 1];
+    }
 
-        // When trying to auto pin screenshare, always select the endpoint even though it happens to be
-        // the large video participant in redux (for the reasons listed above in the large video selection
-        // logic above). The auto pin screenshare logic kicks in after the track is added
-        // (which updates the large video participant and selects all endpoints because of the auto tile
-        // view mode). If the screenshare endpoint is not among the forwarded endpoints from the bridge,
-        // it needs to be selected again at this point.
-        if (participantId !== largeVideo.participantId || participantId === latestScreenshareParticipantId) {
-            dispatch({
-                type: SELECT_LARGE_VIDEO_PARTICIPANT,
-                participantId
-            });
-        }
-    };
+    // When trying to auto pin screenshare, always select the endpoint even though it happens to be
+    // the large video participant in redux (for the reasons listed above in the large video selection
+    // logic above). The auto pin screenshare logic kicks in after the track is added
+    // (which updates the large video participant and selects all endpoints because of the auto tile
+    // view mode). If the screenshare endpoint is not among the forwarded endpoints from the bridge,
+    // it needs to be selected again at this point.
+    if (
+      participantId !== largeVideo.participantId ||
+      participantId === latestScreenshareParticipantId
+    ) {
+      dispatch({
+        type: SELECT_LARGE_VIDEO_PARTICIPANT,
+        participantId,
+      });
+    }
+  };
 }
 
 /**
@@ -73,10 +78,10 @@ export function selectParticipantInLargeVideo(participant: ?string) {
  * }}
  */
 export function updateKnownLargeVideoResolution(resolution: number) {
-    return {
-        type: UPDATE_KNOWN_LARGE_VIDEO_RESOLUTION,
-        resolution
-    };
+  return {
+    type: UPDATE_KNOWN_LARGE_VIDEO_RESOLUTION,
+    resolution,
+  };
 }
 
 /**
@@ -87,14 +92,14 @@ export function updateKnownLargeVideoResolution(resolution: number) {
  * @returns {(Track|undefined)}
  */
 function _electLastVisibleRemoteVideo(tracks) {
-    // First we try to get most recent remote video track.
-    for (let i = tracks.length - 1; i >= 0; --i) {
-        const track = tracks[i];
+  // First we try to get most recent remote video track.
+  for (let i = tracks.length - 1; i >= 0; --i) {
+    const track = tracks[i];
 
-        if (!track.local && track.mediaType === MEDIA_TYPE.VIDEO) {
-            return track;
-        }
+    if (!track.local && track.mediaType === MEDIA_TYPE.VIDEO) {
+      return track;
     }
+  }
 }
 
 /**
@@ -107,74 +112,79 @@ function _electLastVisibleRemoteVideo(tracks) {
  * @returns {(string|undefined)}
  */
 function _electParticipantInLargeVideo(state) {
-    const stageFilmstrip = isStageFilmstripAvailable(state);
-    let participant;
+  const stageFilmstrip = isStageFilmstripAvailable(state);
+  let participant;
+  let hostId = null;
+  const participants = [...getRemoteParticipants(state).values()];
+  console.log('CHECK 1', state['features/conference'].isWebinar);
+  if (!!state['features/conference'].isWebinar) {
+    participants.forEach((p) => {
+      if (p.role != 'participant') {
+        hostId = p.id;
+      }
 
-    if(!!state['features/conference'].isWebinar){
-        participants.forEach((p)=>{
-            if(p.role!='participant'){
-                hostId=p.id;    
-            }
-        })
-        if(!!hostId){
-            return hostId;
-        }
+      console.log('CHECK 3', p.id);
+    });
+
+    console.log('CHECK 2', hostId);
+    if (!!hostId) {
+      return hostId;
     }
+  }
 
-    if (!stageFilmstrip) {
-        // If a participant is pinned, they will be shown in the LargeVideo (regardless of whether they are local or
-        // remote) when the filmstrip on stage is disabled.
-        participant = getPinnedParticipant(state);
+  if (!stageFilmstrip) {
+    // If a participant is pinned, they will be shown in the LargeVideo (regardless of whether they are local or
+    // remote) when the filmstrip on stage is disabled.
+    participant = getPinnedParticipant(state);
 
-        if (participant) {
-            return participant.id;
-        }
-    }
-
-    // Pick the most recent remote screenshare that was added to the conference.
-    const remoteScreenShares = state['features/video-layout'].remoteScreenShares;
-
-    if (remoteScreenShares?.length) {
-        return remoteScreenShares[remoteScreenShares.length - 1];
-    }
-
-    // Next, pick the pinned participant when filmstrip on stage is enabled.
-    if (stageFilmstrip) {
-        participant = getPinnedParticipant(state);
-
-        if (participant) {
-            return participant.id;
-        }
-    }
-
-    // Next, pick the dominant speaker (other than self).
-    participant = getDominantSpeakerParticipant(state);
-    if (participant && !participant.local) {
-        return participant.id;
-    }
-
-    // In case this is the local participant.
-    participant = undefined;
-
-    // Next, pick the most recent participant with video.
-    const tracks = state['features/base/tracks'];
-    const videoTrack = _electLastVisibleRemoteVideo(tracks);
-
-    if (videoTrack) {
-        return videoTrack.participantId;
-    }
-
-    // Last, select the participant that joined last (other than poltergist or other bot type participants).
-    const participants = [ ...getRemoteParticipants(state).values() ];
-
-    for (let i = participants.length; i > 0 && !participant; i--) {
-        const p = participants[i - 1];
-
-        !p.botType && (participant = p);
-    }
     if (participant) {
-        return participant.id;
+      return participant.id;
     }
+  }
 
-    return getLocalParticipant(state)?.id;
+  // Pick the most recent remote screenshare that was added to the conference.
+  const remoteScreenShares = state['features/video-layout'].remoteScreenShares;
+
+  if (remoteScreenShares?.length) {
+    return remoteScreenShares[remoteScreenShares.length - 1];
+  }
+
+  // Next, pick the pinned participant when filmstrip on stage is enabled.
+  if (stageFilmstrip) {
+    participant = getPinnedParticipant(state);
+
+    if (participant) {
+      return participant.id;
+    }
+  }
+
+  // Next, pick the dominant speaker (other than self).
+  participant = getDominantSpeakerParticipant(state);
+  if (participant && !participant.local) {
+    return participant.id;
+  }
+
+  // In case this is the local participant.
+  participant = undefined;
+
+  // Next, pick the most recent participant with video.
+  const tracks = state['features/base/tracks'];
+  const videoTrack = _electLastVisibleRemoteVideo(tracks);
+
+  if (videoTrack) {
+    return videoTrack.participantId;
+  }
+
+  // Last, select the participant that joined last (other than poltergist or other bot type participants).
+
+  for (let i = participants.length; i > 0 && !participant; i--) {
+    const p = participants[i - 1];
+
+    !p.botType && (participant = p);
+  }
+  if (participant) {
+    return participant.id;
+  }
+
+  return getLocalParticipant(state)?.id;
 }
