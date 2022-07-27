@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { createInviteDialogEvent, sendAnalytics } from '../../../../analytics';
 import { getInviteURL } from '../../../../base/connection';
@@ -14,13 +14,13 @@ import { isVpaasMeeting } from '../../../../jaas/functions';
 import { getActiveSession } from '../../../../recording';
 import { updateDialInNumbers } from '../../../actions';
 import {
-    _getDefaultPhoneNumber,
-    getInviteText,
-    getInviteTextiOS,
-    isAddPeopleEnabled,
-    isDialOutEnabled,
-    sharingFeatures,
-    isSharingEnabled
+  _getDefaultPhoneNumber,
+  getInviteText,
+  getInviteTextiOS,
+  isAddPeopleEnabled,
+  isDialOutEnabled,
+  sharingFeatures,
+  isSharingEnabled,
 } from '../../../functions';
 
 import CopyMeetingLinkSection from './CopyMeetingLinkSection';
@@ -32,77 +32,76 @@ import LiveStreamSection from './LiveStreamSection';
 declare var interfaceConfig: Object;
 
 type Props = {
+  /**
+   * The object representing the dialIn feature.
+   */
+  _dialIn: Object,
 
-    /**
-     * The object representing the dialIn feature.
-     */
-    _dialIn: Object,
+  /**
+   * Whether or not embed meeting should be visible.
+   */
+  _embedMeetingVisible: boolean,
 
-    /**
-     * Whether or not embed meeting should be visible.
-     */
-    _embedMeetingVisible: boolean,
+  /**
+   * Whether or not dial in number should be visible.
+   */
+  _dialInVisible: boolean,
 
-    /**
-     * Whether or not dial in number should be visible.
-     */
-    _dialInVisible: boolean,
+  /**
+   * Whether or not url sharing button should be visible.
+   */
+  _urlSharingVisible: boolean,
 
-    /**
-     * Whether or not url sharing button should be visible.
-     */
-    _urlSharingVisible: boolean,
+  /**
+   * Whether or not email sharing features should be visible.
+   */
+  _emailSharingVisible: boolean,
 
-    /**
-     * Whether or not email sharing features should be visible.
-     */
-    _emailSharingVisible: boolean,
+  /**
+   * The meeting invitation text.
+   */
+  _invitationText: string,
 
-    /**
-     * The meeting invitation text.
-     */
-    _invitationText: string,
+  /**
+   * The custom no new-lines meeting invitation text for iOS default email.
+   * Needed because of this mailto: iOS issue: https://developer.apple.com/forums/thread/681023.
+   */
+  _invitationTextiOS: string,
 
-    /**
-     * The custom no new-lines meeting invitation text for iOS default email.
-     * Needed because of this mailto: iOS issue: https://developer.apple.com/forums/thread/681023.
-     */
-    _invitationTextiOS: string,
+  /**
+   * An alternate app name to be displayed in the email subject.
+   */
+  _inviteAppName: ?string,
 
-    /**
-     * An alternate app name to be displayed in the email subject.
-     */
-    _inviteAppName: ?string,
+  /**
+   * Whether or not invite contacts should be visible.
+   */
+  _inviteContactsVisible: boolean,
 
-    /**
-     * Whether or not invite contacts should be visible.
-     */
-    _inviteContactsVisible: boolean,
+  /**
+   * The current url of the conference to be copied onto the clipboard.
+   */
+  _inviteUrl: string,
 
-    /**
-     * The current url of the conference to be copied onto the clipboard.
-     */
-    _inviteUrl: string,
+  /**
+   * The current known URL for a live stream in progress.
+   */
+  _liveStreamViewURL: string,
 
-    /**
-     * The current known URL for a live stream in progress.
-     */
-    _liveStreamViewURL: string,
+  /**
+   * The default phone number.
+   */
+  _phoneNumber: ?string,
 
-    /**
-     * The default phone number.
-     */
-    _phoneNumber: ?string,
+  /**
+   * Invoked to obtain translated strings.
+   */
+  t: Function,
 
-    /**
-     * Invoked to obtain translated strings.
-     */
-    t: Function,
-
-    /**
-     * Method to update the dial in numbers.
-     */
-    updateNumbers: Function
+  /**
+   * Method to update the dial in numbers.
+   */
+  updateNumbers: Function,
 };
 
 /**
@@ -111,84 +110,82 @@ type Props = {
  * @returns {React$Element<any>}
  */
 function AddPeopleDialog({
-    _dialIn,
-    _embedMeetingVisible,
-    _dialInVisible,
-    _urlSharingVisible,
-    _emailSharingVisible,
-    _invitationText,
-    _invitationTextiOS,
-    _inviteAppName,
-    _inviteContactsVisible,
-    _inviteUrl,
-    _liveStreamViewURL,
-    _phoneNumber,
-    t,
-    updateNumbers }: Props) {
-    const [ phoneNumber, setPhoneNumber ] = useState(undefined);
-    const _inviteEmailVisible = false;
-    const _embedMeetingVisibleUsee = false;
+  _dialIn,
+  _embedMeetingVisible,
+  _dialInVisible,
+  _urlSharingVisible,
+  _emailSharingVisible,
+  _invitationText,
+  _invitationTextiOS,
+  _inviteAppName,
+  _inviteContactsVisible,
+  _inviteUrl,
+  _liveStreamViewURL,
+  _phoneNumber,
+  t,
+  updateNumbers,
+}: Props) {
+  const [phoneNumber, setPhoneNumber] = useState(undefined);
+  const _inviteEmailVisible = false;
+  const _embedMeetingVisibleUsee = false;
 
-    /**
-     * Updates the dial-in numbers.
-     */
-    useEffect(() => {
-        if (!_dialIn.numbers) {
-            updateNumbers();
-        }
-    }, []);
+  /**
+   * Updates the dial-in numbers.
+   */
+  useEffect(() => {
+    if (!_dialIn.numbers) {
+      updateNumbers();
+    }
+  }, []);
 
-    /**
-     * Sends analytics events when the dialog opens/closes.
-     *
-     * @returns {void}
-     */
-    useEffect(() => {
-        sendAnalytics(createInviteDialogEvent(
-            'opened', 'dialog'));
+  /**
+   * Sends analytics events when the dialog opens/closes.
+   *
+   * @returns {void}
+   */
+  useEffect(() => {
+    sendAnalytics(createInviteDialogEvent('opened', 'dialog'));
 
-        return () => {
-            sendAnalytics(createInviteDialogEvent(
-                'closed', 'dialog'));
-        };
-    }, []);
+    return () => {
+      sendAnalytics(createInviteDialogEvent('closed', 'dialog'));
+    };
+  }, []);
 
-    const inviteSubject = t('addPeople.inviteMoreMailSubject', {
-        appName: _inviteAppName ?? interfaceConfig.APP_NAME
-    });
+  const inviteSubject = t('addPeople.inviteMoreMailSubject', {
+    appName: _inviteAppName ?? interfaceConfig.APP_NAME,
+  });
 
-    return (
-        <Dialog
-            cancelKey = { 'dialog.close' }
-            hideCancelButton = { true }
-            submitDisabled = { true }
-            titleKey = 'addPeople.inviteMorePrompt'
-            width = { 'small' }>
-            <div className = 'invite-more-dialog'>
-                { _inviteContactsVisible && <InviteContactsSection /> }
-                {_urlSharingVisible ? <CopyMeetingLinkSection url = { _inviteUrl } /> : null}
-                {
-                    _emailSharingVisible
-                        ? <InviteByEmailSection
-                            inviteSubject = { inviteSubject }
-                            inviteText = { _invitationText }
-                            inviteTextiOS = { _invitationTextiOS } />
-                        : null
-                }
-                { _embedMeetingVisible && <EmbedMeetingTrigger /> }
-                <div className = 'invite-more-dialog separator' />
-                {
-                    _liveStreamViewURL
-                        && <LiveStreamSection liveStreamViewURL = { _liveStreamViewURL } />
-                }
-                {
-                    _phoneNumber
-                        && _dialInVisible
-                        && <DialInSection phoneNumber = { _phoneNumber } />
-                }
-            </div>
-        </Dialog>
-    );
+  return (
+    <Dialog
+      cancelKey={'dialog.close'}
+      hideCancelButton={true}
+      submitDisabled={true}
+      titleKey="addPeople.inviteMorePrompt"
+      width={'small'}
+    >
+      <div className="invite-more-dialog">
+        {_inviteContactsVisible && <InviteContactsSection />}
+        {_urlSharingVisible ? (
+          <CopyMeetingLinkSection url={_inviteUrl} />
+        ) : null}
+        {_emailSharingVisible ? (
+          <InviteByEmailSection
+            inviteSubject={inviteSubject}
+            inviteText={_invitationText}
+            inviteTextiOS={_invitationTextiOS}
+          />
+        ) : null}
+        {_embedMeetingVisible && <EmbedMeetingTrigger />}
+        <div className="invite-more-dialog separator" />
+        {_liveStreamViewURL && (
+          <LiveStreamSection liveStreamViewURL={_liveStreamViewURL} />
+        )}
+        {_phoneNumber && _dialInVisible && (
+          <DialInSection phoneNumber={_phoneNumber} />
+        )}
+      </div>
+    </Dialog>
+  );
 }
 
 /**
@@ -201,35 +198,41 @@ function AddPeopleDialog({
  * @returns {Props}
  */
 function mapStateToProps(state, ownProps) {
-    const currentLiveStreamingSession
-        = getActiveSession(state, JitsiRecordingConstants.mode.STREAM);
-    const { iAmRecorder, inviteAppName } = state['features/base/config'];
-    const addPeopleEnabled = isAddPeopleEnabled(state);
-    const dialOutEnabled = isDialOutEnabled(state);
-    const hideInviteContacts = iAmRecorder || (!addPeopleEnabled && !dialOutEnabled);
-    const dialIn = state['features/invite'];
-    const phoneNumber = dialIn && dialIn.numbers ? _getDefaultPhoneNumber(dialIn.numbers) : undefined;
+  const currentLiveStreamingSession = getActiveSession(
+    state,
+    JitsiRecordingConstants.mode.STREAM
+  );
+  const { iAmRecorder, inviteAppName } = state['features/base/config'];
+  const addPeopleEnabled = isAddPeopleEnabled(state);
+  const dialOutEnabled = isDialOutEnabled(state);
+  const hideInviteContacts =
+    iAmRecorder || (!addPeopleEnabled && !dialOutEnabled);
+  const dialIn = state['features/invite'];
+  const phoneNumber =
+    dialIn && dialIn.numbers
+      ? _getDefaultPhoneNumber(dialIn.numbers)
+      : undefined;
 
-    return {
-        _dialIn: dialIn,
-        _embedMeetingVisible: !isVpaasMeeting(state) && isSharingEnabled(sharingFeatures.embed),
-        _dialInVisible: isSharingEnabled(sharingFeatures.dialIn),
-        _urlSharingVisible: isDynamicBrandingDataLoaded(state) && isSharingEnabled(sharingFeatures.url),
-        _emailSharingVisible: isSharingEnabled(sharingFeatures.email),
-        _invitationText: getInviteText({ state,
-            phoneNumber,
-            t: ownProps.t }),
-        _invitationTextiOS: getInviteTextiOS({ state,
-            phoneNumber,
-            t: ownProps.t }),
-        _inviteAppName: inviteAppName,
-        _inviteContactsVisible: interfaceConfig.ENABLE_DIAL_OUT && !hideInviteContacts,
-        _inviteUrl: getInviteURL(state),
-        _liveStreamViewURL:
-            currentLiveStreamingSession
-                && currentLiveStreamingSession.liveStreamViewURL,
-        _phoneNumber: phoneNumber
-    };
+  return {
+    _dialIn: dialIn,
+    _embedMeetingVisible:
+      !isVpaasMeeting(state) && isSharingEnabled(sharingFeatures.embed),
+    _dialInVisible: isSharingEnabled(sharingFeatures.dialIn),
+    _urlSharingVisible:
+      isDynamicBrandingDataLoaded(state) &&
+      isSharingEnabled(sharingFeatures.url),
+    _emailSharingVisible: isSharingEnabled(sharingFeatures.email),
+    _invitationText: getInviteText({ state, phoneNumber, t: ownProps.t }),
+    _invitationTextiOS: getInviteTextiOS({ state, phoneNumber, t: ownProps.t }),
+    _inviteAppName: inviteAppName,
+    _inviteContactsVisible:
+      interfaceConfig.ENABLE_DIAL_OUT && !hideInviteContacts,
+    _inviteUrl: getInviteURL(state),
+    _liveStreamViewURL:
+      currentLiveStreamingSession &&
+      currentLiveStreamingSession.liveStreamViewURL,
+    _phoneNumber: phoneNumber,
+  };
 }
 
 /**
@@ -239,9 +242,9 @@ function mapStateToProps(state, ownProps) {
  * @returns {Props}
  */
 const mapDispatchToProps = {
-    updateNumbers: () => updateDialInNumbers()
+  updateNumbers: () => updateDialInNumbers(),
 };
 
 export default translate(
-    connect(mapStateToProps, mapDispatchToProps)(AddPeopleDialog)
+  connect(mapStateToProps, mapDispatchToProps)(AddPeopleDialog)
 );
