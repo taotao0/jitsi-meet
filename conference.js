@@ -2192,7 +2192,7 @@ export default {
             }
 
             logger.log(`USER ${id} LEFT:`, user);
-
+/*
             APP.UI.onSharedVideoStop(id);
             // hjjung start
             // check
@@ -2207,7 +2207,7 @@ export default {
                     logger.log(`-----------> turn off screen sharing`);
                     APP.store.dispatch(toggleScreensharing());
                 }
-            }
+            }*/
             // hjjung end
         });
 
