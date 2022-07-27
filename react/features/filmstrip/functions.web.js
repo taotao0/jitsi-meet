@@ -70,7 +70,7 @@ declare var interfaceConfig: Object;
  */
 export function isFilmstripVisible(stateful: Object | Function) {
   if (!!state['features/conference'].isWebinar) {
-    return false;
+    //   return false;
   }
   return toState(stateful)['features/filmstrip'].visible;
 }
@@ -85,8 +85,8 @@ export function isFilmstripVisible(stateful: Object | Function) {
  */
 export function shouldRemoteVideosBeVisible(state: Object) {
   if (
-    state['features/invite'].calleeInfoVisible ||
-    !!state['features/conference'].isWebinar
+    state['features/invite'].calleeInfoVisible
+    //||!!state['features/conference'].isWebinar
   ) {
     return false;
   }
