@@ -69,9 +69,9 @@ declare var interfaceConfig: Object;
  * @returns {boolean}
  */
 export function isFilmstripVisible(stateful: Object | Function) {
-  if (!!state['features/conference'].isWebinar) {
+  //if (!!state['features/conference'].isWebinar) {
     //   return false;
-  }
+  //}
   return toState(stateful)['features/filmstrip'].visible;
 }
 
