@@ -178,6 +178,12 @@ class Conference extends AbstractConference<Props, *> {
    */
   componentDidMount() {
     document.title = `${this.props._roomName} | ${interfaceConfig.APP_NAME}`;
+    this._changeUI();
+    this._start();
+  }
+
+  async _changeUI() {
+    const { dispatch } = this.props;
     const ret = await this._checkConferenceMode(this.props._roomName);
     /**
      * Webinar mode check
@@ -185,7 +191,6 @@ class Conference extends AbstractConference<Props, *> {
      */
     dispatch(changeConferenceMode(ret));
     this._changeConferenceUI(ret);
-    this._start();
   }
 
   /**
@@ -523,7 +528,7 @@ class Conference extends AbstractConference<Props, *> {
 
     const { dispatch, t } = this.props;
     dispatch(connect());
-    
+
     maybeShowSuboptimalExperienceNotification(dispatch, t);
   }
 }
