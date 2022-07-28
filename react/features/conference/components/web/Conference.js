@@ -43,6 +43,7 @@ import { default as Notice } from './Notice';
 import { changeConferenceMode } from '../../ducks';
 import axios from 'axios';
 import { jitsiLocalStorage } from '@jitsi/js-utils';
+import { updateConfig } from '../../../base/config';
 
 declare var APP: Object;
 declare var interfaceConfig: Object;
@@ -453,12 +454,13 @@ class Conference extends AbstractConference<Props, *> {
      *
      */
     console.log('loginInfo', loginInfo);
+    let tmpConfig = config;
     if (isWebinar && loginInfo.userStatus === 'VISITOR') {
       //GUEST WEBINAR
       interfaceConfig.TOOLBAR_BUTTONS = WEBINAR_GUEST_BUTTONS;
-      config.toolbarButtons = WEBINAR_GUEST_BUTTONS;
+      tmpConfig.toolbarButtons = WEBINAR_GUEST_BUTTONS;
       console.log('NOT HOST&WEBINAR&VISITOR');
-      config.disableTileView = true;
+      tmpConfig.disableTileView = true;
     } else if (isWebinar && loginInfo.userStatus === 'MEMBER') {
       //HOST WEBINAR
       if (
@@ -466,22 +468,24 @@ class Conference extends AbstractConference<Props, *> {
         this.props._roomName.replaceAll(' ', '-')
       ) {
         interfaceConfig.TOOLBAR_BUTTONS = WEBINAR_HOST_BUTTONS;
-        config.toolbarButtons = WEBINAR_HOST_BUTTONS;
-        config.disableTileView = true;
+        tmpConfig.toolbarButtons = WEBINAR_HOST_BUTTONS;
+        tmpConfig.disableTileView = true;
         console.log('HOST&WEBINAR');
       } else {
         interfaceConfig.TOOLBAR_BUTTONS = WEBINAR_GUEST_BUTTONS;
-        config.toolbarButtons = WEBINAR_GUEST_BUTTONS;
-        config.disableTileView = true;
+        tmpConfig.toolbarButtons = WEBINAR_GUEST_BUTTONS;
+        tmpConfig.disableTileView = true;
         console.log('NOT HOST&WEBINAR');
       }
     } else {
       //CONFERENCE
       interfaceConfig.TOOLBAR_BUTTONS = CONFERENCE_BUTTONS;
-      config.toolbarButtons = CONFERENCE_BUTTONS;
-      config.disableTileView = false;
+      tmpConfig.toolbarButtons = CONFERENCE_BUTTONS;
+      tmpConfig.disableTileView = false;
       console.log('CONFERENCE');
     }
+
+    dispatch(updateConfig(tmpConfig));
   }
 
   async _checkConferenceMode(roomName) {
